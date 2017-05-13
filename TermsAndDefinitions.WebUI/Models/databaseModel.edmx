@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище projects_dataBaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Definition">
+          <Key>
+            <PropertyRef Name="IdDefinition" />
+          </Key>
+          <Property Name="IdDefinition" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTerm" Type="int" Nullable="false" />
+          <Property Name="Frequency" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Glossary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Table">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="IdTerm" />
+          </Key>
+          <Property Name="IdTerm" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TermName" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Definition_ToTable">
+          <End Role="Term" Type="Self.Term" Multiplicity="1" />
+          <End Role="Definition" Type="Self.Definition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="IdTerm" />
+            </Principal>
+            <Dependent Role="Definition">
+              <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище projects_dataBaseModelContainer">
+          <EntitySet Name="Definition" EntityType="Self.Definition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Glossary" EntityType="Self.Glossary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Term" EntityType="Self.Term" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Definition_ToTable" Association="Self.FK_Definition_ToTable">
+            <End Role="Term" EntitySet="Term" />
+            <End Role="Definition" EntitySet="Definition" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projects_dataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="projects_dataBaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Terms" EntityType="projects_dataBaseModel.Term" />
+          <EntitySet Name="Glossaries" EntityType="projects_dataBaseModel.Glossary" />
+          <EntitySet Name="Tables" EntityType="projects_dataBaseModel.Table" />
+          <EntitySet Name="Definitions" EntityType="projects_dataBaseModel.Definition" />
+          <AssociationSet Name="FK_Definition_ToTable" Association="projects_dataBaseModel.FK_Definition_ToTable">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Definition" EntitySet="Definitions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="IdTerm" />
+          </Key>
+          <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TermName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Definitions" Relationship="projects_dataBaseModel.FK_Definition_ToTable" FromRole="Term" ToRole="Definition" />
+        </EntityType>
+        <EntityType Name="Glossary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Table">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Definition">
+          <Key>
+            <PropertyRef Name="IdDefinition" />
+          </Key>
+          <Property Name="IdDefinition" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTerm" Type="Int32" Nullable="false" />
+          <Property Name="Frequency" Type="Int32" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Term" Relationship="projects_dataBaseModel.FK_Definition_ToTable" FromRole="Definition" ToRole="Term" />
+        </EntityType>
+        <Association Name="FK_Definition_ToTable">
+          <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="1" />
+          <End Type="projects_dataBaseModel.Definition" Role="Definition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="IdTerm" />
+            </Principal>
+            <Dependent Role="Definition">
+              <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище projects_dataBaseModelContainer" CdmEntityContainer="projects_dataBaseEntities">
+          <EntitySetMapping Name="Terms">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Term">
+              <MappingFragment StoreEntitySet="Term">
+                <ScalarProperty Name="TermName" ColumnName="TermName" />
+                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Glossaries">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Glossary">
+              <MappingFragment StoreEntitySet="Glossary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tables">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Table">
+              <MappingFragment StoreEntitySet="Table">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Definitions">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Definition">
+              <MappingFragment StoreEntitySet="Definition">
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+                <ScalarProperty Name="IdDefinition" ColumnName="IdDefinition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
