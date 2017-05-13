@@ -17,15 +17,30 @@
         </EntityType>
         <EntityType Name="Glossary">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdGlossary" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdGlossary" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTerm" Type="int" Nullable="false" />
+          <Property Name="IdProject" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Table">
+        <EntityType Name="Project">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="IdProject" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdProject" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectName" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="ReferenceToProject" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="ReferenceToFiles" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Signature" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Annotation" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Signature">
+          <Key>
+            <PropertyRef Name="IdProject" />
+          </Key>
+          <Property Name="IdProject" Type="int" Nullable="false" />
+          <Property Name="Hash1" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="HashN" Type="nvarchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="Term">
           <Key>
@@ -46,14 +61,63 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Definition_ToTerm">
+          <End Role="Term" Type="Self.Term" Multiplicity="1" />
+          <End Role="Glossary" Type="Self.Glossary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="IdTerm" />
+            </Principal>
+            <Dependent Role="Glossary">
+              <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LK_Definition_ToTerm">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Glossary" Type="Self.Glossary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Glossary">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ВK_Definition_ToTerm">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Signature" Type="Self.Signature" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Signature">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище projects_dataBaseModelContainer">
           <EntitySet Name="Definition" EntityType="Self.Definition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Glossary" EntityType="Self.Glossary" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Signature" EntityType="Self.Signature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Term" EntityType="Self.Term" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Definition_ToTable" Association="Self.FK_Definition_ToTable">
             <End Role="Term" EntitySet="Term" />
             <End Role="Definition" EntitySet="Definition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Definition_ToTerm" Association="Self.FK_Definition_ToTerm">
+            <End Role="Term" EntitySet="Term" />
+            <End Role="Glossary" EntitySet="Glossary" />
+          </AssociationSet>
+          <AssociationSet Name="LK_Definition_ToTerm" Association="Self.LK_Definition_ToTerm">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Glossary" EntitySet="Glossary" />
+          </AssociationSet>
+          <AssociationSet Name="ВK_Definition_ToTerm" Association="Self.ВK_Definition_ToTerm">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Signature" EntitySet="Signature" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -62,12 +126,37 @@
       <Schema Namespace="projects_dataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="projects_dataBaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Terms" EntityType="projects_dataBaseModel.Term" />
-          <EntitySet Name="Glossaries" EntityType="projects_dataBaseModel.Glossary" />
-          <EntitySet Name="Tables" EntityType="projects_dataBaseModel.Table" />
           <EntitySet Name="Definitions" EntityType="projects_dataBaseModel.Definition" />
           <AssociationSet Name="FK_Definition_ToTable" Association="projects_dataBaseModel.FK_Definition_ToTable">
             <End Role="Term" EntitySet="Terms" />
             <End Role="Definition" EntitySet="Definitions" />
+          </AssociationSet>
+          <EntitySet Name="Projects" EntityType="projects_dataBaseModel.Project" />
+          <EntitySet Name="Signatures" EntityType="projects_dataBaseModel.Signature" />
+          <AssociationSet Name="DK_Definition_ToTerm" Association="projects_dataBaseModel.DK_Definition_ToTerm">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Signature" EntitySet="Signatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Signature__IdPro__66603565" Association="projects_dataBaseModel.FK__Signature__IdPro__66603565">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Signature" EntitySet="Signatures" />
+          </AssociationSet>
+          <EntitySet Name="Glossary1" EntityType="projects_dataBaseModel.Glossary1" />
+          <AssociationSet Name="FK__Glossary__IdProj__75A278F5" Association="projects_dataBaseModel.FK__Glossary__IdProj__75A278F5">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Glossary1" EntitySet="Glossary1" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Glossary__IdTerm__73BA3083" Association="projects_dataBaseModel.FK__Glossary__IdTerm__73BA3083">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Glossary1" EntitySet="Glossary1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Definition_ToTerm" Association="projects_dataBaseModel.FK_Definition_ToTerm">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Glossary1" EntitySet="Glossary1" />
+          </AssociationSet>
+          <AssociationSet Name="LK_Definition_ToTerm" Association="projects_dataBaseModel.LK_Definition_ToTerm">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Glossary1" EntitySet="Glossary1" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Term">
@@ -77,18 +166,8 @@
           <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TermName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Definitions" Relationship="projects_dataBaseModel.FK_Definition_ToTable" FromRole="Term" ToRole="Definition" />
-        </EntityType>
-        <EntityType Name="Glossary">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Table">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Glossaries" Relationship="projects_dataBaseModel.FK__Glossary__IdTerm__73BA3083" FromRole="Term" ToRole="Glossary1" />
+          <NavigationProperty Name="Glossaries1" Relationship="projects_dataBaseModel.FK_Definition_ToTerm" FromRole="Term" ToRole="Glossary1" />
         </EntityType>
         <EntityType Name="Definition">
           <Key>
@@ -113,6 +192,118 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="IdProject" />
+          </Key>
+          <Property Name="IdProject" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ReferenceToProject" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ReferenceToFiles" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Signature" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Annotation" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Signatures" Relationship="projects_dataBaseModel.DK_Definition_ToTerm" FromRole="Project" ToRole="Signature" />
+          <NavigationProperty Name="Signatures1" Relationship="projects_dataBaseModel.FK__Signature__IdPro__66603565" FromRole="Project" ToRole="Signature" />
+          <NavigationProperty Name="Glossaries" Relationship="projects_dataBaseModel.FK__Glossary__IdProj__75A278F5" FromRole="Project" ToRole="Glossary1" />
+          <NavigationProperty Name="Glossaries1" Relationship="projects_dataBaseModel.LK_Definition_ToTerm" FromRole="Project" ToRole="Glossary1" />
+        </EntityType>
+        <EntityType Name="Signature">
+          <Key>
+            <PropertyRef Name="Hash1" />
+            <PropertyRef Name="HashN" />
+            <PropertyRef Name="IdSignature" />
+          </Key>
+          <Property Name="IdProject" Type="Int32" Nullable="false" />
+          <Property Name="Hash1" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="HashN" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Project" Relationship="projects_dataBaseModel.DK_Definition_ToTerm" FromRole="Signature" ToRole="Project" />
+          <NavigationProperty Name="Project1" Relationship="projects_dataBaseModel.FK__Signature__IdPro__66603565" FromRole="Signature" ToRole="Project" />
+          <Property Name="IdSignature" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="DK_Definition_ToTerm">
+          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Signature" Role="Signature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Signature">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Signature__IdPro__66603565">
+          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Signature" Role="Signature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Signature">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Glossary1">
+          <Key>
+            <PropertyRef Name="IdGlossary" />
+          </Key>
+          <Property Name="IdGlossary" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTerm" Type="Int32" Nullable="false" />
+          <Property Name="IdProject" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="projects_dataBaseModel.FK__Glossary__IdProj__75A278F5" FromRole="Glossary1" ToRole="Project" />
+          <NavigationProperty Name="Term" Relationship="projects_dataBaseModel.FK__Glossary__IdTerm__73BA3083" FromRole="Glossary1" ToRole="Term" />
+          <NavigationProperty Name="Term1" Relationship="projects_dataBaseModel.FK_Definition_ToTerm" FromRole="Glossary1" ToRole="Term" />
+          <NavigationProperty Name="Project1" Relationship="projects_dataBaseModel.LK_Definition_ToTerm" FromRole="Glossary1" ToRole="Project" />
+        </EntityType>
+        <Association Name="FK__Glossary__IdProj__75A278F5">
+          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Glossary1" Role="Glossary1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Glossary1">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Glossary__IdTerm__73BA3083">
+          <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Glossary1" Role="Glossary1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="IdTerm" />
+            </Principal>
+            <Dependent Role="Glossary1">
+              <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Definition_ToTerm">
+          <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Glossary1" Role="Glossary1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="IdTerm" />
+            </Principal>
+            <Dependent Role="Glossary1">
+              <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LK_Definition_ToTerm">
+          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="projects_dataBaseModel.Glossary1" Role="Glossary1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Glossary1">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -127,20 +318,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Glossaries">
-            <EntityTypeMapping TypeName="projects_dataBaseModel.Glossary">
-              <MappingFragment StoreEntitySet="Glossary">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tables">
-            <EntityTypeMapping TypeName="projects_dataBaseModel.Table">
-              <MappingFragment StoreEntitySet="Table">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Definitions">
             <EntityTypeMapping TypeName="projects_dataBaseModel.Definition">
               <MappingFragment StoreEntitySet="Definition">
@@ -149,6 +326,36 @@
                 <ScalarProperty Name="Frequency" ColumnName="Frequency" />
                 <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
                 <ScalarProperty Name="IdDefinition" ColumnName="IdDefinition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
+                <ScalarProperty Name="Signature" ColumnName="Signature" />
+                <ScalarProperty Name="ReferenceToFiles" ColumnName="ReferenceToFiles" />
+                <ScalarProperty Name="ReferenceToProject" ColumnName="ReferenceToProject" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Signatures">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Signature">
+              <MappingFragment StoreEntitySet="Signature">
+                <ScalarProperty Name="HashN" ColumnName="HashN" />
+                <ScalarProperty Name="Hash1" ColumnName="Hash1" />
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Glossary1">
+            <EntityTypeMapping TypeName="projects_dataBaseModel.Glossary1">
+              <MappingFragment StoreEntitySet="Glossary">
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+                <ScalarProperty Name="IdGlossary" ColumnName="IdGlossary" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -5,11 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="59cce7fb73224655ad984e24114082d8" Name="Diagram1">
-        <EntityTypeShape EntityType="projects_dataBaseModel.Term" Width="1.5" PointX="0.75" PointY="1.25" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Glossary" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Table" Width="1.5" PointX="2.75" PointY="4.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Definition" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Term" Width="1.5" PointX="0.75" PointY="0.5" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Definition" Width="1.5" PointX="5.125" PointY="0.5" />
         <AssociationConnector Association="projects_dataBaseModel.FK_Definition_ToTable" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Project" Width="1.5" PointX="7.625" PointY="2.375" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Signature" Width="1.5" PointX="4.625" PointY="6.125" />
+        <AssociationConnector Association="projects_dataBaseModel.DK_Definition_ToTerm" />
+        <AssociationConnector Association="projects_dataBaseModel.FK__Signature__IdPro__66603565" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Glossary1" Width="1.5" PointX="3" PointY="2.375" />
+        <AssociationConnector Association="projects_dataBaseModel.FK__Glossary__IdProj__75A278F5" />
+        <AssociationConnector Association="projects_dataBaseModel.FK__Glossary__IdTerm__73BA3083" />
+        <AssociationConnector Association="projects_dataBaseModel.FK_Definition_ToTerm" />
+        <AssociationConnector Association="projects_dataBaseModel.LK_Definition_ToTerm" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
