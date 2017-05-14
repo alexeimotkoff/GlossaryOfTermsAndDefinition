@@ -12,22 +12,17 @@ namespace TermsAndDefinitions.WebUI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Term
+    public partial class InformationSystem
     {
-        public Term()
+        public InformationSystem()
         {
-            this.Definitions = new HashSet<Definition>();
-            this.Glossaries = new HashSet<Glossary>();
+            this.Terms = new HashSet<Term>();
         }
     
-        public int IdTerm { get; set; }
-        public string TermName { get; set; }
         public int IdInformationSystem { get; set; }
-        public int IdFundamentalArea { get; set; }
+        public string NameInformationSystem { get; set; }
+        public string DescriptonInformationSystem { get; set; }
     
-        public virtual ICollection<Definition> Definitions { get; set; }
-        public virtual FundamentalArea FundamentalArea { get; set; }
-        public virtual ICollection<Glossary> Glossaries { get; set; }
-        public virtual InformationSystem InformationSystem { get; set; }
+        public virtual ICollection<Term> Terms { get; set; }
     }
 }

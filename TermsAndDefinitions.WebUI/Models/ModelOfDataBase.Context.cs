@@ -13,10 +13,10 @@ namespace TermsAndDefinitions.WebUI.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class projects_dataBaseEntities : DbContext
+    public partial class projects_dataBaseEntities2 : DbContext
     {
-        public projects_dataBaseEntities()
-            : base("name=projects_dataBaseEntities")
+        public projects_dataBaseEntities2()
+            : base("name=projects_dataBaseEntities2")
         {
         }
     
@@ -25,9 +25,13 @@ namespace TermsAndDefinitions.WebUI.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Term> Terms { get; set; }
-        public virtual DbSet<Glossary> Glossaries { get; set; }
-        public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<Definition> Definitions { get; set; }
+        public virtual DbSet<FundamentalArea> FundamentalAreas { get; set; }
+        public virtual DbSet<Glossary> Glossaries { get; set; }
+        public virtual DbSet<InformationSystem> InformationSystems { get; set; }
+        public virtual DbSet<LifeСycle> LifeСycle { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Signature> Signatures { get; set; }
+        public virtual DbSet<Term> Terms { get; set; }
     }
 }

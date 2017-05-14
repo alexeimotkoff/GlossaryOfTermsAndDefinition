@@ -12,22 +12,24 @@ namespace TermsAndDefinitions.WebUI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Term
+    public partial class Project
     {
-        public Term()
+        public Project()
         {
-            this.Definitions = new HashSet<Definition>();
             this.Glossaries = new HashSet<Glossary>();
+            this.Signatures = new HashSet<Signature>();
         }
     
-        public int IdTerm { get; set; }
-        public string TermName { get; set; }
-        public int IdInformationSystem { get; set; }
-        public int IdFundamentalArea { get; set; }
+        public int IdProject { get; set; }
+        public string ProjectName { get; set; }
+        public string ReferenceToProject { get; set; }
+        public string ReferenceToFiles { get; set; }
+        public string Signature { get; set; }
+        public string Annotation { get; set; }
+        public int IdLifeСycle { get; set; }
     
-        public virtual ICollection<Definition> Definitions { get; set; }
-        public virtual FundamentalArea FundamentalArea { get; set; }
         public virtual ICollection<Glossary> Glossaries { get; set; }
-        public virtual InformationSystem InformationSystem { get; set; }
+        public virtual LifeСycle LifeСycle { get; set; }
+        public virtual ICollection<Signature> Signatures { get; set; }
     }
 }
