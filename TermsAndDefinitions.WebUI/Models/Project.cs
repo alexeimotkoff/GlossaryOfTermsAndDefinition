@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class Project
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
             this.Glossaries = new HashSet<Glossary>();
@@ -28,8 +29,10 @@ namespace TermsAndDefinitions.WebUI.Models
         public string Annotation { get; set; }
         public int IdLifeСycle { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Glossary> Glossaries { get; set; }
         public virtual LifeСycle LifeСycle { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Signature> Signatures { get; set; }
     }
 }

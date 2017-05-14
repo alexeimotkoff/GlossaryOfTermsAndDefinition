@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class Term
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Term()
         {
             this.Definitions = new HashSet<Definition>();
@@ -25,8 +26,10 @@ namespace TermsAndDefinitions.WebUI.Models
         public int IdInformationSystem { get; set; }
         public int IdFundamentalArea { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Definition> Definitions { get; set; }
         public virtual FundamentalArea FundamentalArea { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Glossary> Glossaries { get; set; }
         public virtual InformationSystem InformationSystem { get; set; }
     }

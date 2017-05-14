@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class LifeСycle
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LifeСycle()
         {
             this.Projects = new HashSet<Project>();
@@ -23,6 +24,7 @@ namespace TermsAndDefinitions.WebUI.Models
         public string NameLifeСycle { get; set; }
         public string DescriptonLifeСycle { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
     }
 }
