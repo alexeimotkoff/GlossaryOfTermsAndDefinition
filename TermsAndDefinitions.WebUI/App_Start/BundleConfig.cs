@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Optimization;
 
-namespace TermsAndDefinitions.WebUI.App_Start
+namespace TermsAndDefinitions.WebUI
 {
     public class BundleConfig
     {
-            public static void RegisterBundles(BundleCollection bundles)
+            public static void Register(BundleCollection bundles)
             {
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
