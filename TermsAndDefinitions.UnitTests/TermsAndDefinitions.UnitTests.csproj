@@ -103,10 +103,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TermsAndDefinitions.Domain\TermsAndDefinitions.Domain.csproj">
-      <Project>{cd7cfade-59f4-4854-8e07-10b70f0ac897}</Project>
-      <Name>TermsAndDefinitions.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TermsAndDefinitions.WebUI\TermsAndDefinitions.WebUI.csproj">
       <Project>{c468a0f9-1fb9-4f76-8dfd-f72096dce54a}</Project>
       <Name>TermsAndDefinitions.WebUI</Name>
