@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="11.25" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" ManuallyRouted="false" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" ManuallyRouted="false" />
