@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using TermsAndDefinitions.WebUI.Models;
 
-namespace TermsAndDefinitions.WebUI.ViewModel
+namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class VTerm
     {

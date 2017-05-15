@@ -1,5 +1,12 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
+@using System.Collections;
+@using TermsAndDefinitions.WebUI.ViewModels;
+@model IEnumerable<VTerm>
 
+@foreach(var item in Model)
+{
+    <h2>@item.TermName - @item.Description.Description </h2>
+}
 <h2>Index</h2>

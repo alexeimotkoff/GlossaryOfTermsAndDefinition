@@ -1,0 +1,12 @@
+﻿@using TermsAndDefinitions.WebUI.ViewModels;
+@model SearchQuery
+
+<div>
+    Строка поиска
+</div>
+<div index="SearchResult">
+
+    @{Html.RenderPartial("Search", Model);}
+
+</div>
+
