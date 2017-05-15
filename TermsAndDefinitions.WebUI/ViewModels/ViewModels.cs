@@ -11,8 +11,8 @@ namespace TermsAndDefinitions.WebUI.ViewModel
         {
             TermName = termName;
         }
-        string TermName { get; set; }
-        VDefinition Definition { get; set; }
+        public string TermName { get; set; }
+        public VDefinition Definition { get; set; }
     }
 
     public class VDefinition
@@ -22,8 +22,8 @@ namespace TermsAndDefinitions.WebUI.ViewModel
             Description = description;
             URL = url;
         }
-        string Description { get; set; }
-        string URL { get; set; }
+       public string Description { get; set; }
+       public string URL { get; set; }
     }
 
     public class VGlossary
@@ -32,7 +32,7 @@ namespace TermsAndDefinitions.WebUI.ViewModel
         {
 
         }
-        List<VTerm> terms { get; set; }
+        public List<VTerm> terms { get; set; }
 
     }
 
