@@ -13,10 +13,10 @@ namespace TermsAndDefinitions.WebUI.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GlossaryProjectDatabaseEntities : DbContext
+    public partial class projects_dataBaseEntities2 : DbContext
     {
-        public GlossaryProjectDatabaseEntities()
-            : base("name=GlossaryProjectDatabaseEntities")
+        public projects_dataBaseEntities2()
+            : base("name=projects_dataBaseEntities2")
         {
         }
     
