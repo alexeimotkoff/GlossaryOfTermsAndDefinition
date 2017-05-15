@@ -11,6 +11,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
     {
         //
         // GET: /EditTerm/
+        //
         projects_dataBaseEntities2 db = new projects_dataBaseEntities2();
         public ActionResult Index()
         {
