@@ -214,7 +214,24 @@
     <Content Include="Content\site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <EntityDeploy Include="Models\ModelOfDataBase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelOfDataBase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelOfDataBase.edmx.diagram">
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Models\ModelOfDataBase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+      <LastGenOutput>ModelOfDataBase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelOfDataBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+      <LastGenOutput>ModelOfDataBase.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -250,27 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Models\ModelOfDataBase.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelOfDataBase.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Models\ModelOfDataBase.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
-      <LastGenOutput>ModelOfDataBase.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ModelOfDataBase.edmx.diagram">
-      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\ModelOfDataBase.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
-      <LastGenOutput>ModelOfDataBase.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />

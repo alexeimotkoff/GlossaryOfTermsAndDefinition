@@ -10,7 +10,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
     {
         public DBInitializer()
         {
-            projects_dataBaseEntities2 db = new projects_dataBaseEntities2();
+            GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
 
             if (db.Projects.Count() == 0)
             {

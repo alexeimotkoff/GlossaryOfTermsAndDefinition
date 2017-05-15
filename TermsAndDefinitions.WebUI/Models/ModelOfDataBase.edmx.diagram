@@ -1,23 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0438f0fb9ef74e969908f99aabca6cbb" Name="Diagram1">
-        <EntityTypeShape EntityType="projects_dataBaseModel.Definition" Width="1.5" PointX="7.5" PointY="3.875" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.FundamentalArea" Width="1.5" PointX="3" PointY="7.25" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.InformationSystem" Width="1.5" PointX="3" PointY="0.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="4" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Project" Width="1.5" PointX="3" PointY="3.5" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Signature" Width="1.5" PointX="5.25" PointY="7.25" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Term" Width="1.5" PointX="5.25" PointY="3.625" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_Definition_ToTable" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_YK_Term_ToIdFundamentalArea" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_SK_Term_ToIdInformationSystem" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_LL_Project_ToIdLifeСycle" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_ВK_Definition_ToTerm" />
-        <AssociationConnector Association="projects_dataBaseModel.Glossaries" />
+      <Diagram DiagramId="bb3cfd773df942e5a93670b44e74d059" Name="Diagram1">
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="7.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" ManuallyRouted="false" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_SK_Term_ToIdInformationSystem" ManuallyRouted="false" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" ManuallyRouted="false" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_ВK_Definition_ToTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Glossaries" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

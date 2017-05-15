@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class Project
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
             this.Signatures = new HashSet<Signature>();
@@ -29,7 +30,9 @@ namespace TermsAndDefinitions.WebUI.Models
         public Nullable<int> IdLifeСycle { get; set; }
     
         public virtual LifeСycle LifeСycle { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Signature> Signatures { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Term> Terms { get; set; }
     }
 }

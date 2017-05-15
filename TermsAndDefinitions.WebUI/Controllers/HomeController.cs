@@ -13,7 +13,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /Home/
         //
-        projects_dataBaseEntities2 db = new projects_dataBaseEntities2();
+        GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
 
         public ActionResult Index()
         {
