@@ -20,28 +20,38 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View();
         }
 
-        [HttpPatch]
+        [HttpPost]
         public ActionResult AddDocumetation(Project project)
         {
             
             return View();
         }
 
-        public ActionResult AddGlossary
-
-        [HttpPatch]
-        public ActionResult AddTerm(string nameTerm, string description, string url)
+        [HttpPost]
+        public bool AddGlossary(List<KeyValuePair<Term, Definition>> glossary)
         {
-            Term term = db.Terms.FirstOrDefault(x => x.TermName.ToLower() == x.TermName.ToLower().Trim());
-            if (term == null)
+            foreach (var pair in glossary)
             {
-                term = new Term() { TermName = nameTerm };
-                db.Terms.Add(term);
-                db.SaveChanges();
+                Term term = db.Terms.FirstOrDefault(x => x.TermName.ToLower() == x.TermName.ToLower().Trim());
+                if (term == null)
+                {
+                    term = pair.Key;
+                    db.Terms.Add(term);
+                    db.SaveChanges();
+                }
+                Definition definition = new Definition() { Description = description, URL = url, IdTerm = term.IdTerm };
+
             }
-            Definition definition = new Definition() { Description = description, URL = url, IdTerm = term.IdTerm };
 
             return View();
+
+            return View();
+        }
+
+       
+        public ActionResult AddTerm(string nameTerm, string description, string url)
+        {
+           
         }
 
     }
