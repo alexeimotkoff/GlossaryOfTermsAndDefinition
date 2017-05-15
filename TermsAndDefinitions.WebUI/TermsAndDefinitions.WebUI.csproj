@@ -153,6 +153,7 @@
     <Compile Include="Controllers\AddDocumentationController.cs" />
     <Compile Include="Controllers\EditTermController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
