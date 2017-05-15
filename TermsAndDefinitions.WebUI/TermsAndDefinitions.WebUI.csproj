@@ -20,7 +20,6 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -133,48 +132,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Definition.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FundamentalArea.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Glossary.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GlossaryProjectDB_Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlossaryProjectDB_Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GlossaryProjectDB_Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GlossaryProjectDB_Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GlossaryProjectDB_Model.edmx</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InformationSystem.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LifeСycle.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelOfDataBase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelOfDataBase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelOfDataBase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelOfDataBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Project.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Signature.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Term.cs">
-      <DependentUpon>GlossaryProjectDB_Model.tt</DependentUpon>
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -182,17 +180,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\projects_dataBase.mdf" />
+    <Content Include="App_Data\projects_dataBase_log.ldf">
+      <DependentUpon>projects_dataBase.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
-    <Content Include="Models\GlossaryProjectDB_Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GlossaryProjectDB_Model.edmx</DependentUpon>
-      <LastGenOutput>GlossaryProjectDB_Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\GlossaryProjectDB_Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GlossaryProjectDB_Model.edmx</DependentUpon>
-      <LastGenOutput>GlossaryProjectDB_Model.cs</LastGenOutput>
-    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -203,27 +195,40 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TermsAndDefinitions.Domain\TermsAndDefinitions.Domain.csproj">
+      <Project>{cd7cfade-59f4-4854-8e07-10b70f0ac897}</Project>
+      <Name>TermsAndDefinitions.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\GlossaryProjectDB_Model.edmx">
+    <EntityDeploy Include="Models\ModelOfDataBase.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GlossaryProjectDB_Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelOfDataBase.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\GlossaryProjectDB_Model.edmx.diagram">
-      <DependentUpon>GlossaryProjectDB_Model.edmx</DependentUpon>
+    <Content Include="Models\ModelOfDataBase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+      <LastGenOutput>ModelOfDataBase.Context.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Models\ModelOfDataBase.edmx.diagram">
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\ModelOfDataBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+      <LastGenOutput>ModelOfDataBase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
