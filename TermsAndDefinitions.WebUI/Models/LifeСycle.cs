@@ -8,7 +8,6 @@ namespace TermsAndDefinitions.WebUI.Models
 
     public partial class LifeСycle
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LifeСycle()
         {
             Projects = new HashSet<Project>();
@@ -24,8 +23,12 @@ namespace TermsAndDefinitions.WebUI.Models
         [Required]
         [StringLength(1)]
         public string DescriptonLifeСycle { get; set; }
+<<<<<<< HEAD
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+=======
+    
+>>>>>>> parent of 9ed99d5... Перенесена база данных на Microsoft Azure. Создана модель на основе данной базы данных.
         public virtual ICollection<Project> Projects { get; set; }
     }
 }
