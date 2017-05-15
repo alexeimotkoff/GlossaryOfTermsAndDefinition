@@ -1,0 +1,17 @@
+﻿@using System.Collections;
+@using TermsAndDefinitions.WebUI.ViewModels;
+@model SearchQuery
+    
+    @switch(Model.typeSearching)
+    {
+        case 0:
+          @{Html.RenderPartial("GetTerms", Model);}            
+          break;            
+          case 1:        
+        @{Html.RenderPartial("GetTermsByDefinition", Model);}
+           break;
+        default :
+              @{Html.RenderPartial("GetTerms", Model);}
+        @{Html.RenderPartial("GetTermsByDefinition", Model);}
+          break;            
+    }         
