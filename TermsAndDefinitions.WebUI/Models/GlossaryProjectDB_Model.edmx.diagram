@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Glossary" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="0.625" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
