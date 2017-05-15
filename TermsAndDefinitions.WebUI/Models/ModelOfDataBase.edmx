@@ -13,7 +13,7 @@
           <Property Name="IdTerm" Type="int" Nullable="false" />
           <Property Name="Frequency" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="URL" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="FundamentalAreas">
           <Key>
@@ -25,9 +25,9 @@
         </EntityType>
         <EntityType Name="Glossaries">
           <Key>
-            <PropertyRef Name="IdGlossary" />
+            <PropertyRef Name="IdTerm" />
+            <PropertyRef Name="IdProject" />
           </Key>
-          <Property Name="IdGlossary" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTerm" Type="int" Nullable="false" />
           <Property Name="IdProject" Type="int" Nullable="false" />
         </EntityType>
@@ -53,11 +53,11 @@
           </Key>
           <Property Name="IdProject" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectName" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="ReferenceToProject" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="ReferenceToProject" Type="nvarchar" MaxLength="1" />
           <Property Name="ReferenceToFiles" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="Signature" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="Annotation" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="IdLifeСycle" Type="int" Nullable="false" />
+          <Property Name="Signature" Type="nvarchar" MaxLength="1" />
+          <Property Name="Annotation" Type="nvarchar" MaxLength="1" />
+          <Property Name="IdLifeСycle" Type="int" />
         </EntityType>
         <EntityType Name="Signatures">
           <Key>
@@ -74,8 +74,8 @@
           </Key>
           <Property Name="IdTerm" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TermName" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="IdInformationSystem" Type="int" Nullable="false" />
-          <Property Name="IdFundamentalArea" Type="int" Nullable="false" />
+          <Property Name="IdInformationSystem" Type="int" />
+          <Property Name="IdFundamentalArea" Type="int" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
@@ -89,19 +89,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Definition_ToTerm">
-          <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
-          <End Role="Glossaries" Type="Self.Glossaries" Multiplicity="*" />
+        <Association Name="FK_LL_Project_ToIdLifeСycle">
+          <End Role="LifeСycle" Type="Self.LifeСycle" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Terms">
-              <PropertyRef Name="IdTerm" />
+            <Principal Role="LifeСycle">
+              <PropertyRef Name="IdLifeСycle" />
             </Principal>
-            <Dependent Role="Glossaries">
-              <PropertyRef Name="IdTerm" />
+            <Dependent Role="Projects">
+              <PropertyRef Name="IdLifeСycle" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LK_Definition_ToTerm">
+        <Association Name="FK_LL_Projects_ToTerm">
           <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
           <End Role="Glossaries" Type="Self.Glossaries" Multiplicity="*" />
           <ReferentialConstraint>
@@ -113,20 +113,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LL_Definition_ToTerm">
-          <End Role="LifeСycle" Type="Self.LifeСycle" Multiplicity="1" />
-          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+        <Association Name="FK_LL_Term_ToIdProjects">
+          <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
+          <End Role="Glossaries" Type="Self.Glossaries" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="LifeСycle">
-              <PropertyRef Name="IdLifeСycle" />
+            <Principal Role="Terms">
+              <PropertyRef Name="IdTerm" />
             </Principal>
-            <Dependent Role="Projects">
-              <PropertyRef Name="IdLifeСycle" />
+            <Dependent Role="Glossaries">
+              <PropertyRef Name="IdTerm" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SK_Definition_ToTerm">
-          <End Role="InformationSystems" Type="Self.InformationSystems" Multiplicity="1" />
+        <Association Name="FK_SK_Term_ToIdInformationSystem">
+          <End Role="InformationSystems" Type="Self.InformationSystems" Multiplicity="0..1" />
           <End Role="Terms" Type="Self.Terms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InformationSystems">
@@ -137,8 +137,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_YK_Definition_ToTerm">
-          <End Role="FundamentalAreas" Type="Self.FundamentalAreas" Multiplicity="1" />
+        <Association Name="FK_YK_Term_ToIdFundamentalArea">
+          <End Role="FundamentalAreas" Type="Self.FundamentalAreas" Multiplicity="0..1" />
           <End Role="Terms" Type="Self.Terms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FundamentalAreas">
@@ -174,23 +174,23 @@
             <End Role="Terms" EntitySet="Terms" />
             <End Role="Definitions" EntitySet="Definitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Definition_ToTerm" Association="Self.FK_Definition_ToTerm">
-            <End Role="Terms" EntitySet="Terms" />
-            <End Role="Glossaries" EntitySet="Glossaries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LK_Definition_ToTerm" Association="Self.FK_LK_Definition_ToTerm">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Glossaries" EntitySet="Glossaries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LL_Definition_ToTerm" Association="Self.FK_LL_Definition_ToTerm">
+          <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="Self.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
             <End Role="Projects" EntitySet="Projects" />
           </AssociationSet>
-          <AssociationSet Name="FK_SK_Definition_ToTerm" Association="Self.FK_SK_Definition_ToTerm">
+          <AssociationSet Name="FK_LL_Projects_ToTerm" Association="Self.FK_LL_Projects_ToTerm">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Glossaries" EntitySet="Glossaries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LL_Term_ToIdProjects" Association="Self.FK_LL_Term_ToIdProjects">
+            <End Role="Terms" EntitySet="Terms" />
+            <End Role="Glossaries" EntitySet="Glossaries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SK_Term_ToIdInformationSystem" Association="Self.FK_SK_Term_ToIdInformationSystem">
             <End Role="InformationSystems" EntitySet="InformationSystems" />
             <End Role="Terms" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="FK_YK_Definition_ToTerm" Association="Self.FK_YK_Definition_ToTerm">
+          <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="Self.FK_YK_Term_ToIdFundamentalArea">
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
             <End Role="Terms" EntitySet="Terms" />
           </AssociationSet>
@@ -206,7 +206,6 @@
         <EntityContainer Name="projects_dataBaseEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Definitions" EntityType="projects_dataBaseModel.Definition" />
           <EntitySet Name="FundamentalAreas" EntityType="projects_dataBaseModel.FundamentalArea" />
-          <EntitySet Name="Glossaries" EntityType="projects_dataBaseModel.Glossary" />
           <EntitySet Name="InformationSystems" EntityType="projects_dataBaseModel.InformationSystem" />
           <EntitySet Name="LifeСycle" EntityType="projects_dataBaseModel.LifeСycle" />
           <EntitySet Name="Projects" EntityType="projects_dataBaseModel.Project" />
@@ -216,29 +215,25 @@
             <End Role="Term" EntitySet="Terms" />
             <End Role="Definition" EntitySet="Definitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_YK_Definition_ToTerm" Association="projects_dataBaseModel.FK_YK_Definition_ToTerm">
+          <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="projects_dataBaseModel.FK_YK_Term_ToIdFundamentalArea">
             <End Role="FundamentalArea" EntitySet="FundamentalAreas" />
             <End Role="Term" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="FK_Definition_ToTerm" Association="projects_dataBaseModel.FK_Definition_ToTerm">
-            <End Role="Term" EntitySet="Terms" />
-            <End Role="Glossary" EntitySet="Glossaries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LK_Definition_ToTerm" Association="projects_dataBaseModel.FK_LK_Definition_ToTerm">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Glossary" EntitySet="Glossaries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SK_Definition_ToTerm" Association="projects_dataBaseModel.FK_SK_Definition_ToTerm">
+          <AssociationSet Name="FK_SK_Term_ToIdInformationSystem" Association="projects_dataBaseModel.FK_SK_Term_ToIdInformationSystem">
             <End Role="InformationSystem" EntitySet="InformationSystems" />
             <End Role="Term" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="FK_LL_Definition_ToTerm" Association="projects_dataBaseModel.FK_LL_Definition_ToTerm">
+          <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="projects_dataBaseModel.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_ВK_Definition_ToTerm" Association="projects_dataBaseModel.FK_ВK_Definition_ToTerm">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Signature" EntitySet="Signatures" />
+          </AssociationSet>
+          <AssociationSet Name="Glossaries" Association="projects_dataBaseModel.Glossaries">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Term" EntitySet="Terms" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Definition">
@@ -249,7 +244,7 @@
           <Property Name="IdTerm" Type="Int32" Nullable="false" />
           <Property Name="Frequency" Type="Int32" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="URL" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Term" Relationship="projects_dataBaseModel.FK_Definition_ToTable" FromRole="Definition" ToRole="Term" />
         </EntityType>
         <EntityType Name="FundamentalArea">
@@ -259,17 +254,7 @@
           <Property Name="IdFundamentalArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameFundamentalArea" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="DescriptonFundamentalArea" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Terms" Relationship="projects_dataBaseModel.FK_YK_Definition_ToTerm" FromRole="FundamentalArea" ToRole="Term" />
-        </EntityType>
-        <EntityType Name="Glossary">
-          <Key>
-            <PropertyRef Name="IdGlossary" />
-          </Key>
-          <Property Name="IdGlossary" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdTerm" Type="Int32" Nullable="false" />
-          <Property Name="IdProject" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Term" Relationship="projects_dataBaseModel.FK_Definition_ToTerm" FromRole="Glossary" ToRole="Term" />
-          <NavigationProperty Name="Project" Relationship="projects_dataBaseModel.FK_LK_Definition_ToTerm" FromRole="Glossary" ToRole="Project" />
+          <NavigationProperty Name="Terms" Relationship="projects_dataBaseModel.FK_YK_Term_ToIdFundamentalArea" FromRole="FundamentalArea" ToRole="Term" />
         </EntityType>
         <EntityType Name="InformationSystem">
           <Key>
@@ -278,7 +263,7 @@
           <Property Name="IdInformationSystem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameInformationSystem" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="DescriptonInformationSystem" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Terms" Relationship="projects_dataBaseModel.FK_SK_Definition_ToTerm" FromRole="InformationSystem" ToRole="Term" />
+          <NavigationProperty Name="Terms" Relationship="projects_dataBaseModel.FK_SK_Term_ToIdInformationSystem" FromRole="InformationSystem" ToRole="Term" />
         </EntityType>
         <EntityType Name="LifeСycle">
           <Key>
@@ -287,7 +272,7 @@
           <Property Name="IdLifeСycle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameLifeСycle" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="DescriptonLifeСycle" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Projects" Relationship="projects_dataBaseModel.FK_LL_Definition_ToTerm" FromRole="LifeСycle" ToRole="Project" />
+          <NavigationProperty Name="Projects" Relationship="projects_dataBaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="LifeСycle" ToRole="Project" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -295,14 +280,14 @@
           </Key>
           <Property Name="IdProject" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="ReferenceToProject" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ReferenceToProject" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="ReferenceToFiles" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="Signature" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="Annotation" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="IdLifeСycle" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Glossaries" Relationship="projects_dataBaseModel.FK_LK_Definition_ToTerm" FromRole="Project" ToRole="Glossary" />
-          <NavigationProperty Name="LifeСycle" Relationship="projects_dataBaseModel.FK_LL_Definition_ToTerm" FromRole="Project" ToRole="LifeСycle" />
+          <Property Name="Signature" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Annotation" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="IdLifeСycle" Type="Int32" />
+          <NavigationProperty Name="LifeСycle" Relationship="projects_dataBaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="Project" ToRole="LifeСycle" />
           <NavigationProperty Name="Signatures" Relationship="projects_dataBaseModel.FK_ВK_Definition_ToTerm" FromRole="Project" ToRole="Signature" />
+          <NavigationProperty Name="Terms" Relationship="projects_dataBaseModel.Glossaries" FromRole="Project" ToRole="Term" />
         </EntityType>
         <EntityType Name="Signature">
           <Key>
@@ -320,12 +305,12 @@
           </Key>
           <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TermName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="IdInformationSystem" Type="Int32" Nullable="false" />
-          <Property Name="IdFundamentalArea" Type="Int32" Nullable="false" />
+          <Property Name="IdInformationSystem" Type="Int32" />
+          <Property Name="IdFundamentalArea" Type="Int32" />
           <NavigationProperty Name="Definitions" Relationship="projects_dataBaseModel.FK_Definition_ToTable" FromRole="Term" ToRole="Definition" />
-          <NavigationProperty Name="FundamentalArea" Relationship="projects_dataBaseModel.FK_YK_Definition_ToTerm" FromRole="Term" ToRole="FundamentalArea" />
-          <NavigationProperty Name="Glossaries" Relationship="projects_dataBaseModel.FK_Definition_ToTerm" FromRole="Term" ToRole="Glossary" />
-          <NavigationProperty Name="InformationSystem" Relationship="projects_dataBaseModel.FK_SK_Definition_ToTerm" FromRole="Term" ToRole="InformationSystem" />
+          <NavigationProperty Name="FundamentalArea" Relationship="projects_dataBaseModel.FK_YK_Term_ToIdFundamentalArea" FromRole="Term" ToRole="FundamentalArea" />
+          <NavigationProperty Name="InformationSystem" Relationship="projects_dataBaseModel.FK_SK_Term_ToIdInformationSystem" FromRole="Term" ToRole="InformationSystem" />
+          <NavigationProperty Name="Projects" Relationship="projects_dataBaseModel.Glossaries" FromRole="Term" ToRole="Project" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="1" />
@@ -339,8 +324,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_YK_Definition_ToTerm">
-          <End Type="projects_dataBaseModel.FundamentalArea" Role="FundamentalArea" Multiplicity="1" />
+        <Association Name="FK_YK_Term_ToIdFundamentalArea">
+          <End Type="projects_dataBaseModel.FundamentalArea" Role="FundamentalArea" Multiplicity="0..1" />
           <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FundamentalArea">
@@ -351,32 +336,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Definition_ToTerm">
-          <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="1" />
-          <End Type="projects_dataBaseModel.Glossary" Role="Glossary" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Term">
-              <PropertyRef Name="IdTerm" />
-            </Principal>
-            <Dependent Role="Glossary">
-              <PropertyRef Name="IdTerm" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LK_Definition_ToTerm">
-          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="projects_dataBaseModel.Glossary" Role="Glossary" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="IdProject" />
-            </Principal>
-            <Dependent Role="Glossary">
-              <PropertyRef Name="IdProject" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SK_Definition_ToTerm">
-          <End Type="projects_dataBaseModel.InformationSystem" Role="InformationSystem" Multiplicity="1" />
+        <Association Name="FK_SK_Term_ToIdInformationSystem">
+          <End Type="projects_dataBaseModel.InformationSystem" Role="InformationSystem" Multiplicity="0..1" />
           <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InformationSystem">
@@ -387,8 +348,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LL_Definition_ToTerm">
-          <End Type="projects_dataBaseModel.LifeСycle" Role="LifeСycle" Multiplicity="1" />
+        <Association Name="FK_LL_Project_ToIdLifeСycle">
+          <End Type="projects_dataBaseModel.LifeСycle" Role="LifeСycle" Multiplicity="0..1" />
           <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LifeСycle">
@@ -411,7 +372,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="Glossaries">
+          <End Type="projects_dataBaseModel.Project" Role="Project" Multiplicity="*" />
+          <End Type="projects_dataBaseModel.Term" Role="Term" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -434,15 +399,6 @@
                 <ScalarProperty Name="DescriptonFundamentalArea" ColumnName="DescriptonFundamentalArea" />
                 <ScalarProperty Name="NameFundamentalArea" ColumnName="NameFundamentalArea" />
                 <ScalarProperty Name="IdFundamentalArea" ColumnName="IdFundamentalArea" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Glossaries">
-            <EntityTypeMapping TypeName="projects_dataBaseModel.Glossary">
-              <MappingFragment StoreEntitySet="Glossaries">
-                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
-                <ScalarProperty Name="IdGlossary" ColumnName="IdGlossary" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -497,6 +453,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="Glossaries" TypeName="projects_dataBaseModel.Glossaries" StoreEntitySet="Glossaries">
+            <EndProperty Name="Term">
+              <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+            </EndProperty>
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

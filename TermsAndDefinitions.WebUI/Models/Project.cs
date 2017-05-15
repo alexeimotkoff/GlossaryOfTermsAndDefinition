@@ -16,8 +16,8 @@ namespace TermsAndDefinitions.WebUI.Models
     {
         public Project()
         {
-            this.Glossaries = new HashSet<Glossary>();
             this.Signatures = new HashSet<Signature>();
+            this.Terms = new HashSet<Term>();
         }
     
         public int IdProject { get; set; }
@@ -26,10 +26,10 @@ namespace TermsAndDefinitions.WebUI.Models
         public string ReferenceToFiles { get; set; }
         public string Signature { get; set; }
         public string Annotation { get; set; }
-        public int IdLifeСycle { get; set; }
+        public Nullable<int> IdLifeСycle { get; set; }
     
-        public virtual ICollection<Glossary> Glossaries { get; set; }
         public virtual LifeСycle LifeСycle { get; set; }
         public virtual ICollection<Signature> Signatures { get; set; }
+        public virtual ICollection<Term> Terms { get; set; }
     }
 }

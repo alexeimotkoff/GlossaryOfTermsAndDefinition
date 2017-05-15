@@ -17,17 +17,17 @@ namespace TermsAndDefinitions.WebUI.Models
         public Term()
         {
             this.Definitions = new HashSet<Definition>();
-            this.Glossaries = new HashSet<Glossary>();
+            this.Projects = new HashSet<Project>();
         }
     
         public int IdTerm { get; set; }
         public string TermName { get; set; }
-        public int IdInformationSystem { get; set; }
-        public int IdFundamentalArea { get; set; }
+        public Nullable<int> IdInformationSystem { get; set; }
+        public Nullable<int> IdFundamentalArea { get; set; }
     
         public virtual ICollection<Definition> Definitions { get; set; }
         public virtual FundamentalArea FundamentalArea { get; set; }
-        public virtual ICollection<Glossary> Glossaries { get; set; }
         public virtual InformationSystem InformationSystem { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

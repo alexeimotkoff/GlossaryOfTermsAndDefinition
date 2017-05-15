@@ -27,7 +27,6 @@ namespace TermsAndDefinitions.WebUI.Models
     
         public virtual DbSet<Definition> Definitions { get; set; }
         public virtual DbSet<FundamentalArea> FundamentalAreas { get; set; }
-        public virtual DbSet<Glossary> Glossaries { get; set; }
         public virtual DbSet<InformationSystem> InformationSystems { get; set; }
         public virtual DbSet<LifeСycle> LifeСycle { get; set; }
         public virtual DbSet<Project> Projects { get; set; }

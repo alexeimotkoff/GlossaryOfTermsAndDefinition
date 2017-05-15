@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
-using TermsAndDefinitions.WebUI.ViewModels;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {

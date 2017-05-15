@@ -5,21 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0438f0fb9ef74e969908f99aabca6cbb" Name="Diagram1">
-        <EntityTypeShape EntityType="projects_dataBaseModel.Definition" Width="1.5" PointX="5.25" PointY="6.25" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.FundamentalArea" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Glossary" Width="1.5" PointX="5.25" PointY="2.625" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.InformationSystem" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Project" Width="1.5" PointX="3" PointY="7.125" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Signature" Width="1.5" PointX="5.25" PointY="9.625" />
-        <EntityTypeShape EntityType="projects_dataBaseModel.Term" Width="1.5" PointX="3" PointY="3.375" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Definition" Width="1.5" PointX="7.5" PointY="3.875" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.FundamentalArea" Width="1.5" PointX="3" PointY="7.25" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.InformationSystem" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Project" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Signature" Width="1.5" PointX="5.25" PointY="7.25" />
+        <EntityTypeShape EntityType="projects_dataBaseModel.Term" Width="1.5" PointX="5.25" PointY="3.625" />
         <AssociationConnector Association="projects_dataBaseModel.FK_Definition_ToTable" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_YK_Definition_ToTerm" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_Definition_ToTerm" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_LK_Definition_ToTerm" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_SK_Definition_ToTerm" />
-        <AssociationConnector Association="projects_dataBaseModel.FK_LL_Definition_ToTerm" />
+        <AssociationConnector Association="projects_dataBaseModel.FK_YK_Term_ToIdFundamentalArea" />
+        <AssociationConnector Association="projects_dataBaseModel.FK_SK_Term_ToIdInformationSystem" />
+        <AssociationConnector Association="projects_dataBaseModel.FK_LL_Project_ToIdLifeСycle" />
         <AssociationConnector Association="projects_dataBaseModel.FK_ВK_Definition_ToTerm" />
+        <AssociationConnector Association="projects_dataBaseModel.Glossaries" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
