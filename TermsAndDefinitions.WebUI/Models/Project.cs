@@ -23,13 +23,12 @@ namespace TermsAndDefinitions.WebUI.Models
     
         public int IdProject { get; set; }
         public string ProjectName { get; set; }
-        public string ReferenceToProject { get; set; }
-        public string ReferenceToFiles { get; set; }
         public string Signature { get; set; }
         public string Annotation { get; set; }
         public Nullable<int> IdLifeСycle { get; set; }
     
         public virtual LifeСycle LifeСycle { get; set; }
+        public virtual Reference Reference { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Signature> Signatures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
