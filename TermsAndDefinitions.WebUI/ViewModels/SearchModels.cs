@@ -8,7 +8,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class SearchQuery
     {
-      public  SearchQuery( int? type, string query = "", int  count=10)
+      public  SearchQuery(string query = "", int  count=10, int type = -1)
         {
             countSearchItem = count;
             querySearch = query;
@@ -18,6 +18,6 @@ namespace TermsAndDefinitions.WebUI.ViewModels
      
       public string querySearch { get; set; }
       public  int countSearchItem {get; set;}
-       public int? typeSearching { get; set; }
+      public int typeSearching { get; set; }
     }
 }
