@@ -1,0 +1,14 @@
+﻿@using System.Collections;
+@using TermsAndDefinitions.WebUI.ViewModels;
+@model IEnumerable<VProject>
+
+@if (Model.Count() > 0)
+{
+    <div>
+        <h2>Проекты:</h2>
+        @foreach (var item in Model)
+        {
+            <p>@item.ProjectName</p>
+        }
+    </div>
+}

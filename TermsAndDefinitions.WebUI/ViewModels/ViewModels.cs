@@ -8,7 +8,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class VTerm
     {
-        public VTerm() { }
+        public VTerm()
+        { }
         public VTerm(string termName)
         {
             TermName = termName;
@@ -50,9 +51,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         {
             ProjectName = project.ProjectName;
         }
-        string ProjectName;
-        //public List<VTerm> terms { get; set; }
-
+        public string ProjectName;
+        
     }
 
 

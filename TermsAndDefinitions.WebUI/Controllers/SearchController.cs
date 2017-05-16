@@ -19,7 +19,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View( new SearchQuery());
         }
         
-        public ActionResult Search(SearchQuery searchQuery)
+        public ActionResult GetResultSearch(SearchQuery searchQuery)
         {
             return View(searchQuery);
         }
@@ -31,37 +31,39 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 searchResult = db.Terms.Where(x => x.TermName.Contains(searchQuery.querySearch)).OrderBy(x => x.TermName).Take(searchQuery.countSearchItem);
             else
                 searchResult = db.Terms.Where(x => x.TermName.Contains(searchQuery.querySearch)).OrderBy(x => x.TermName);
-            var resultData = searchResult.Select(x => new VTerm(x));
+            var resultData = searchResult.Select(x => new VTerm(x)).ToList();
             return View(resultData);
         }
 
         public ActionResult GetTermsByDefinition(SearchQuery searchQuery)
         {
-            IEnumerable<VTerm> searchResult;
+            IEnumerable<Definition> searchResult;
             if (searchQuery.countSearchItem > 0)
                 searchResult = db.Definitions
                     .Where(x => x.Description.Contains(searchQuery.querySearch)).OrderBy(x => x.Term.TermName)
-                    .Take(searchQuery.countSearchItem).Select(x => new VTerm(x.Term.TermName) { Description = new VDefinition(x)});
-            else
-                searchResult = db.Definitions
-                   .Where(x => x.Description.Contains(searchQuery.querySearch)).OrderBy(x => x.Term.TermName)
-                   .Select(x => new VTerm(x.Term.TermName) { Description = new VDefinition(x)});
-
-            return View(searchResult);
-        }
-
-        public ActionResult GetProject(SearchQuery searchQuery)
-        {
-            IEnumerable<VProject> searchResult;
-            if (searchQuery.countSearchItem > 0)
-                searchResult = db.Projects.Where(x => x.ProjectName.Contains(searchQuery.querySearch))
-                    .OrderBy(x => x.ProjectName).Select(x => new VProject(x))
                     .Take(searchQuery.countSearchItem);
             else
-                searchResult = db.Projects.Where(x => x.ProjectName.Contains(searchQuery.querySearch))
-                    .OrderBy(x => x.ProjectName).Select(x => new VProject(x));
+                searchResult = db.Definitions
+                   .Where(x => x.Description.Contains(searchQuery.querySearch)).OrderBy(x => x.Term.TermName);
+            List<VTerm> searchResultToViewModel = new List<VTerm>();
+            foreach (var item in searchResult) searchResultToViewModel.Add(new VTerm(item.Term.TermName) { Description = new VDefinition(item)});
+            
+            return View(searchResultToViewModel);
+        }
 
-            return View(searchResult);
+        public ActionResult GetProjects(SearchQuery searchQuery)
+        {
+            IEnumerable<Project> searchResult;
+            if (searchQuery.countSearchItem > 0)
+                searchResult = db.Projects.Where(x => x.ProjectName.Contains(searchQuery.querySearch))
+                    .OrderBy(x => x.ProjectName).Take(searchQuery.countSearchItem);
+            else
+                searchResult = db.Projects.Where(x => x.ProjectName.Contains(searchQuery.querySearch))
+                    .OrderBy(x => x.ProjectName);
+            List<VProject> searchResultToViewModel = new List<VProject>();
+            foreach (var project in searchResult) searchResultToViewModel.Add(new VProject(project));
+            
+            return View(searchResultToViewModel);
         }
     }
 }

@@ -4,7 +4,8 @@
 <div>
     Строка поиска
 </div>
-<div index="SearchResult">
-    @Html.Partial("Search", Model)
+
+<div index="SearchResult" class="rows" >
+    @{Html.RenderAction("GetResultSearch", "Search", Model);}
 </div>
 

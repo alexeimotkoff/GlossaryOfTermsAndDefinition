@@ -255,7 +255,8 @@
     <Content Include="Views\Search\GetTerms.cshtml" />
     <Content Include="Views\Search\GetTermsByDefinition.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
-    <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Search\GetResultSearch.cshtml" />
+    <Content Include="Views\Search\GetProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

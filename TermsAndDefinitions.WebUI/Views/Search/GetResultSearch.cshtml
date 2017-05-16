@@ -1,0 +1,20 @@
+﻿@using TermsAndDefinitions.WebUI.ViewModels;
+@model SearchQuery
+    
+    @switch (Model.typeSearching)
+    {
+        case 0:
+            Html.RenderAction("GetTerms", "Search", Model);
+            break;
+        case 1:
+            Html.RenderAction("GetTermsByDefinition", "Search", Model);
+            break;
+        case 2:
+            Html.RenderAction("GetProjects", "Search", Model);
+            break;
+        default:
+            Html.RenderAction("GetTerms", "Search", new { Model });
+            Html.RenderAction("GetTermsByDefinition", "Search", Model);
+            Html.RenderAction("GetProjects", "Search", Model);
+            break;
+    }
