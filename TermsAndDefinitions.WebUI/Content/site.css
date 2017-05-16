@@ -1,7 +1,6 @@
-﻿@import url('site.css');
-.term {
+﻿.term {
     font-weight:bold;
 }
 .rows:not(:last-child) {
-    border-bottom: 2px solid #ccc;
+    border-bottom: 4px solid #ccc;
 }

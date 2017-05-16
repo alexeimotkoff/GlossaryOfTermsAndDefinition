@@ -10,20 +10,21 @@ namespace TermsAndDefinitions.WebUI.PutTestData
     {
         public DBInitializer()
         {
-            GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();            
-            //db.Definitions.RemoveRange(db.Definitions);
-            //db.Terms.RemoveRange(db.Terms);
-            //db.Projects.RemoveRange(db.Projects);
-            //db.SaveChanges();
-            if (db.Projects.Count() == 0)
+            using (GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities())
             {
-                List<Project> listOfProject = new List<Project>(){
+                //db.Definitions.RemoveRange(db.Definitions);
+                //db.Terms.RemoveRange(db.Terms);
+                //db.Projects.RemoveRange(db.Projects);
+                //db.SaveChanges();
+                if (db.Projects.Count() == 0)
+                {
+                    List<Project> listOfProject = new List<Project>(){
                         new Project(){ProjectName = "FirstProject 42454654", Annotation = "Включает надписи-девизы, популярные в западноевропейском изобразительном искусстве на христианские и античные сюжеты, а также названия иконографических типов изображения, используемые в истории искусства, и обычно сложившиеся на основе названий латинских текстов, которых они иллюстрируют." },
                         new Project(){ProjectName = "SecondProject 786786", Annotation = "октября1491, Аспейтия — 31 июля 1556, Рим) — католический святой, основатель ордена иезуитов, видный деятель контрреформации.Родился около 1491 года[1] в замке Лойола в басконской провинции Гипускоа. При крещении получил имя И́ньиго (баск. Iñigo). После обращения принял имя Игнатий (исп. Ignacio), избрав себе небесным покровителем святого Игнатия Антиохийского. Возможно, послужил прообразом Дон Кихота в одноимённом " },
                         new Project(){ProjectName = "ThirdProject  248648",  Annotation = "Миге́ль де Серва́нтес Сааве́дра (исп. Miguel de Cervantes Saavedra; предположительно 29 сентября 1547, Алькала-де-Энарес — 22 апреля 1616[⇨], Мадрид) — всемирно известный испанский писатель. Прежде всего, известен как автор одного из величайших произведений мировой литературы — романа «Хитроумный идальго Дон Кихот Ламанчский»."}
                  };
 
-                List<Term> Glossary1 = new List<Term>()
+                    List<Term> Glossary1 = new List<Term>()
                     {
                         new Term(){ TermName ="Бамп-драфтинг"  },
                         new Term(){ TermName ="Джентльмен-драйвер (gentleman-driver)"  },
@@ -34,7 +35,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                         new Term(){ TermName ="Боли́д" },
                         new Term(){ TermName ="Суперспециальный участок, суперспешиал" }
                     };
-                List<Term> Glossary2 = new List<Term>()
+                    List<Term> Glossary2 = new List<Term>()
                     {
                         new Term(){TermName ="Шпилька" },
                         new Term(){TermName ="Пит-ле́йн (англ. pit lane)" },
@@ -43,7 +44,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                         new Term(){TermName ="Большой шлем" },
                         new Term(){TermName ="Сли́ки (англ. slicks)" }
                     };
-                List<Term> Glossary3 = new List<Term>()
+                    List<Term> Glossary3 = new List<Term>()
                     {
                         new Term(){TermName ="Быстрый круг, боевой круг" },
                         new Term(){TermName ="Апрон" },
@@ -53,7 +54,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                         new Term(){TermName ="Лаки дог (англ. lucky dog)" }
                     };
 
-                List<Definition> DefenitionForGL1 = new List<Definition>()
+                    List<Definition> DefenitionForGL1 = new List<Definition>()
                     {
 
                         new Definition(){ Description = "приём, используемый в гонках на треках, когда находящийся в слипстриме пилот ударяет бампером идущего впереди гонщика с целью придания ему дополнительного ускоряющего момента, в результате чего обе машины едут быстрее." },
@@ -66,7 +67,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                         new Definition(){ Description = "хронометрируемый участок дороги на дистанции ралли, на правах спецучастка, но имеющий дополнительные особенности с целью повышения зрелищности — он имеет небольшую длину, находится в населённом пункте или других местах удобных для зрителей, часто допускает параллельное движение двух машин по собственным непересекающимся траекториям." }
 
                     };
-                List<Definition> DefenitionForGL2 = new List<Definition>()
+                    List<Definition> DefenitionForGL2 = new List<Definition>()
                     {
 
                           new Definition(){ Description = "резкий поворот малого радиуса, менее 180 и более 90 градусов, соединяющий две прямые.Круг возвраще́ния в бо́ксы — круг в квалификации, на котором пилот в спокойном темпе возвращается в боксы (как правило, проехав свой быстрый круг и показав квалификационное время)." },
@@ -76,7 +77,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                           new Definition(){ Description = "по аналогии с теннисом) достижение гонщика, показавшего лучшее время круга в квалификации и гонке, лидировавшего в гонке от старта до финиша и одержавшего в ней победу. Большой шлем считается исключительным достижением в Формуле - 1, хотя за него не дают ни очков, ни иных наград." },
                           new Definition(){ Description = "абсолютно гладкие шины, не имеющие ни канавок, ни иных элементов, уменьшающих пятно контакта с трассой. В кольцевых автогонках в большинстве случаев используются именно слики.Форма автомобильных сликов представляет собой гладкий цилиндр и является оптимальной для сцепления с сухой асфальтовой трассой. В дождь и на грунтовых трассах применяются протекторные шины." }
                     };
-                List<Definition> DefenitionForGL3 = new List<Definition>()
+                    List<Definition> DefenitionForGL3 = new List<Definition>()
                     {
                           new Definition(){ Description = "круг в квалификации, который гонщик идёт в максимально возможном темпе, стремясь показать наилучший результат. По итогам квалификации(по лучшему из быстрых кругов) определяется расстановка на старте гонки." },
                           new Definition(){ Description = "внутренняя, плоская часть трековых трасс, отделяющая наклонный бэнкинг от внутренней части трассы(инфилда), на которой расположен пит-лейн.Апрон используется гонщиками для съезда с бэнкинга и движения к пит-лейн для совершения пит - стопа.От бэнкинга отделяется белой полосой, заезжая за которую, гонщик не всегда имеет право совершать обгон." },
@@ -87,27 +88,28 @@ namespace TermsAndDefinitions.WebUI.PutTestData
 
                     };
 
-                foreach (var project in listOfProject)
-                {   
-                    db.Terms.AddRange(Glossary1);
-                    db.Terms.AddRange(Glossary2);
-                    db.Terms.AddRange(Glossary3);
-                    for (int i = 0; i < Glossary1.Count; i++)
-                        DefenitionForGL1[i].Term = Glossary1[i];
-                    for (int i = 0; i < Glossary2.Count; i++)
-                        DefenitionForGL2[i].Term = Glossary2[i];
-                    for (int i = 0; i < Glossary3.Count; i++)
-                        DefenitionForGL3[i].Term = Glossary3[i];
-                    db.Definitions.AddRange(DefenitionForGL1);
-                    db.Definitions.AddRange(DefenitionForGL2);
-                    db.Definitions.AddRange(DefenitionForGL3);
-                  db.SaveChanges();
+                    foreach (var project in listOfProject)
+                    {
+                        db.Terms.AddRange(Glossary1);
+                        db.Terms.AddRange(Glossary2);
+                        db.Terms.AddRange(Glossary3);
+                        for (int i = 0; i < Glossary1.Count; i++)
+                            DefenitionForGL1[i].Term = Glossary1[i];
+                        for (int i = 0; i < Glossary2.Count; i++)
+                            DefenitionForGL2[i].Term = Glossary2[i];
+                        for (int i = 0; i < Glossary3.Count; i++)
+                            DefenitionForGL3[i].Term = Glossary3[i];
+                        db.Definitions.AddRange(DefenitionForGL1);
+                        db.Definitions.AddRange(DefenitionForGL2);
+                        db.Definitions.AddRange(DefenitionForGL3);
+                        db.SaveChanges();
 
-                    listOfProject[0].Terms = Glossary1;
-                    listOfProject[1].Terms = Glossary2;
-                    listOfProject[2].Terms = Glossary3;
-                    db.Projects.AddRange(listOfProject);
-                    db.SaveChanges();
+                        listOfProject[0].Terms = Glossary1;
+                        listOfProject[1].Terms = Glossary2;
+                        listOfProject[2].Terms = Glossary3;
+                        db.Projects.AddRange(listOfProject);
+                        db.SaveChanges();
+                    }
                 }
             }
         }
