@@ -43,9 +43,9 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
     public class VGlossary
     {
-        public VGlossary()
+        public VGlossary(Project project)
         {
-
+            terms = project.Terms.OrderBy(x => x.TermName).Select(x => new VTerm(x)).ToList();
         }
         public List<VTerm> terms { get; set; }
 

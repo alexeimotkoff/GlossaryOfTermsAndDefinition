@@ -52,5 +52,17 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View(searchResult);
         }
 
+        public ActionResult GetTermsByProject(SearchQuery searchQuery)
+        {
+            IEnumerable<VTerm> searchResult;
+            if (searchQuery.countSearchItem > 0)
+                searchResult = db.Projects.Where(x => x.ProjectName.Contains(searchQuery.querySearch)).Intersect(db.Terms.Where(x => x.Projects)).;
+            else
+                searchResult = db.Definitions
+                   .Where(x => x.Description.Contains(searchQuery.querySearch)).OrderBy(x => x.Term.TermName)
+                   .Select(x => new VTerm(x.Term.TermName) { Description = new VDefinition(x) });
+
+            return View(searchResult);
+        }
     }
 }
