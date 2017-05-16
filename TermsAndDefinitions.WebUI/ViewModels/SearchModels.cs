@@ -17,7 +17,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
             typeSearching = -1;
         }
 
-        public  SearchQuery(string query = "", int  count=10, int type = -1)
+        public  SearchQuery(string query = "", int  count = 6, int type = -1)
         {
             countSearchItem = count;
             querySearch = query.ToLower();
@@ -28,7 +28,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         {
             get
             {
-                return rx.Match(querySearch).Success && querySearch.Length == 1;
+                if (string.IsNullOrEmpty(querySearch))
+                    return false;
+                else
+                    return rx.Match(querySearch).Success && querySearch.Length == 1;
             }
         }
       public string querySearch { get; set; }

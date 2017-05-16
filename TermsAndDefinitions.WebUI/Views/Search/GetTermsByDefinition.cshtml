@@ -4,11 +4,15 @@
 
 @if (Model.Count() > 0)
 {
-    <div>
-        <h2>Поиск по определению</h2>
+    <div class="ans-box">
+        <h class="titel-ans-box">Поиск по определению:</h>
         @foreach (var item in Model)
         {
-            <p><span class="term">@item.TermName</span> - @item.Description.Description </p>
+            <div class="text-cut-box">
+                <div>
+                    <p><span class="term">@item.TermName</span> — @item.Description.Description</p>
+                </div>
+            </div>
         }
     </div>
 }

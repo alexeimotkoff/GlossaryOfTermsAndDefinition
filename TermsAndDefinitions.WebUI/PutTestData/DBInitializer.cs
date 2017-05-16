@@ -10,8 +10,8 @@ namespace TermsAndDefinitions.WebUI.PutTestData
     {
         public DBInitializer()
         {
-            using (GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities())
-            {
+             GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
+          
                 //db.Definitions.RemoveRange(db.Definitions);
                 //db.Terms.RemoveRange(db.Terms);
                 //db.Projects.RemoveRange(db.Projects);
@@ -110,8 +110,7 @@ namespace TermsAndDefinitions.WebUI.PutTestData
                         db.Projects.AddRange(listOfProject);
                         db.SaveChanges();
                     }
-                }
-            }
+                }           
         }
     }
 }
