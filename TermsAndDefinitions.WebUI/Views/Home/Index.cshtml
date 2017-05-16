@@ -5,14 +5,18 @@
 @using TermsAndDefinitions.WebUI.ViewModels;
 @model IEnumerable<VTerm>
 <h2>Index</h2>
-    @{ 
-        if (Model != null)
+@{
+    if (Model != null)
+    {
+        foreach (var item in Model)
         {
-            foreach (var item in Model)
-            {
-            <h2>@item.TermName - @item.Description.Description </h2>
-            }
+            <div class="well">
+                <h4>
+                    @item.TermName - @item.Description.Description
+                </h4>
+            </div>
         }
     }
+}
 
 
