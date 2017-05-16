@@ -16,11 +16,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
         public ActionResult Index()
         {
-            SearchQuery searchQuery = new SearchQuery(null, null);
+            SearchQuery searchQuery = new SearchQuery(null);
             return View();
         }
-
-        [HttpGet]
+        
         public ActionResult Search(SearchQuery searchQuery)
         {
             return View(searchQuery);
