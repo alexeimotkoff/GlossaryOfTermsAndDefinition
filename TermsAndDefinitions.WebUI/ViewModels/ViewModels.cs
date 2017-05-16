@@ -42,13 +42,14 @@ namespace TermsAndDefinitions.WebUI.ViewModels
        public string URL { get; set; }
     }
 
-    public class VGlossary
+    public class VProject
     {
-        public VGlossary(Project project)
+        public VProject(Project project)
         {
-            terms = project.Terms.OrderBy(x => x.TermName).Select(x => new VTerm(x)).ToList();
+            ProjectName = project.ProjectName;
         }
-        public List<VTerm> terms { get; set; }
+        string ProjectName;
+        //public List<VTerm> terms { get; set; }
 
     }
 
