@@ -9,8 +9,8 @@
         case 1:
             Html.Action("GetTermsByDefinition", "Search", Model);
             break;
-        default:        
-            Html.Action("GetTerms", "Search", Model);
+        default:
+            Html.Action("GetTerms", "Search", new { Model});
             Html.Action("GetTermsByDefinition", "Search", Model);
             break;
     }         

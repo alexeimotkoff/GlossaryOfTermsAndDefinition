@@ -15,9 +15,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //h
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
         public ActionResult Index()
-        {
-            SearchQuery searchQuery = new SearchQuery(null);
-            return View();
+        {            
+            return View( new SearchQuery());
         }
         
         public ActionResult Search(SearchQuery searchQuery)

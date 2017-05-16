@@ -8,6 +8,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class VTerm
     {
+        public VTerm() { }
         public VTerm(string termName)
         {
             TermName = termName;
@@ -27,6 +28,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
     public class VDefinition
     {
+        public VDefinition() { }
         public VDefinition(string description, string url)
         {
             Description = description;
@@ -43,7 +45,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     }
 
     public class VProject
-    {
+    {   public VProject() { }
         public VProject(Project project)
         {
             ProjectName = project.ProjectName;
