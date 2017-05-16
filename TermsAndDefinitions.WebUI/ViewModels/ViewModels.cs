@@ -17,6 +17,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         {
             TermName = term.TermName;
             Definition discription = term.Definitions.OrderByDescending(y => y.Frequency).FirstOrDefault();
+            if(discription != null)
             Description = new VDefinition(discription);
         }
 

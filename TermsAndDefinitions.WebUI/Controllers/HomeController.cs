@@ -17,8 +17,9 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
         public ActionResult Index()
         {
-            var terms = db.Terms.Select((x) => new VTerm(x));
-            
+            List<VTerm> terms = new List<VTerm>();
+            foreach (var term in db.Terms)
+                terms.Add(new VTerm(term));            
             return View(terms);
         }
 

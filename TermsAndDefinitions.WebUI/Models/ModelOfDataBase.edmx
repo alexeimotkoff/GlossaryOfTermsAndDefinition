@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище GlossaryProjectDatabaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище GlossaryProjectDatabaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Definitions">
           <Key>
             <PropertyRef Name="IdDefinition" />
@@ -81,24 +81,6 @@
           <Property Name="TermName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IdInformationSystem" Type="int" />
           <Property Name="IdFundamentalArea" Type="int" />
-        </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "GlossaryProjectDatabase.sys.database_firewall_rules" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="create_date" Type="datetime" Nullable="false" />
-          <Property Name="modify_date" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
@@ -206,16 +188,6 @@
           <EntitySet Name="Reference" EntityType="Self.Reference" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Signatures" EntityType="Self.Signatures" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Terms" EntityType="Self.Terms" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
-            <DefiningQuery>SELECT 
-    [database_firewall_rules].[id] AS [id], 
-    [database_firewall_rules].[name] AS [name], 
-    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
-    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
-    [database_firewall_rules].[create_date] AS [create_date], 
-    [database_firewall_rules].[modify_date] AS [modify_date]
-    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Definition_ToTable" Association="Self.FK_Definition_ToTable">
             <End Role="Terms" EntitySet="Terms" />
             <End Role="Definitions" EntitySet="Definitions" />
@@ -262,7 +234,6 @@
           <EntitySet Name="References" EntityType="GlossaryProjectDatabaseModel.Reference" />
           <EntitySet Name="Signatures" EntityType="GlossaryProjectDatabaseModel.Signature" />
           <EntitySet Name="Terms" EntityType="GlossaryProjectDatabaseModel.Term" />
-          <EntitySet Name="database_firewall_rules" EntityType="GlossaryProjectDatabaseModel.database_firewall_rules" />
           <AssociationSet Name="FK_Definition_ToTable" Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable">
             <End Role="Term" EntitySet="Terms" />
             <End Role="Definition" EntitySet="Definitions" />
@@ -375,22 +346,6 @@
           <NavigationProperty Name="InformationSystem" Relationship="GlossaryProjectDatabaseModel.FK_SK_Term_ToIdInformationSystem" FromRole="Term" ToRole="InformationSystem" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Term" ToRole="Project" />
         </EntityType>
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="1" />
           <End Type="GlossaryProjectDatabaseModel.Definition" Role="Definition" Multiplicity="*" />
@@ -467,7 +422,7 @@
           <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
           <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -547,18 +502,6 @@
                 <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
                 <ScalarProperty Name="TermName" ColumnName="TermName" />
                 <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="database_firewall_rules">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.database_firewall_rules">
-              <MappingFragment StoreEntitySet="database_firewall_rules">
-                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
-                <ScalarProperty Name="create_date" ColumnName="create_date" />
-                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
-                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

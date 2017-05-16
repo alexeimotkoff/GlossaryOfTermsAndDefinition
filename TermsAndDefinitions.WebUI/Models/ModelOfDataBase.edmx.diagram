@@ -4,16 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bb3cfd773df942e5a93670b44e74d059" Name="Diagram1" ZoomLevel="97">
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="7.5" PointY="2.875" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="3" PointY="0.875" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="2.5" PointY="7.25" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="4.125" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="3" PointY="3.625" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="5.75" PointY="5.875" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="5.25" PointY="8.5" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="5.25" PointY="2.75" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.database_firewall_rules" Width="1.5" PointX="7.75" PointY="6.75" />
+      <Diagram DiagramId="116192b5c5ab4c51a2fe5c59ad04177b" Name="Diagram1">
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="10.5" PointY="4.875" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="6" PointY="12.25" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Signature" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="8.25" PointY="4.625" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_SK_Term_ToIdInformationSystem" />

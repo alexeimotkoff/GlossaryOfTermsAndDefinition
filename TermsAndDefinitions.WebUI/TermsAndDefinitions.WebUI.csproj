@@ -74,6 +74,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -186,6 +187,9 @@
       <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Project.cs">
+      <DependentUpon>ModelOfDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reference.cs">
       <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Signature.cs">
