@@ -8,7 +8,11 @@
         <h2>Поиск по термину</h2>
         @foreach (var item in Model)
         {
-            <h3>@item.TermName - @item.Description.Description </h3>
+            <div class="well">
+                <h4>
+                    @item.TermName - @item.Description.Description 
+                </h4>
+            </div>
         }
     </div>
 }

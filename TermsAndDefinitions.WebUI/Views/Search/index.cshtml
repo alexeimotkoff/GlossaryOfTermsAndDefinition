@@ -2,7 +2,10 @@
 @model SearchQuery
 
 <div>
-    Строка поиска
+    <form action="" method="get">
+        <input name="s" placeholder="Поиск" type="search" required>
+        <button type="submit">Поиск</button>
+    </form>
 </div>
 <div index="SearchResult">
     @Html.Partial("Search", Model)
