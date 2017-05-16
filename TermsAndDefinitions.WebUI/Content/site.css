@@ -1,6 +1,49 @@
-﻿.term {
+﻿@import url('site.css');
+.term {
     font-weight:bold;
 }
 .rows:not(:last-child) {
-    border-bottom: 4px solid #ccc;
+    border-bottom: 2px solid #ccc;
+}
+#search {
+  width: 235px;
+  height: 29px;
+}
+
+#search input {
+  float: left;
+  border: none;
+}
+
+#search .input {
+  width: 183px;
+  height: 28px;
+  padding: 0 37px 1px 15px;
+  background: #EEE url(https://lh4.googleusercontent.com/-EllJnywnmlY/UAaKJYSYYMI/AAAAAAAABUU/IaRo-yUcRmc/s235/search.png) no-repeat;
+  color: #555;
+  font: 13px/28px Tahoma, Arial, sans-serif;
+  outline: none;
+}
+
+@-moz-document url-prefix() {
+  #search .input {
+    height: 27px;
+    padding-bottom: 2px;
+  }
+}
+
+#search .input:focus {
+  background-color: #E8E8E8;
+  background-position: 0 -29px;
+  color: #333;
+}
+
+#search .submit {
+  width: 37px;
+  height: 29px;
+  cursor: pointer;
+
+  margin-left: -37px;
+
+  background: url(dontexist.png);
 }
