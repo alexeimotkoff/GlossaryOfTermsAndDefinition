@@ -11,12 +11,22 @@ namespace TermsAndDefinitions.WebUI.PutTestData
         public DBInitializer()
         {
              GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-          
-                //db.Definitions.RemoveRange(db.Definitions);
-                //db.Terms.RemoveRange(db.Terms);
-                //db.Projects.RemoveRange(db.Projects);
-                //db.SaveChanges();
-                if (db.Projects.Count() == 0)
+
+            //foreach (var project in db.Projects.ToList())
+            //{
+            //    foreach (var term in project.Terms.ToList())
+            //    {
+            //        project.Terms.Remove(term);
+            //    }
+            //}
+            //db.SaveChanges();
+            //db.Definitions.RemoveRange(db.Definitions);   
+            //db.SaveChanges();
+            //db.Terms.RemoveRange(db.Terms);
+            //db.SaveChanges();    
+            //db.Projects.RemoveRange(db.Projects);
+            //db.SaveChanges();
+            if (db.Projects.Count() == 0)
                 {
                     List<Project> listOfProject = new List<Project>(){
                         new Project(){ProjectName = "FirstProject 42454654", Annotation = "Включает надписи-девизы, популярные в западноевропейском изобразительном искусстве на христианские и античные сюжеты, а также названия иконографических типов изображения, используемые в истории искусства, и обычно сложившиеся на основе названий латинских текстов, которых они иллюстрируют." },

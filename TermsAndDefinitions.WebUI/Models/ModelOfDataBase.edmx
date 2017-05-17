@@ -56,6 +56,7 @@
           <Property Name="Signature" Type="nvarchar(max)" />
           <Property Name="Annotation" Type="nvarchar(max)" />
           <Property Name="IdLifeСycle" Type="int" />
+          <Property Name="IdInformationSystem" Type="int" />
         </EntityType>
         <EntityType Name="Reference">
           <Key>
@@ -79,7 +80,6 @@
           </Key>
           <Property Name="IdTerm" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TermName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="IdInformationSystem" Type="int" />
           <Property Name="IdFundamentalArea" Type="int" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
@@ -142,14 +142,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SK_Term_ToIdInformationSystem">
+        <Association Name="FK_SK_Project_ToIdInformationSystem">
           <End Role="InformationSystems" Type="Self.InformationSystems" Multiplicity="0..1" />
-          <End Role="Terms" Type="Self.Terms" Multiplicity="*" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InformationSystems">
               <PropertyRef Name="IdInformationSystem" />
             </Principal>
-            <Dependent Role="Terms">
+            <Dependent Role="Projects">
               <PropertyRef Name="IdInformationSystem" />
             </Dependent>
           </ReferentialConstraint>
@@ -208,9 +208,9 @@
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Reference" EntitySet="Reference" />
           </AssociationSet>
-          <AssociationSet Name="FK_SK_Term_ToIdInformationSystem" Association="Self.FK_SK_Term_ToIdInformationSystem">
+          <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="Self.FK_SK_Project_ToIdInformationSystem">
             <End Role="InformationSystems" EntitySet="InformationSystems" />
-            <End Role="Terms" EntitySet="Terms" />
+            <End Role="Projects" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="Self.FK_YK_Term_ToIdFundamentalArea">
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
@@ -253,7 +253,7 @@
           <Property Name="IdInformationSystem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameInformationSystem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DescriptonInformationSystem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Terms" Relationship="Self.FK_SK_Term_ToIdInformationSystem" FromRole="InformationSystems" ToRole="Terms" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_SK_Project_ToIdInformationSystem" FromRole="InformationSystems" ToRole="Projects" />
         </EntityType>
         <EntityType Name="LifeСycle">
           <Key>
@@ -273,6 +273,8 @@
           <Property Name="Signature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Annotation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IdLifeСycle" Type="Int32" />
+          <Property Name="IdInformationSystem" Type="Int32" />
+          <NavigationProperty Name="InformationSystem" Relationship="Self.FK_SK_Project_ToIdInformationSystem" FromRole="Projects" ToRole="InformationSystems" />
           <NavigationProperty Name="LifeСycle" Relationship="Self.FK_LL_Project_ToIdLifeСycle" FromRole="Projects" ToRole="LifeСycle" />
           <NavigationProperty Name="Reference" Relationship="Self.FK_Reference_ToProject" FromRole="Projects" ToRole="Reference" />
           <NavigationProperty Name="Signatures" Relationship="Self.FK_ВK_Definition_ToTerm" FromRole="Projects" ToRole="Signatures" />
@@ -302,11 +304,9 @@
           </Key>
           <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TermName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IdInformationSystem" Type="Int32" />
           <Property Name="IdFundamentalArea" Type="Int32" />
           <NavigationProperty Name="Definitions" Relationship="Self.FK_Definition_ToTable" FromRole="Terms" ToRole="Definitions" />
           <NavigationProperty Name="FundamentalArea" Relationship="Self.FK_YK_Term_ToIdFundamentalArea" FromRole="Terms" ToRole="FundamentalAreas" />
-          <NavigationProperty Name="InformationSystem" Relationship="Self.FK_SK_Term_ToIdInformationSystem" FromRole="Terms" ToRole="InformationSystems" />
           <NavigationProperty Name="Projects" Relationship="Self.Glossaries" FromRole="Terms" ToRole="Projects" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
@@ -333,14 +333,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SK_Term_ToIdInformationSystem">
+        <Association Name="FK_SK_Project_ToIdInformationSystem">
           <End Role="InformationSystems" Type="Self.InformationSystem" Multiplicity="0..1" />
-          <End Role="Terms" Type="Self.Term" Multiplicity="*" />
+          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InformationSystems">
               <PropertyRef Name="IdInformationSystem" />
             </Principal>
-            <Dependent Role="Terms">
+            <Dependent Role="Projects">
               <PropertyRef Name="IdInformationSystem" />
             </Dependent>
           </ReferentialConstraint>
@@ -402,9 +402,9 @@
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
             <End Role="Terms" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="FK_SK_Term_ToIdInformationSystem" Association="Self.FK_SK_Term_ToIdInformationSystem">
+          <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="Self.FK_SK_Project_ToIdInformationSystem">
             <End Role="InformationSystems" EntitySet="InformationSystems" />
-            <End Role="Terms" EntitySet="Terms" />
+            <End Role="Projects" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="Self.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
@@ -475,6 +475,7 @@
                 <ScalarProperty Name="Signature" ColumnName="Signature" />
                 <ScalarProperty Name="Annotation" ColumnName="Annotation" />
                 <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
+                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -501,7 +502,6 @@
               <MappingFragment StoreEntitySet="Terms">
                 <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
                 <ScalarProperty Name="TermName" ColumnName="TermName" />
-                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
                 <ScalarProperty Name="IdFundamentalArea" ColumnName="IdFundamentalArea" />
               </MappingFragment>
             </EntityTypeMapping>
