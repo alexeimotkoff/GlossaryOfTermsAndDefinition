@@ -222,20 +222,20 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModelOfDataBase.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Models\ModelOfDataBase.edmx.diagram">
+      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Models\ModelOfDataBase.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
       <LastGenOutput>ModelOfDataBase.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ModelOfDataBase.edmx.diagram">
-      <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
     </Content>
     <Content Include="Models\ModelOfDataBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
       <LastGenOutput>ModelOfDataBase.cs</LastGenOutput>
     </Content>
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -297,7 +297,6 @@
   <ItemGroup>
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
