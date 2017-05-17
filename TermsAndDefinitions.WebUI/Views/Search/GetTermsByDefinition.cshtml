@@ -3,15 +3,15 @@
 @model IEnumerable<VTerm>
 
 @if (Model.Count() > 0)
-{ 
+{
     <div class="ans-box">
-        <hr>
-        <h4 class="titel-ans-box">Поиск по терминам:</h4>
-        <hr>
+        <h class="titel-ans-box">Поиск по определению:</h>
         @foreach (var item in Model)
         {
             <div class="text-cut-box">
-                <p class=".clip"><span class="term">@item.TermName</span> — @item.Description.Description</p>
+                <div>
+                    <p><span class="term">@item.TermName</span> — @item.Description.Description</p>
+                </div>
             </div>
         }
     </div>

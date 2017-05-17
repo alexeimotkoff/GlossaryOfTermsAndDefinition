@@ -1,0 +1,14 @@
+﻿@using TermsAndDefinitions.WebUI.ViewModels;
+@model SearchQuery
+
+<div>
+    <form action="" method="get" id="search">
+        <input type="text" name="" value="поиск" onblur="if(this.value=='') this.value='поиск';" onfocus="if(this.value=='поиск') this.value='';" class="input" />
+        <input type="submit" name="" value="" class="submit" />
+    </form>
+</div>
+
+<div index="SearchResult" class="rows" >
+    @{Html.RenderAction("GetResultSearch", "Search", Model);}
+</div>
+

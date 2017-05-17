@@ -9,17 +9,18 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class SearchQuery
     {
-
         Regex rx = new Regex("[а-яёa-z]");
         
-        public SearchQuery() : this("", 10, -1) { }
+        public SearchQuery() {
+            countSearchItem = 10;
+            querySearch = "";
+            typeSearching = -1;
+        }
 
-        public SearchQuery(string query, int type) : this(query, 0, type) {  }
-
-        public  SearchQuery(string query, int  count, int type)
+        public  SearchQuery(string query = "", int  count = 6, int type = -1)
         {
             countSearchItem = count;
-            queryString = query.ToLower();
+            querySearch = query.ToLower();
             typeSearching = type;
         }
 
@@ -27,13 +28,13 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         {
             get
             {
-                if (string.IsNullOrEmpty(queryString))
+                if (string.IsNullOrEmpty(querySearch))
                     return false;
                 else
-                    return rx.Match(queryString).Success && queryString.Length == 1;
+                    return rx.Match(querySearch).Success && querySearch.Length == 1;
             }
         }
-      public string queryString { get; set; }
+      public string querySearch { get; set; }
       public  int countSearchItem {get; set;}
       public int typeSearching { get; set; }
     }

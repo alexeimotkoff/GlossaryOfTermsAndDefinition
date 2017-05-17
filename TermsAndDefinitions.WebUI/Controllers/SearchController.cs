@@ -15,13 +15,15 @@ namespace TermsAndDefinitions.WebUI.Controllers
         // GET: /SearchTerm/
         //h
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-        public ActionResult All()
-        {
-           
-            return View( new SearchQuery("",-1));
+        public ActionResult Index()
+        {            
+            return View( new SearchQuery());
         }
-
-      
+        
+        public ActionResult GetResultSearch(SearchQuery searchQuery)
+        {
+            return View(searchQuery);
+        }
 
         public ActionResult GetTerms(SearchQuery searchQuery)
         {
@@ -29,12 +31,12 @@ namespace TermsAndDefinitions.WebUI.Controllers
             IQueryable<Term> searchResult = db.Terms.OrderBy(x => x.TermName);
             int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
             
-            if (!string.IsNullOrEmpty(searchQuery.queryString))
+            if (!string.IsNullOrEmpty(searchQuery.querySearch))
             {
                 if(searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.TermName.ToLower()[0] == searchQuery.queryString[0]);
+                    searchResult = searchResult.Where(x => x.TermName.ToLower()[0] == searchQuery.querySearch[0]);
                 else
-                    searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(searchQuery.queryString));
+                    searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(searchQuery.querySearch));
             }
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
@@ -48,12 +50,12 @@ namespace TermsAndDefinitions.WebUI.Controllers
         {
             IQueryable<Definition> searchResult = db.Definitions.OrderBy(x => x.Term.TermName);
             int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
-            if (!string.IsNullOrEmpty(searchQuery.queryString))
+            if (!string.IsNullOrEmpty(searchQuery.querySearch))
             {
                 if (searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.Description.ToLower()[0] == searchQuery.queryString[0]);
+                    searchResult = searchResult.Where(x => x.Description.ToLower()[0] == searchQuery.querySearch[0]);
                 else
-                    searchResult = searchResult.Where(x => x.Description.ToLower().Contains(searchQuery.queryString));
+                    searchResult = searchResult.Where(x => x.Description.ToLower().Contains(searchQuery.querySearch));
             }
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
@@ -67,12 +69,12 @@ namespace TermsAndDefinitions.WebUI.Controllers
         {
             IQueryable<Project> searchResult = db.Projects.OrderBy(x => x.ProjectName);
             int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
-            if (!string.IsNullOrEmpty(searchQuery.queryString))
+            if (!string.IsNullOrEmpty(searchQuery.querySearch))
             {
                 if (searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.ProjectName[0] == searchQuery.queryString[0]);
+                    searchResult = searchResult.Where(x => x.ProjectName[0] == searchQuery.querySearch[0]);
                 else
-                    searchResult = searchResult.Where(x => x.ProjectName.Contains(searchQuery.queryString));
+                    searchResult = searchResult.Where(x => x.ProjectName.Contains(searchQuery.querySearch));
             }
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
