@@ -23,13 +23,11 @@ namespace TermsAndDefinitions.WebUI.Models
     
         public int IdTerm { get; set; }
         public string TermName { get; set; }
-        public Nullable<int> IdInformationSystem { get; set; }
         public Nullable<int> IdFundamentalArea { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Definition> Definitions { get; set; }
         public virtual FundamentalArea FundamentalArea { get; set; }
-        public virtual InformationSystem InformationSystem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
     }

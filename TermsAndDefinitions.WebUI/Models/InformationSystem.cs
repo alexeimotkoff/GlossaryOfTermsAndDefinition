@@ -17,7 +17,7 @@ namespace TermsAndDefinitions.WebUI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public InformationSystem()
         {
-            this.Terms = new HashSet<Term>();
+            this.Projects = new HashSet<Project>();
         }
     
         public int IdInformationSystem { get; set; }
@@ -25,6 +25,6 @@ namespace TermsAndDefinitions.WebUI.Models
         public string DescriptonInformationSystem { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Term> Terms { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }
