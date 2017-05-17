@@ -253,9 +253,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Search\GetTerms.cshtml" />
     <Content Include="Views\Search\GetTermsByDefinition.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Search\All.cshtml" />
     <Content Include="Views\Search\GetResultSearch.cshtml" />
     <Content Include="Views\Search\GetProjects.cshtml" />
+    <Content Include="Views\Search\SearchPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

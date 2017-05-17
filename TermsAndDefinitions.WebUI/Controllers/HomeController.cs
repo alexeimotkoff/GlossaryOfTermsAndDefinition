@@ -16,11 +16,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
 
         public ActionResult Index()
-        {
-            List<VTerm> terms = new List<VTerm>();
-            foreach (var term in db.Terms)
-                terms.Add(new VTerm(term));            
-            return View(terms);
+        {          
+            return View(new SearchQuery());
         }
 
     }

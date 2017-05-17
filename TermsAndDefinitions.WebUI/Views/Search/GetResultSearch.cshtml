@@ -1,6 +1,6 @@
 ﻿@using TermsAndDefinitions.WebUI.ViewModels;
 @model SearchQuery
-    
+<div class="row placeholders">
     @switch (Model.typeSearching)
     {
         case 0:
@@ -13,8 +13,9 @@
             Html.RenderAction("GetProjects", "Search", Model);
             break;
         default:
-            Html.RenderAction("GetTerms", "Search", new { Model });
+            Html.RenderAction("GetTerms", "Search", Model);
             Html.RenderAction("GetTermsByDefinition", "Search", Model);
             Html.RenderAction("GetProjects", "Search", Model);
             break;
     }
+</div> 

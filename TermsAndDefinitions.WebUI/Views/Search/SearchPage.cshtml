@@ -1,0 +1,8 @@
+﻿@using TermsAndDefinitions.WebUI.ViewModels;
+@model SearchQuery
+
+<div class="row placeholders">
+    Поиск....
+</div>
+
+    @{Html.RenderAction("GetResultSearch", "Search", Model);}

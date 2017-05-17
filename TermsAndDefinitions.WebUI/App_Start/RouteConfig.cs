@@ -15,8 +15,8 @@ namespace TermsAndDefinitions.WebUI
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{typeSearch}/{id}",
+                defaults: new { controller = "Search", action = "All", typeSearch = UrlParameter.Optional, query = UrlParameter.Optional}
             );
         }
     }
