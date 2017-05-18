@@ -15,48 +15,60 @@ namespace TermsAndDefinitions.WebUI.Controllers
         // GET: /SearchTerm/
         //h
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-        public ActionResult Index()
-        {            
-            return View( new SearchQuery());
+
+        public ActionResult All(string catchall)
+        {
+            List<string> actions = new List<string> { "all", "terms", "definitions", "projects" };
+            int actionIdx = -1;
+            int count = 6;
+            List<string> querys = new List<string>();
+            if (!string.IsNullOrEmpty(catchall))
+            {
+                querys = catchall.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                actionIdx = actions.IndexOf(querys[0].ToLower()) - 1;
+                if (actionIdx > -2)
+                {
+                    querys.RemoveAt(0);
+                    count = 0;
+                }
+            }
+            return View("Index", new SearchQuery(querys, actionIdx, count));
         }
         
+        [ChildActionOnly]
         public ActionResult GetResultSearch(SearchQuery searchQuery)
         {
             return View(searchQuery);
         }
-
+        [ChildActionOnly]
         public ActionResult GetTerms(SearchQuery searchQuery)
         {
            
             IQueryable<Term> searchResult = db.Terms.OrderBy(x => x.TermName);
-            int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
-            
-            if (!string.IsNullOrEmpty(searchQuery.querySearch))
-            {
-                if(searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.TermName.ToLower()[0] == searchQuery.querySearch[0]);
-                else
-                    searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(searchQuery.querySearch));
-            }
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+                       
+            foreach (var query in searchQuery.QuerySearch)
+                searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(query));
+           
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x => x.TermName.StartsWith(searchQuery.FirstQuery));
+           
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
            List<VTerm> searchResultToViewModel = new List<VTerm>();
-            foreach (var term in searchResult.ToList())
+            foreach (var term in searchResult)
                 searchResultToViewModel.Add(new VTerm(term));            
             return View(searchResultToViewModel);
         }
-
+        [ChildActionOnly]
         public ActionResult GetTermsByDefinition(SearchQuery searchQuery)
         {
             IQueryable<Definition> searchResult = db.Definitions.OrderBy(x => x.Term.TermName);
-            int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
-            if (!string.IsNullOrEmpty(searchQuery.querySearch))
-            {
-                if (searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.Description.ToLower()[0] == searchQuery.querySearch[0]);
-                else
-                    searchResult = searchResult.Where(x => x.Description.ToLower().Contains(searchQuery.querySearch));
-            }
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+            foreach (var query in searchQuery.QuerySearch)
+                searchResult = searchResult.Where(x => x.Description.ToLower().Contains(query));
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x => x.Description.StartsWith(searchQuery.FirstQuery));
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
             List<VTerm> searchResultToViewModel = new List<VTerm>();
@@ -64,18 +76,16 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 searchResultToViewModel.Add(new VTerm(item.Term.TermName) { Description = new VDefinition(item)});
             return View(searchResultToViewModel);
         }
-
+        [ChildActionOnly]
         public ActionResult GetProjects(SearchQuery searchQuery)
         {
             IQueryable<Project> searchResult = db.Projects.OrderBy(x => x.ProjectName);
-            int takeCount = Math.Min(searchQuery.countSearchItem, searchResult.Count());
-            if (!string.IsNullOrEmpty(searchQuery.querySearch))
-            {
-                if (searchQuery.IsChar)
-                    searchResult = searchResult.Where(x => x.ProjectName[0] == searchQuery.querySearch[0]);
-                else
-                    searchResult = searchResult.Where(x => x.ProjectName.Contains(searchQuery.querySearch));
-            }
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+            foreach (var query in searchQuery.QuerySearch)
+                searchResult = searchResult.Where(x => x.ProjectName.Contains(query));
+
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x =>x.ProjectName.StartsWith(searchQuery.FirstQuery));
             if (takeCount > 0)
                 searchResult = searchResult.Take(takeCount);
             List<VProject> searchResultToViewModel = new List<VProject>();

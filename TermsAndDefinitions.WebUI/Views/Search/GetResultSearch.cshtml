@@ -1,7 +1,7 @@
 ﻿@using TermsAndDefinitions.WebUI.ViewModels;
 @model SearchQuery
     
-    @switch (Model.typeSearching)
+    @switch (Model.TypeSearching)
     {
         case 0:
             Html.RenderAction("GetTerms", "Search", Model);
@@ -13,7 +13,7 @@
             Html.RenderAction("GetProjects", "Search", Model);
             break;
         default:
-            Html.RenderAction("GetTerms", "Search", new { Model });
+            Html.RenderAction("GetTerms", "Search",  Model);
             Html.RenderAction("GetTermsByDefinition", "Search", Model);
             Html.RenderAction("GetProjects", "Search", Model);
             break;

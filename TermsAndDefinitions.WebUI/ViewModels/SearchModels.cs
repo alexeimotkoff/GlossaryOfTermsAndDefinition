@@ -10,32 +10,47 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class SearchQuery
     {
         Regex rx = new Regex("[а-яёa-z]");
-        
+        List<string> querySearch = new List<string>();
+
         public SearchQuery() {
-            countSearchItem = 10;
-            querySearch = "";
-            typeSearching = -1;
+            CountSearchItem = 10;
+            TypeSearching = -1;
         }
 
-        public  SearchQuery(string query = "", int  count = 6, int type = -1)
+        public  SearchQuery(List<string> querys, int type = -1, int count = 10)
         {
-            countSearchItem = count;
-            querySearch = query.ToLower();
-            typeSearching = type;
+            CountSearchItem = count;
+            TypeSearching = type;
+            QuerySearch = querys;            
         }
-
-      public bool IsChar
+        
+        public bool FirtstIsChar
         {
             get
             {
-                if (string.IsNullOrEmpty(querySearch))
-                    return false;
-                else
-                    return rx.Match(querySearch).Success && querySearch.Length == 1;
+              if (!string.IsNullOrEmpty(FirstQuery))
+                        return rx.Match(querySearch[0]).Success && querySearch[0].Length == 1;
+                return false;
             }
         }
-      public string querySearch { get; set; }
-      public  int countSearchItem {get; set;}
-      public int typeSearching { get; set; }
+
+        public string FirstQuery
+        {
+            get {
+                if (querySearch.Count > 0)
+                    return querySearch[0];
+                return "";
+            }
+        }
+      
+        public List<string> QuerySearch {
+            get  {return querySearch; }
+            set
+            {
+                querySearch = value.Select(query => query.ToLower()).ToList();
+            }
+        }
+      public  int CountSearchItem {get; set;}
+      public int TypeSearching { get; set; }
     }
 }
