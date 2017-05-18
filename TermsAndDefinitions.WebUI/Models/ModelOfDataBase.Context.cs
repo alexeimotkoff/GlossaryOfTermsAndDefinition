@@ -25,13 +25,14 @@ namespace TermsAndDefinitions.WebUI.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BucketHash> BucketHashes { get; set; }
         public virtual DbSet<Definition> Definitions { get; set; }
         public virtual DbSet<FundamentalArea> FundamentalAreas { get; set; }
         public virtual DbSet<InformationSystem> InformationSystems { get; set; }
         public virtual DbSet<LifeСycle> LifeСycle { get; set; }
+        public virtual DbSet<MinHash> MinHashes { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Reference> References { get; set; }
-        public virtual DbSet<Signature> Signatures { get; set; }
         public virtual DbSet<Term> Terms { get; set; }
     }
 }

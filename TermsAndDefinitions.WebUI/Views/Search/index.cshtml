@@ -1,6 +1,9 @@
 ﻿@using TermsAndDefinitions.WebUI.ViewModels;
 @model SearchQuery
 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 <div>
     <form action="" method="get" id="search">
         <input type="text" name="" value="поиск" onblur="if(this.value=='') this.value='поиск';" onfocus="if(this.value=='поиск') this.value='';" class="input" />

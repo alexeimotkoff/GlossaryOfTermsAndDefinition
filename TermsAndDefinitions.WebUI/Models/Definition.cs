@@ -18,6 +18,7 @@ namespace TermsAndDefinitions.WebUI.Models
         public int IdTerm { get; set; }
         public Nullable<int> Frequency { get; set; }
         public string Description { get; set; }
+        public string DescriptionEng { get; set; }
         public string URL { get; set; }
     
         public virtual Term Term { get; set; }

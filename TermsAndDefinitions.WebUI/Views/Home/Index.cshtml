@@ -4,6 +4,11 @@
 @using System.Collections;
 @using TermsAndDefinitions.WebUI.ViewModels;
 @model IEnumerable<VTerm>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <h2>Index</h2>
 @{
     if (Model != null)

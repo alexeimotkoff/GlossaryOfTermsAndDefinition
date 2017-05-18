@@ -14,15 +14,16 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class Project
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
-            this.Signatures = new HashSet<Signature>();
+            this.BucketHashes = new HashSet<BucketHash>();
             this.Terms = new HashSet<Term>();
+            this.MinHashes = new HashSet<MinHash>();
         }
     
         public int IdProject { get; set; }
         public string ProjectName { get; set; }
-        public string Signature { get; set; }
         public string Annotation { get; set; }
         public Nullable<int> IdLifeСycle { get; set; }
         public Nullable<int> IdInformationSystem { get; set; }
@@ -30,7 +31,11 @@ namespace TermsAndDefinitions.WebUI.Models
         public virtual InformationSystem InformationSystem { get; set; }
         public virtual LifeСycle LifeСycle { get; set; }
         public virtual Reference Reference { get; set; }
-        public virtual ICollection<Signature> Signatures { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BucketHash> BucketHashes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Term> Terms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MinHash> MinHashes { get; set; }
     }
 }
