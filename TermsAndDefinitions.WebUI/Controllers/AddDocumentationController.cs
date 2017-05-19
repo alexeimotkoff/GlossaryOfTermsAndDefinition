@@ -13,12 +13,18 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /AddDocumentation/
         //
-
+        Random rnd = new Random(1337);
+        int countMinHash = 100;
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
 
         public ActionResult Index()
         {
             return View();
+        }
+         
+        public Project getSimilarProgect(string text)
+        {
+            int[]
         }
 
         [HttpPost]

@@ -68,8 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Among.cs" />
+    <Compile Include="Canonizator.cs" />
+    <Compile Include="StemmerOperations.cs" />
+    <Compile Include="EnglishStemmer.cs" />
+    <Compile Include="IStemmer.cs" />
+    <Compile Include="MinHash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RussianStemmer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
