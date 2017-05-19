@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.Models
     
     public partial class Reference
     {
+        public int IdUrl { get; set; }
         public int IdProject { get; set; }
         public string URLToFile { get; set; }
     

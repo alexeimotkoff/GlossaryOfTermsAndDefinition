@@ -17,6 +17,7 @@ namespace TermsAndDefinitions.WebUI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
+            this.References = new HashSet<Reference>();
             this.BucketHashes = new HashSet<BucketHash>();
             this.Terms = new HashSet<Term>();
             this.MinHashes = new HashSet<MinHash>();
@@ -30,7 +31,8 @@ namespace TermsAndDefinitions.WebUI.Models
     
         public virtual InformationSystem InformationSystem { get; set; }
         public virtual LifeСycle LifeСycle { get; set; }
-        public virtual Reference Reference { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reference> References { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BucketHash> BucketHashes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

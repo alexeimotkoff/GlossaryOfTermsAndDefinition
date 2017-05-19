@@ -21,7 +21,7 @@ namespace TermsAndDefinitions.WebUI.Models
         }
     
         public int IdMinHash { get; set; }
-        public Nullable<int> MinHash1 { get; set; }
+        public int MinHash1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }

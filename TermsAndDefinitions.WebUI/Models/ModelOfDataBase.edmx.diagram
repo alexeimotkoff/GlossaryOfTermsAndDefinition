@@ -4,24 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d01277107ccd4610986325e6c2e13a2d" Name="Diagram1" ZoomLevel="67">
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.BucketHash" Width="1.5" PointX="8.125" PointY="4.75" IsExpanded="true" />
+      <Diagram DiagramId="d01277107ccd4610986325e6c2e13a2d" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="8.125" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="3.125" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="3.125" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeСycle" Width="1.5" PointX="3.125" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.MinHash" Width="1.5" PointX="8.125" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="5.5" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="3.125" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="5.5" PointY="2.125" IsExpanded="true" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" ManuallyRouted="false" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Reference_ToProject" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.Buckets" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.Glossaries" ManuallyRouted="false" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.Signature" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.BucketHash" Width="1.5" PointX="8" PointY="6.75" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.MinHash" Width="1.5" PointX="8" PointY="4.875" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="3.125" PointY="4" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="5.5" PointY="5.125" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Reference_ToProject" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Buckets" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Glossaries" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Signature" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

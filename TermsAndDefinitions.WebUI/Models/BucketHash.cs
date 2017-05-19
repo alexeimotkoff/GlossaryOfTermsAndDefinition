@@ -21,7 +21,7 @@ namespace TermsAndDefinitions.WebUI.Models
         }
     
         public int IdHash { get; set; }
-        public Nullable<long> Hash { get; set; }
+        public long Hash { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }

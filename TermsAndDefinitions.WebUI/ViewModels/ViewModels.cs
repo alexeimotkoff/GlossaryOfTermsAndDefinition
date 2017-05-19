@@ -18,13 +18,16 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public VTerm(Term term)
         {
             TermName = term.TermName;
+            ID = term.IdTerm;
             Definition discription = term.Definitions.OrderByDescending(y => y.Frequency).FirstOrDefault();
-            if(discription != null)
+
+            if (discription != null)
             Description = new VDefinition(discription);
         }
 
         public string TermName { get; set; }
-        public VDefinition Description { get; set; }
+        public int ID { get; set; }
+        public VDefinition Description {get; set;}
     }
 
     public class VDefinition
@@ -46,14 +49,30 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     }
 
     public class VProject
-    {   public VProject() { }
+    {
+        public VProject() { }
+
         public VProject(Project project)
         {
             ProjectName = project.ProjectName;
-        }
-        public string ProjectName;
-        
+            InformationSystems = project.InformationSystem.NameInformationSystem;
+            LifeCycle = project.LifeСycle.NameLifeСycle;
+            DocumetationURLs = project.References.Select(x => x.URLToFile).ToList();
+            foreach (var term in project.Terms)
+                Glossary.Add(new VTerm(term));
+        }        
+
+        public string Annotation {get; set;}
+
+        public string ProjectName { get; set; }
+
+        public string InformationSystems { get; set; }
+
+        public string LifeCycle { get; set; }
+
+        public List<string> DocumetationURLs = new List<string>();
+
+        public List<VTerm> Glossary {get; set;}
     }
-
-
+    
 }

@@ -4,13 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище GlossaryProjectDatabaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище GlossaryProjectDatabaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BucketHash">
           <Key>
             <PropertyRef Name="IdHash" />
           </Key>
           <Property Name="IdHash" Type="int" Nullable="false" />
-          <Property Name="Hash" Type="bigint" />
+          <Property Name="Hash" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Buckets">
           <Key>
@@ -68,7 +68,7 @@
             <PropertyRef Name="IdMinHash" />
           </Key>
           <Property Name="IdMinHash" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MinHash" Type="int" />
+          <Property Name="MinHash" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Projects">
           <Key>
@@ -82,8 +82,9 @@
         </EntityType>
         <EntityType Name="Reference">
           <Key>
-            <PropertyRef Name="IdProject" />
+            <PropertyRef Name="IdUrl" />
           </Key>
+          <Property Name="IdUrl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdProject" Type="int" Nullable="false" />
           <Property Name="URLToFile" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
@@ -178,7 +179,7 @@
         </Association>
         <Association Name="FK_Reference_ToProject">
           <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="Reference" Type="Self.Reference" Multiplicity="0..1" />
+          <End Role="Reference" Type="Self.Reference" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projects">
               <PropertyRef Name="IdProject" />
@@ -294,19 +295,10 @@
             <End Role="Signature" EntitySet="Signature" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GlossaryProjectDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="BucketHash">
-          <Key>
-            <PropertyRef Name="IdHash" />
-          </Key>
-          <Property Name="IdHash" Type="Int32" Nullable="false" />
-          <Property Name="Hash" Type="Int64" />
-          <NavigationProperty Name="Projects" Relationship="Self.Buckets" FromRole="BucketHash" ToRole="Projects" />
-        </EntityType>
         <EntityType Name="Definition">
           <Key>
             <PropertyRef Name="IdDefinition" />
@@ -335,7 +327,7 @@
           <Property Name="IdInformationSystem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameInformationSystem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DescriptonInformationSystem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Projects" Relationship="Self.FK_SK_Project_ToIdInformationSystem" FromRole="InformationSystems" ToRole="Projects" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" FromRole="InformationSystem" ToRole="Project" />
         </EntityType>
         <EntityType Name="LifeСycle">
           <Key>
@@ -344,39 +336,7 @@
           <Property Name="IdLifeСycle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NameLifeСycle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DescriptonLifeСycle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Projects" Relationship="Self.FK_LL_Project_ToIdLifeСycle" FromRole="LifeСycle" ToRole="Projects" />
-        </EntityType>
-        <EntityType Name="MinHash">
-          <Key>
-            <PropertyRef Name="IdMinHash" />
-          </Key>
-          <Property Name="IdMinHash" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MinHash1" Type="Int32" />
-          <NavigationProperty Name="Projects" Relationship="Self.Signature" FromRole="MinHash" ToRole="Projects" />
-        </EntityType>
-        <EntityType Name="Project">
-          <Key>
-            <PropertyRef Name="IdProject" />
-          </Key>
-          <Property Name="IdProject" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Annotation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IdLifeСycle" Type="Int32" />
-          <Property Name="IdInformationSystem" Type="Int32" />
-          <NavigationProperty Name="InformationSystem" Relationship="Self.FK_SK_Project_ToIdInformationSystem" FromRole="Projects" ToRole="InformationSystems" />
-          <NavigationProperty Name="LifeСycle" Relationship="Self.FK_LL_Project_ToIdLifeСycle" FromRole="Projects" ToRole="LifeСycle" />
-          <NavigationProperty Name="Reference" Relationship="Self.FK_Reference_ToProject" FromRole="Projects" ToRole="Reference" />
-          <NavigationProperty Name="BucketHashes" Relationship="Self.Buckets" FromRole="Projects" ToRole="BucketHash" />
-          <NavigationProperty Name="Terms" Relationship="Self.Glossaries" FromRole="Projects" ToRole="Terms" />
-          <NavigationProperty Name="MinHashes" Relationship="Self.Signature" FromRole="Projects" ToRole="MinHash" />
-        </EntityType>
-        <EntityType Name="Reference">
-          <Key>
-            <PropertyRef Name="IdProject" />
-          </Key>
-          <Property Name="IdProject" Type="Int32" Nullable="false" />
-          <Property Name="URLToFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="Self.FK_Reference_ToProject" FromRole="Reference" ToRole="Projects" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="LifeСycle" ToRole="Project" />
         </EntityType>
         <EntityType Name="Term">
           <Key>
@@ -388,7 +348,7 @@
           <Property Name="IdFundamentalArea" Type="Int32" />
           <NavigationProperty Name="Definitions" Relationship="Self.FK_Definition_ToTable" FromRole="Terms" ToRole="Definitions" />
           <NavigationProperty Name="FundamentalArea" Relationship="Self.FK_YK_Term_ToIdFundamentalArea" FromRole="Terms" ToRole="FundamentalAreas" />
-          <NavigationProperty Name="Projects" Relationship="Self.Glossaries" FromRole="Terms" ToRole="Projects" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Term" ToRole="Project" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Role="Terms" Type="Self.Term" Multiplicity="1" />
@@ -414,63 +374,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SK_Project_ToIdInformationSystem">
-          <End Role="InformationSystems" Type="Self.InformationSystem" Multiplicity="0..1" />
-          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InformationSystems">
-              <PropertyRef Name="IdInformationSystem" />
-            </Principal>
-            <Dependent Role="Projects">
-              <PropertyRef Name="IdInformationSystem" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LL_Project_ToIdLifeСycle">
-          <End Role="LifeСycle" Type="Self.LifeСycle" Multiplicity="0..1" />
-          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LifeСycle">
-              <PropertyRef Name="IdLifeСycle" />
-            </Principal>
-            <Dependent Role="Projects">
-              <PropertyRef Name="IdLifeСycle" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reference_ToProject">
-          <End Role="Projects" Type="Self.Project" Multiplicity="1" />
-          <End Role="Reference" Type="Self.Reference" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="IdProject" />
-            </Principal>
-            <Dependent Role="Reference">
-              <PropertyRef Name="IdProject" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Buckets">
-          <End Role="BucketHash" Type="Self.BucketHash" Multiplicity="*" />
-          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
-        </Association>
-        <Association Name="Glossaries">
-          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
-          <End Role="Terms" Type="Self.Term" Multiplicity="*" />
-        </Association>
-        <Association Name="Signature">
-          <End Role="MinHash" Type="Self.MinHash" Multiplicity="*" />
-          <End Role="Projects" Type="Self.Project" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="GlossaryProjectDatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BucketHashes" EntityType="Self.BucketHash" />
           <EntitySet Name="Definitions" EntityType="Self.Definition" />
           <EntitySet Name="FundamentalAreas" EntityType="Self.FundamentalArea" />
           <EntitySet Name="InformationSystems" EntityType="Self.InformationSystem" />
           <EntitySet Name="LifeСycle" EntityType="Self.LifeСycle" />
-          <EntitySet Name="MinHashes" EntityType="Self.MinHash" />
-          <EntitySet Name="Projects" EntityType="Self.Project" />
-          <EntitySet Name="References" EntityType="Self.Reference" />
           <EntitySet Name="Terms" EntityType="Self.Term" />
           <AssociationSet Name="FK_Definition_ToTable" Association="Self.FK_Definition_ToTable">
             <End Role="Terms" EntitySet="Terms" />
@@ -480,45 +388,130 @@
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
             <End Role="Terms" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="Self.FK_SK_Project_ToIdInformationSystem">
-            <End Role="InformationSystems" EntitySet="InformationSystems" />
-            <End Role="Projects" EntitySet="Projects" />
+          <EntitySet Name="BucketHashes" EntityType="GlossaryProjectDatabaseModel.BucketHash" />
+          <EntitySet Name="MinHashes" EntityType="GlossaryProjectDatabaseModel.MinHash" />
+          <EntitySet Name="References" EntityType="GlossaryProjectDatabaseModel.Reference" />
+          <EntitySet Name="Projects" EntityType="GlossaryProjectDatabaseModel.Project" />
+          <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem">
+            <End Role="InformationSystem" EntitySet="InformationSystems" />
+            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
-          <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="Self.FK_LL_Project_ToIdLifeСycle">
+          <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
-            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reference_ToProject" Association="Self.FK_Reference_ToProject">
-            <End Role="Projects" EntitySet="Projects" />
+          <AssociationSet Name="FK_Reference_ToProject" Association="GlossaryProjectDatabaseModel.FK_Reference_ToProject">
+            <End Role="Project" EntitySet="Projects" />
             <End Role="Reference" EntitySet="References" />
           </AssociationSet>
-          <AssociationSet Name="Buckets" Association="Self.Buckets">
+          <AssociationSet Name="Buckets" Association="GlossaryProjectDatabaseModel.Buckets">
             <End Role="BucketHash" EntitySet="BucketHashes" />
-            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
-          <AssociationSet Name="Glossaries" Association="Self.Glossaries">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Terms" EntitySet="Terms" />
+          <AssociationSet Name="Glossaries" Association="GlossaryProjectDatabaseModel.Glossaries">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Term" EntitySet="Terms" />
           </AssociationSet>
-          <AssociationSet Name="Signature" Association="Self.Signature">
+          <AssociationSet Name="Signature" Association="GlossaryProjectDatabaseModel.Signature">
             <End Role="MinHash" EntitySet="MinHashes" />
-            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="BucketHash">
+          <Key>
+            <PropertyRef Name="IdHash" />
+          </Key>
+          <Property Name="IdHash" Type="Int32" Nullable="false" />
+          <Property Name="Hash" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="BucketHash" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="MinHash">
+          <Key>
+            <PropertyRef Name="IdMinHash" />
+          </Key>
+          <Property Name="IdMinHash" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MinHash1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="MinHash" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Reference">
+          <Key>
+            <PropertyRef Name="IdUrl" />
+          </Key>
+          <Property Name="IdUrl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProject" Type="Int32" Nullable="false" />
+          <Property Name="URLToFile" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Project" Relationship="GlossaryProjectDatabaseModel.FK_Reference_ToProject" FromRole="Reference" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="IdProject" />
+          </Key>
+          <Property Name="IdProject" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Annotation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdLifeСycle" Type="Int32" />
+          <Property Name="IdInformationSystem" Type="Int32" />
+          <NavigationProperty Name="InformationSystem" Relationship="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" FromRole="Project" ToRole="InformationSystem" />
+          <NavigationProperty Name="LifeСycle" Relationship="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="Project" ToRole="LifeСycle" />
+          <NavigationProperty Name="References" Relationship="GlossaryProjectDatabaseModel.FK_Reference_ToProject" FromRole="Project" ToRole="Reference" />
+          <NavigationProperty Name="BucketHashes" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="Project" ToRole="BucketHash" />
+          <NavigationProperty Name="Terms" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Project" ToRole="Term" />
+          <NavigationProperty Name="MinHashes" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="Project" ToRole="MinHash" />
+        </EntityType>
+        <Association Name="FK_SK_Project_ToIdInformationSystem">
+          <End Type="GlossaryProjectDatabaseModel.InformationSystem" Role="InformationSystem" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InformationSystem">
+              <PropertyRef Name="IdInformationSystem" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="IdInformationSystem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LL_Project_ToIdLifeСycle">
+          <End Type="GlossaryProjectDatabaseModel.LifeСycle" Role="LifeСycle" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LifeСycle">
+              <PropertyRef Name="IdLifeСycle" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="IdLifeСycle" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reference_ToProject">
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="GlossaryProjectDatabaseModel.Reference" Role="Reference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="IdProject" />
+            </Principal>
+            <Dependent Role="Reference">
+              <PropertyRef Name="IdProject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Buckets">
+          <End Type="GlossaryProjectDatabaseModel.BucketHash" Role="BucketHash" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+        </Association>
+        <Association Name="Glossaries">
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="*" />
+        </Association>
+        <Association Name="Signature">
+          <End Type="GlossaryProjectDatabaseModel.MinHash" Role="MinHash" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Хранилище GlossaryProjectDatabaseModelContainer" CdmEntityContainer="GlossaryProjectDatabaseEntities">
-          <EntitySetMapping Name="BucketHashes">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.BucketHash">
-              <MappingFragment StoreEntitySet="BucketHash">
-                <ScalarProperty Name="IdHash" ColumnName="IdHash" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Definitions">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Definition">
               <MappingFragment StoreEntitySet="Definitions">
@@ -558,33 +551,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MinHashes">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.MinHash">
-              <MappingFragment StoreEntitySet="MinHash">
-                <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
-                <ScalarProperty Name="MinHash1" ColumnName="MinHash" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Project">
-              <MappingFragment StoreEntitySet="Projects">
-                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
-                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
-                <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
-                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="References">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Reference">
-              <MappingFragment StoreEntitySet="Reference">
-                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-                <ScalarProperty Name="URLToFile" ColumnName="URLToFile" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Terms">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Term">
               <MappingFragment StoreEntitySet="Terms">
@@ -595,28 +561,64 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BucketHashes">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.BucketHash">
+              <MappingFragment StoreEntitySet="BucketHash">
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="IdHash" ColumnName="IdHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinHashes">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.MinHash">
+              <MappingFragment StoreEntitySet="MinHash">
+                <ScalarProperty Name="MinHash1" ColumnName="MinHash" />
+                <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="References">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Reference">
+              <MappingFragment StoreEntitySet="Reference">
+                <ScalarProperty Name="URLToFile" ColumnName="URLToFile" />
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+                <ScalarProperty Name="IdUrl" ColumnName="IdUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
+                <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
+                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="Buckets" TypeName="GlossaryProjectDatabaseModel.Buckets" StoreEntitySet="Buckets">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+            </EndProperty>
             <EndProperty Name="BucketHash">
               <ScalarProperty Name="IdHash" ColumnName="IdHash" />
             </EndProperty>
-            <EndProperty Name="Projects">
-              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="Glossaries" TypeName="GlossaryProjectDatabaseModel.Glossaries" StoreEntitySet="Glossaries">
-            <EndProperty Name="Projects">
-              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-            </EndProperty>
-            <EndProperty Name="Terms">
+            <EndProperty Name="Term">
               <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+            </EndProperty>
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="Signature" TypeName="GlossaryProjectDatabaseModel.Signature" StoreEntitySet="Signature">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+            </EndProperty>
             <EndProperty Name="MinHash">
               <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
-            </EndProperty>
-            <EndProperty Name="Projects">
-              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

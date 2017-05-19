@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TermsAndDefinitions.Domain
 {
-    class MinHash
+    public class MinHash
     {
         Random rnd = new Random(1337);
         private Encoding windowsEnc = Encoding.GetEncoding("windows-1251");       
@@ -53,7 +53,7 @@ namespace TermsAndDefinitions.Domain
             return (a * x + b) >> (32 - UniverseBits);
         }
 
-        public int[] GetSignature(string text, int shinglesCount)
+        public int[] GetSignature(string text)
         {
             var textWords = Canonize(text);
 
@@ -76,12 +76,12 @@ namespace TermsAndDefinitions.Domain
             return minHashes.Select(x => unchecked((int)x)).ToArray();
         }
 
-        public int[] GetBuckets(int[] signature)
+        public long[] GetBuckets(int[] signature)
         {
-            int[] buckets = new int[m_numBands];
+            long[] buckets = new long[m_numBands];
             for (int i = 0; i < m_numBands; i++)
             {                //combine all 5 MH values and then hash get its hashcode
-                int sum = 0;
+                long sum = 0;
 
                 for (int j = 0; j < ROWSINBAND; j++)
                 {
