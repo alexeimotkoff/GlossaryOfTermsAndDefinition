@@ -22,10 +22,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View();
         }
          
-        public Project getSimilarProgect(string text)
+       /* public Project getSimilarProgect(string text)
         {
             int[]
-        }
+        }*/
 
         [HttpPost]
         public ActionResult AddDocumetation(Project project)

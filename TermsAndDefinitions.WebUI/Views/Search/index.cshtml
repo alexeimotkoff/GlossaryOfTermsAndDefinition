@@ -4,14 +4,14 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <form action="" method="get" id="search">
-        <input type="text" name="" value="поиск" onblur="if(this.value=='') this.value='поиск';" onfocus="if(this.value=='поиск') this.value='';" class="input" />
-        <input type="submit" name="" value="" class="submit" />
-    </form>
-</div>
 
-<div index="SearchResult" class="rows" >
+<div index="SearchResult" class="rows">
+    @using (Html.BeginForm("All", "Search", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <form action="" method="get" id="search">
+            <input type="text" name="catchall" value="поиск" onblur="if(this.value=='') this.value='поиск';" onfocus="if(this.value=='поиск') this.value='';" class="input" />
+            <input type="submit" name="" value="" class="submit" />
+        </form>
+    }
     @{Html.RenderAction("GetResultSearch", "Search", Model);}
 </div>
-
