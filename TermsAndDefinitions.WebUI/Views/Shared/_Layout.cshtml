@@ -54,6 +54,15 @@
     });
 
 </script>
+ <script type='text/javascript'>
+ $(function () {
+    $('#mylink').click(function() {
+        $('#AjaxTestDiv').load(this.href);
+        return false;
+    });
+ });
+
+ </script>
 
 </body>
 </html>

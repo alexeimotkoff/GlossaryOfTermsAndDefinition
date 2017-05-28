@@ -15,7 +15,7 @@ namespace TermsAndDefinitions.WebUI
        
             routes.MapRoute(
                    name: "SearchRoute",
-                   url: "search/{*catchall}",
+                   url: "Search/{*catchall}",
                    defaults: new { controller = "Search", action = "All"}
                );
 
