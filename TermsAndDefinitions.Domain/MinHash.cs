@@ -8,7 +8,7 @@ namespace TermsAndDefinitions.Domain
 {
     public class MinHash
     {
-        /*Random rnd = new Random(1337);
+        Random rnd = new Random(1337);
         private Encoding windowsEnc = Encoding.GetEncoding("windows-1251");       
         private uint[] hashFunc_a;
         private uint[] hashFunc_b;
@@ -125,7 +125,7 @@ namespace TermsAndDefinitions.Domain
         private IEnumerable<string> Canonize(string text)
         {
             return Canonizator.GetCanonizedTextWords(text);
-        }*/
+        }
         
     }
 }

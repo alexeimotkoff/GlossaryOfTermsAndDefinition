@@ -25,11 +25,11 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View();
         }
 
-        public ActionResult ShowProjectsGlossaries(VProject projectFiles )
-        {
-            List<Project> similarProgects = 
-            return View();
-        }
+        //public ActionResult ShowProjectsGlossaries(VProject projectFiles )
+        //{
+        //    //List<Project> similarProgects = 
+        //    //return View();
+        //}
 
         public IEnumerable<Project> GetSimilarProgects(string text, int count)
         {
@@ -62,24 +62,24 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View();
         }
 
-        [HttpPost]
-        public bool AddGlossary(VProject glossary)
-        {
-            foreach (var pair in glossary)
-            {
-                Term term = db.Terms.FirstOrDefault(x => x.TermName.ToLower() == x.TermName.ToLower().Trim());
-                if (term == null)
-                {
-                    term = pair.Key;
-                    db.Terms.Add(term);
-                    db.SaveChanges();
-                }
-                Definition definition = new Definition() { Description = description, URL = url, IdTerm = term.IdTerm };
+        //[HttpPost]
+        //public bool AddGlossary(VProject glossary)
+        //{
+        //    foreach (var pair in glossary)
+        //    {
+        //        Term term = db.Terms.FirstOrDefault(x => x.TermName.ToLower() == x.TermName.ToLower().Trim());
+        //        if (term == null)
+        //        {
+        //            term = pair.Key;
+        //            db.Terms.Add(term);
+        //            db.SaveChanges();
+        //        }
+        //        Definition definition = new Definition() { Description = description, URL = url, IdTerm = term.IdTerm };
 
-            }
+        //    }
 
 
-        }
+        //}
 
 
         //public ActionResult AddTerm(string nameTerm, string description, string url)

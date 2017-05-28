@@ -54,9 +54,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
         public VProject(Project project)
         {
+            Glossary = new List<VTerm>();
             ProjectName = project.ProjectName;
-            InformationSystems = project.InformationSystem.NameInformationSystem;
-            LifeCycle = project.LifeСycle.NameLifeСycle;
+            InformationSystems = project.InformationSystem?.NameInformationSystem;
+            LifeCycle = project.LifeСycle?.NameLifeСycle;
             DocumetationURLs = project.References.Select(x => x.URLToFile).ToList();
             foreach (var term in project.Terms)
                 Glossary.Add(new VTerm(term));

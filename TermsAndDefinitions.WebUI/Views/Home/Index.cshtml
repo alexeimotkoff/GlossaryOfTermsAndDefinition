@@ -9,16 +9,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section navigation {
+<ul class="nav">
+    <li>@Html.ActionLink("Все", "All","Search")</li>
+    <li>@Html.ActionLink("Термины", "Terms", "Search")</li>
+    <li>@Html.ActionLink("Определения", "Definitions", "Search")</li>
+    <li>@Html.ActionLink("Проекты", "Projects", "Search")</li>
+</ul>
+}
+
 @{
     if (Model != null)
     {
         foreach (var item in Model)
         {
-            <div class="well">
-                <h4>
-                    @item.TermName - @item.Description.Description
-                </h4>
+            <div class="text-cut-box">
+                <div>
+                    <p><span class="term">@item.TermName</span> — @item.Description.Description</p>
+                </div>
             </div>
         }
     }
