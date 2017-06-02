@@ -12,18 +12,34 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         Regex rx = new Regex("[а-яёa-z]");
         List<string> querySearch = new List<string>();
 
+
         public SearchQuery() {
             CountSearchItem = 10;
             TypeSearching = -1;
         }
 
-        public  SearchQuery(List<string> querys, int type = -1, int count = 10)
+        public SearchQuery(List<string> querys, int type = -1, int count = 10)
         {
             CountSearchItem = count;
             TypeSearching = type;
-            QuerySearch = querys;            
+            QueryToList = querys;
+            QueryString = "";
+            if (querys != null )
+                if (querys.Count > 0)
+                    QueryString = string.Join("/", querys);
+        }
+
+        public SearchQuery(string query, int type = -1, int count = 10)
+        {
+            CountSearchItem = count;
+            TypeSearching = type;
+            QueryString = query;
+            if(!string.IsNullOrEmpty(query))
+            QueryToList = query.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
         
+        public string QueryString { get; set;}
+
         public bool FirtstIsChar
         {
             get
@@ -43,14 +59,23 @@ namespace TermsAndDefinitions.WebUI.ViewModels
             }
         }
       
-        public List<string> QuerySearch {
-            get  {return querySearch; }
+        public List<string> QueryToList
+        {
+            get
+            {
+                return querySearch;
+            }
             set
             {
-                querySearch = value.Select(query => query.ToLower()).ToList();
+                querySearch.Clear();
+                querySearch.AddRange(value.Select(query => query.ToLower()).ToList());
             }
         }
-      public  int CountSearchItem {get; set;}
-      public int TypeSearching { get; set; }
+
+        public  int CountSearchItem {get; set;}
+
+        public int TypeSearching { get; set; }
     }
+    
+
 }

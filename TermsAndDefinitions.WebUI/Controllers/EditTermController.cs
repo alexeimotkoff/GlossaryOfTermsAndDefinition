@@ -12,7 +12,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /EditTerm/
         //
-        GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
+        //GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
         public ActionResult Index()
         {
             return View();

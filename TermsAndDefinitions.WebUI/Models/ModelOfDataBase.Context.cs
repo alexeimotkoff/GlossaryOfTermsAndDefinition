@@ -34,5 +34,7 @@ namespace TermsAndDefinitions.WebUI.Models
         public virtual DbSet<MinHash> MinHashes { get; set; }
         public virtual DbSet<Reference> References { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
     }
 }

@@ -13,8 +13,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /Home/
         //
-        GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-
+      GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
+       
         public ActionResult Index()
         {
             List<VTerm> terms = new List<VTerm>();

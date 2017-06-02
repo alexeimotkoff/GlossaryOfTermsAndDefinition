@@ -28,9 +28,11 @@ namespace TermsAndDefinitions.WebUI.Models
         public string Annotation { get; set; }
         public Nullable<int> IdLifeСycle { get; set; }
         public Nullable<int> IdInformationSystem { get; set; }
+        public Nullable<int> UserId { get; set; }
     
         public virtual InformationSystem InformationSystem { get; set; }
         public virtual LifeСycle LifeСycle { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reference> References { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

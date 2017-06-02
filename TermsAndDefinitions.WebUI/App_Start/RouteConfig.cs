@@ -12,20 +12,25 @@ namespace TermsAndDefinitions.WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-       
+
             routes.MapRoute(
-                   name: "SearchRoute",
-                   url: "Search/{*catchall}",
-                   defaults: new { controller = "Search", action = "All"}
+                 name: "SearchRoute",
+                 url: "Search/{action}/{*catchall}",
+                 defaults: new { controller = "Search", action = "Index" }
+             );
+            //routes.MapRoute(
+            //       name: "SearchRoute",
+            //       url: "Search/{*catchall}",
+            //       defaults: new { controller = "Search", action = "All" }
+            //   );
+
+            routes.MapRoute(
+                  name: "Default",
+                  url: "{controller}/{action}/{id}",
+                  defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
                );
 
-         routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
 
-         
         }
     }
 }

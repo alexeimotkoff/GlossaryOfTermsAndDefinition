@@ -20,6 +20,7 @@
                     </button>
                     <a class="navbar-brand" href="#">Project Name</a>
                 </div>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
 
@@ -52,17 +53,15 @@
             $('.row-offcanvas').toggleClass('active');
         });
     });
-
 </script>
- <script type='text/javascript'>
- $(function () {
-    $('#mylink').click(function() {
-        $('#AjaxTestDiv').load(this.href);
+
+<script type='text/javascript'>
+    $("a.nav_link").click(function () {
+        $("#SearchResult").load($(this).attr("href"));
         return false;
     });
- });
+</script>
 
- </script>
 
 </body>
 </html>

@@ -17,9 +17,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         Domain.MinHash minHash = new Domain.MinHash();
         Random rnd = new Random(1337);
-        int countMinHash = 100;
-        GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
 
+       GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
         public ActionResult Index()
         {
             return View();

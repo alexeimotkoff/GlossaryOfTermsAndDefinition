@@ -79,6 +79,7 @@
           <Property Name="Annotation" Type="nvarchar(max)" />
           <Property Name="IdLifeСycle" Type="int" />
           <Property Name="IdInformationSystem" Type="int" />
+          <Property Name="UserId" Type="int" />
         </EntityType>
         <EntityType Name="Reference">
           <Key>
@@ -104,6 +105,30 @@
           <Property Name="TermName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TermNameEng" Type="nvarchar(max)" />
           <Property Name="IdFundamentalArea" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="56" />
+          <Property Name="PhoneNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Buckets_ToBucketHash">
           <End Role="BucketHash" Type="Self.BucketHash" Multiplicity="1" />
@@ -177,6 +202,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Projects_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Reference_ToProject">
           <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
           <End Role="Reference" Type="Self.Reference" Multiplicity="*" />
@@ -189,6 +226,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SK_Project_ToIdInformationSystem">
           <End Role="InformationSystems" Type="Self.InformationSystems" Multiplicity="0..1" />
           <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
@@ -198,6 +247,18 @@
             </Principal>
             <Dependent Role="Projects">
               <PropertyRef Name="IdInformationSystem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -250,6 +311,9 @@
           <EntitySet Name="Reference" EntityType="Self.Reference" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Signature" EntityType="Self.Signature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Terms" EntityType="Self.Terms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Buckets_ToBucketHash" Association="Self.FK_Buckets_ToBucketHash">
             <End Role="BucketHash" EntitySet="BucketHash" />
             <End Role="Buckets" EntitySet="Buckets" />
@@ -274,13 +338,25 @@
             <End Role="Terms" EntitySet="Terms" />
             <End Role="Glossaries" EntitySet="Glossaries" />
           </AssociationSet>
+          <AssociationSet Name="FK_Projects_ToUsers" Association="Self.FK_Projects_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
           <AssociationSet Name="FK_Reference_ToProject" Association="Self.FK_Reference_ToProject">
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Reference" EntitySet="Reference" />
           </AssociationSet>
+          <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
           <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="Self.FK_SK_Project_ToIdInformationSystem">
             <End Role="InformationSystems" EntitySet="InformationSystems" />
             <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="Self.FK_YK_Term_ToIdFundamentalArea">
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
@@ -392,12 +468,17 @@
           <EntitySet Name="MinHashes" EntityType="GlossaryProjectDatabaseModel.MinHash" />
           <EntitySet Name="References" EntityType="GlossaryProjectDatabaseModel.Reference" />
           <EntitySet Name="Projects" EntityType="GlossaryProjectDatabaseModel.Project" />
+          <EntitySet Name="Users" EntityType="GlossaryProjectDatabaseModel.User" />
           <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem">
             <End Role="InformationSystem" EntitySet="InformationSystems" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_ToUsers" Association="GlossaryProjectDatabaseModel.FK_Projects_ToUsers">
+            <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Reference_ToProject" Association="GlossaryProjectDatabaseModel.FK_Reference_ToProject">
@@ -416,7 +497,12 @@
             <End Role="MinHash" EntitySet="MinHashes" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="webpages_Roles" EntityType="GlossaryProjectDatabaseModel.webpages_Roles" />
+          <AssociationSet Name="webpages_UsersInRoles" Association="GlossaryProjectDatabaseModel.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="BucketHash">
           <Key>
             <PropertyRef Name="IdHash" />
@@ -451,12 +537,25 @@
           <Property Name="Annotation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IdLifeСycle" Type="Int32" />
           <Property Name="IdInformationSystem" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="InformationSystem" Relationship="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" FromRole="Project" ToRole="InformationSystem" />
           <NavigationProperty Name="LifeСycle" Relationship="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="Project" ToRole="LifeСycle" />
+          <NavigationProperty Name="User" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="References" Relationship="GlossaryProjectDatabaseModel.FK_Reference_ToProject" FromRole="Project" ToRole="Reference" />
           <NavigationProperty Name="BucketHashes" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="Project" ToRole="BucketHash" />
           <NavigationProperty Name="Terms" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Project" ToRole="Term" />
           <NavigationProperty Name="MinHashes" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="Project" ToRole="MinHash" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="56" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int32" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="User" ToRole="Project" />
+          <NavigationProperty Name="webpages_Roles" Relationship="GlossaryProjectDatabaseModel.webpages_UsersInRoles" FromRole="User" ToRole="webpages_Roles" />
         </EntityType>
         <Association Name="FK_SK_Project_ToIdInformationSystem">
           <End Type="GlossaryProjectDatabaseModel.InformationSystem" Role="InformationSystem" Multiplicity="0..1" />
@@ -479,6 +578,18 @@
             </Principal>
             <Dependent Role="Project">
               <PropertyRef Name="IdLifeСycle" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_ToUsers">
+          <End Type="GlossaryProjectDatabaseModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -506,7 +617,19 @@
           <End Type="GlossaryProjectDatabaseModel.MinHash" Role="MinHash" Multiplicity="*" />
           <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
         </Association>
-      </Schema>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="GlossaryProjectDatabaseModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="User" />
+        </EntityType>
+        <Association Name="webpages_UsersInRoles">
+          <End Type="GlossaryProjectDatabaseModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -589,11 +712,22 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Project">
               <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
                 <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
                 <ScalarProperty Name="Annotation" ColumnName="Annotation" />
                 <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
                 <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -621,7 +755,23 @@
               <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="GlossaryProjectDatabaseModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

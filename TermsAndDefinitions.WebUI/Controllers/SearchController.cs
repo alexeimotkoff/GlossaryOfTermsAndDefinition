@@ -4,19 +4,22 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using TermsAndDefinitions.WebUI.CustomAttributes;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
+
+    [AllowAnonymous]
     public class SearchController : Controller
     {
         //
         // GET: /SearchTerm/
         //h
-        GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-
-        public ActionResult All(string catchall)
+       GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
+        
+        public ActionResult Index(string catchall)
         {
             List<string> actions = new List<string> { "all", "terms", "definitions", "projects" };
             int actionIdx = -1;
@@ -34,12 +37,38 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
             return View("Index", new SearchQuery(querys, actionIdx, count));
         }
-        
+
+        public ActionResult All(string query)
+        {
+            return GetResultSearch(new SearchQuery(query, 0, -1));
+        }
+
+
+        [AjaxOnly]
+        public ActionResult Terms(string query)
+        {
+            return GetTerms(new SearchQuery(query, 0, 0));
+          //  return GetResultSearch( new SearchQuery(query, 0, 0));
+        }
+
+        [AjaxOnly]
+        public ActionResult Definitions(string query)
+        {
+            return GetResultSearch(new SearchQuery(query, 1, 0));
+        }
+
+        [AjaxOrChildActionOnly]
+        public ActionResult Projects(string query)
+        {
+            return GetResultSearch(new SearchQuery(query, 2, 0));
+        }
+
         [ChildActionOnly]
         public ActionResult GetResultSearch(SearchQuery searchQuery)
         {
             return View(searchQuery);
         }
+    
         [ChildActionOnly]
         public ActionResult GetTerms(SearchQuery searchQuery)
         {
@@ -47,7 +76,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             IQueryable<Term> searchResult = db.Terms.OrderBy(x => x.TermName);
             int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
                        
-            foreach (var query in searchQuery.QuerySearch)
+            foreach (var query in searchQuery.QueryToList)
                 searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(query));
            
             if (searchQuery.FirtstIsChar)
@@ -57,15 +86,16 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 searchResult = searchResult.Take(takeCount);
            List<VTerm> searchResultToViewModel = new List<VTerm>();
             foreach (var term in searchResult)
-                searchResultToViewModel.Add(new VTerm(term));            
+                searchResultToViewModel.Add(new VTerm(term));
             return View(searchResultToViewModel);
         }
+
         [ChildActionOnly]
         public ActionResult GetTermsByDefinition(SearchQuery searchQuery)
         {
             IQueryable<Definition> searchResult = db.Definitions.OrderBy(x => x.Term.TermName);
             int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
-            foreach (var query in searchQuery.QuerySearch)
+            foreach (var query in searchQuery.QueryToList)
                 searchResult = searchResult.Where(x => x.Description.ToLower().Contains(query));
             if (searchQuery.FirtstIsChar)
                 searchResult = searchResult.Where(x => x.Description.StartsWith(searchQuery.FirstQuery));
@@ -81,7 +111,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
         {
             IQueryable<Project> searchResult = db.Projects.OrderBy(x => x.ProjectName);
             int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
-            foreach (var query in searchQuery.QuerySearch)
+            foreach (var query in searchQuery.QueryToList)
                 searchResult = searchResult.Where(x => x.ProjectName.Contains(query));
 
             if (searchQuery.FirtstIsChar)
