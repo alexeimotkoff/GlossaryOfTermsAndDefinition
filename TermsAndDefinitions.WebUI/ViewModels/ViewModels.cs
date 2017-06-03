@@ -43,7 +43,9 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         {
             Description = definition.Description;
             URL = definition.URL;
+            Term = definition.Term.TermName;
         }
+        public string Term { get; set; }
        public string Description { get; set; }
        public string URL { get; set; }
     }

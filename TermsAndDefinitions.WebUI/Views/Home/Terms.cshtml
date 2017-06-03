@@ -1,0 +1,24 @@
+﻿@model List<TermsAndDefinitions.WebUI.ViewModels.VDefinition>
+
+@{
+    ViewBag.Title = "Terms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr>
+<p><span class="term">@Model.First().Term</span> — @Model.First().Description</p>
+<hr>
+<div>
+    @for(int i=1; i<Model.Count; i++)
+    {
+      <p>@Model[i].Description</p>
+    }
+</div>
+<hr>
+<div>
+    <h4>Ссылки</h4>
+   @foreach(var item in Model)
+   {
+    <a href="@item.URL">item.URL</a>
+   }
+</div>
+
