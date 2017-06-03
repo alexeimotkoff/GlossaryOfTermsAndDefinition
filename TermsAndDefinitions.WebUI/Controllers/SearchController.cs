@@ -40,28 +40,24 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
         public ActionResult All(string query)
         {
-            return GetResultSearch(new SearchQuery(query, 0, -1));
+            return PartialView("GetResultSearch",new SearchQuery(query, 0, -1));
+          
         }
 
 
-        [AjaxOnly]
-        public ActionResult Terms(string query)
-        {
-            return GetTerms(new SearchQuery(query, 0, 0));
-          //  return GetResultSearch( new SearchQuery(query, 0, 0));
-        }
+     
 
-        [AjaxOnly]
-        public ActionResult Definitions(string query)
-        {
-            return GetResultSearch(new SearchQuery(query, 1, 0));
-        }
+        //[AjaxOnly]
+        //public ActionResult Definitions(string query)
+        //{
+        //    return GetResultSearch(new SearchQuery(query, 1, 0));
+        //}
 
-        [AjaxOrChildActionOnly]
-        public ActionResult Projects(string query)
-        {
-            return GetResultSearch(new SearchQuery(query, 2, 0));
-        }
+        //[AjaxOrChildActionOnly]
+        //public ActionResult Projects(string query)
+        //{
+        //    return GetResultSearch(new SearchQuery(query, 2, 0));
+        //}
 
         [ChildActionOnly]
         public ActionResult GetResultSearch(SearchQuery searchQuery)
@@ -90,6 +86,26 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return View(searchResultToViewModel);
         }
 
+        public ActionResult Terms(string query)
+        {
+            SearchQuery searchQuery = new SearchQuery(query, 0, 0);
+            IQueryable<Term> searchResult = db.Terms.OrderBy(x => x.TermName);
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+
+            foreach (var querys in searchQuery.QueryToList)
+                searchResult = searchResult.Where(x => x.TermName.ToLower().Contains(querys));
+
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x => x.TermName.StartsWith(searchQuery.FirstQuery));
+
+            if (takeCount > 0)
+                searchResult = searchResult.Take(takeCount);
+            List<VTerm> searchResultToViewModel = new List<VTerm>();
+            foreach (var term in searchResult)
+                searchResultToViewModel.Add(new VTerm(term));
+            return PartialView("GetTerms",searchResultToViewModel);
+        }
+
         [ChildActionOnly]
         public ActionResult GetTermsByDefinition(SearchQuery searchQuery)
         {
@@ -106,6 +122,24 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 searchResultToViewModel.Add(new VTerm(item.Term.TermName) { Description = new VDefinition(item)});
             return View(searchResultToViewModel);
         }
+
+        public ActionResult Definition(string query)
+        {
+            SearchQuery searchQuery = new SearchQuery(query, 1, 0);
+            IQueryable<Definition> searchResult = db.Definitions.OrderBy(x => x.Term.TermName);
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+            foreach (var querys in searchQuery.QueryToList)
+                searchResult = searchResult.Where(x => x.Description.ToLower().Contains(querys));
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x => x.Description.StartsWith(searchQuery.FirstQuery));
+            if (takeCount > 0)
+                searchResult = searchResult.Take(takeCount);
+            List<VTerm> searchResultToViewModel = new List<VTerm>();
+            foreach (var item in searchResult.ToList())
+                searchResultToViewModel.Add(new VTerm(item.Term.TermName) { Description = new VDefinition(item) });
+          
+            return PartialView("GetTermsByDefinition", searchResultToViewModel);
+        }
         [ChildActionOnly]
         public ActionResult GetProjects(SearchQuery searchQuery)
         {
@@ -120,8 +154,28 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 searchResult = searchResult.Take(takeCount);
             List<VProject> searchResultToViewModel = new List<VProject>();
             foreach (var project in searchResult.ToList())
-                searchResultToViewModel.Add(new VProject(project));            
-            return View(searchResultToViewModel);
+                searchResultToViewModel.Add(new VProject(project));      
+
+            return PartialView("GetProjects", searchResultToViewModel);
+        }
+
+        public ActionResult Projects(string query)
+        {
+            SearchQuery searchQuery = new SearchQuery(query, 2, 0);
+            IQueryable<Project> searchResult = db.Projects.OrderBy(x => x.ProjectName);
+            int takeCount = Math.Min(searchQuery.CountSearchItem, searchResult.Count());
+            foreach (var querys in searchQuery.QueryToList)
+                searchResult = searchResult.Where(x => x.ProjectName.Contains(querys));
+
+            if (searchQuery.FirtstIsChar)
+                searchResult = searchResult.Where(x => x.ProjectName.StartsWith(searchQuery.FirstQuery));
+            if (takeCount > 0)
+                searchResult = searchResult.Take(takeCount);
+            List<VProject> searchResultToViewModel = new List<VProject>();
+            foreach (var project in searchResult.ToList())
+                searchResultToViewModel.Add(new VProject(project));
+
+            return PartialView("GetProjects", searchResultToViewModel);
         }
     }
 }

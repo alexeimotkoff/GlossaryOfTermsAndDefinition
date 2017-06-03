@@ -7,10 +7,10 @@
 
 @section navigation {
     <ul class="nav">
-        <li>@Html.ActionLink("Все", "All",new { query = Model.QueryString }, new { @class = "nav_link" })</li>
-        <li>@Html.ActionLink("Поиск среди терминов", "Terms", new { query = Model.QueryString }, new { @class = "nav_link" })</li>
-        <li>@Html.ActionLink("Поиск по определениям", "Definitions", new { query = Model.QueryString }, new { @class = "nav_link" })</li>
-        <li>@Html.ActionLink("Поиск проектов", "Projects", new { query = Model.QueryString }, new { @class = "nav_link" })</li>
+        <li>@Ajax.ActionLink("Все", "All",new { query = Model.QueryString }, new AjaxOptions { UpdateTargetId = "SearchResult" })</li>
+        <li>@Ajax.ActionLink("Поиск среди терминов", "Terms", new { query = Model.QueryString }, new AjaxOptions{ UpdateTargetId = "SearchResult" })</li>
+        <li>@Ajax.ActionLink("Поиск по определениям", "Definition", new { query = Model.QueryString }, new AjaxOptions { UpdateTargetId = "SearchResult" })</li>
+        <li>@Ajax.ActionLink("Поиск проектов", "Projects", new { query = Model.QueryString }, new AjaxOptions { UpdateTargetId = "SearchResult" })</li>
     </ul>
 }
 
