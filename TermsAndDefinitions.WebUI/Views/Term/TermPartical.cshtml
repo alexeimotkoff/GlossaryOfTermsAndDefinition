@@ -1,6 +1,7 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
 
 <div>
+    <hr />
     <h3>@Model.TermName</h3>
     <hr />
     @{
@@ -14,37 +15,46 @@
                 }
              }
         </p>
-        if (Model.Definitions.Count() > 1)
-        {
-            <h5>Другие определения</h5>
-            <hr />
-                    foreach (var item in Model.Definitions.Skip(1))
+
+                if (Model.Definitions.Count() > 1)
+                {
+           <hr />
+            <h4>Другие определения</h4>
+             <ul>
+                    @foreach (var item in Model.Definitions.Skip(1))
                     {
-                        <p>
-                            <span class="term">@Model.TermName</span> — @item.Description 
-                            @{
-                                if (!string.IsNullOrEmpty(firstItem.URL))
-                                {
-                                    <sup>[<a href=@item.URL>@(count++)</a>]</sup>
+                        <li style="list-style-type: none">
+                            <p>
+                                <span class="term">@Model.TermName</span> — @item.Description
+                                @{
+                                    if (!string.IsNullOrEmpty(firstItem.URL))
+                                    {
+                                        <sup>[<a href=@item.URL>@(count++)</a>]</sup>
+                                    }
                                 }
-                            }
-                        </p>
-                }
-            }
-     }
+                            </p>
+                        </li>
+                                    }
+             </ul>
+              }
+    }
 </div>
-@if (Model.Projects.Count() > 0)
+@if (Model.Projects != null)
 {
-    <h4>Встречается в проектах</h4>
-    <hr />
+    if (Model.Projects.Count() > 0)
+    {
+        <div>
+            @{Html.RenderAction("PreviewProjectsPartical", "Project", new { id = Model.Projects });}
+        </div>
+    }
 }
 <div>  
-   @{  
+   @{
        var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
        if (URLs.Count() > 0)
        {
-           <h4>Ссылки</h4>
-           <hr />
+        <hr />
+        <h4>Ссылки</h4>
            <ol type="1">
                 @{
                     count = 1;

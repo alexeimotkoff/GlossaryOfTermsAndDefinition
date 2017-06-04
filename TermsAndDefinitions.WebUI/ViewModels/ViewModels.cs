@@ -51,7 +51,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
                         }
                         return result;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         return URL;
                     }

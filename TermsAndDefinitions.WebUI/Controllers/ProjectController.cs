@@ -27,24 +27,43 @@ namespace TermsAndDefinitions.WebUI.Controllers
         async public Task<ActionResult> IndexProjects()
         {
             var projects = await db.Projects.ToListAsync();
-            Mapper.Initialize(cfg => cfg.CreateMap<Project, PreviewProjectViewModel>());
-            var result = Mapper.Map<IEnumerable<Project>,IEnumerable<PreviewProjectViewModel>>(projects);           
-                return View("IndexPreviewProjects", result);
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Project, PreviewProjectViewModel>().ForMember("InformationSystem", opt => opt.MapFrom(c => c.InformationSystem.NameInformationSystem));
+            });
+            var resultProjectsColection = Mapper.Map<IEnumerable<Project>,IEnumerable<PreviewProjectViewModel>>(projects);
+            if (Request.IsAjaxRequest())
+                return PartialView("PreviewProjectsPartical", resultProjectsColection);
+            return View("IndexPreviewProjects", resultProjectsColection);
         }
 
-        async public Task<ActionResult> IndexProjects(string name)
+        async public Task<ActionResult> IndexProject(string name)
         {
             var projects = await db.Projects.FirstOrDefaultAsync(p=>p.ProjectName == name);
 
-            Mapper.Initialize(cfg => cfg.CreateMap<Term, PreviewTermViewModel>()
-                 .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().Description))
-                 .ForMember("URL", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().URL)));
-           
-            Mapper.Initialize(cfg => cfg.CreateMap<Project, ProjectViewModel>()
-              .ForMember("Glossary", opt => opt.MapFrom(c => Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(c.Terms)))
-              );
-            var result = Mapper.Map<Project,ProjectViewModel>(projects);
-            return View();
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>();
+                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<Project, ProjectViewModel>().ForMember("InformationSystem", opt => opt.MapFrom(c => c.InformationSystem.NameInformationSystem))
+                .ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
+            });
+
+            var resultProject = Mapper.Map<Project,ProjectViewModel>(projects);
+            if (Request.IsAjaxRequest())
+                return PartialView("ProjectPartical", resultProject);
+            return View("IndexProject", resultProject);
+        }
+        
+        public ActionResult PreviewProjectsPartical(IEnumerable<PreviewProjectViewModel> id)
+        {
+            ViewData["anotherTitle"] = "Встречается в проектах";
+            return PartialView("PreviewProjectsPartical", id);
+        }
+        
+        public ActionResult ProjectPartical(ProjectViewModel id)
+        {
+            return PartialView("ProjectPartical", id);
         }
 
 

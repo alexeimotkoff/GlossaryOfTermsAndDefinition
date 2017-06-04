@@ -20,14 +20,13 @@ namespace TermsAndDefinitions.WebUI.Controllers
         
         async public Task<ActionResult> IndexTerms()
         {
-            var termsColection = await db.Terms.ToListAsync();
+            var termsColection = await db.Terms.OrderBy(t=>t.TermName).ToListAsync();
 
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>();
                 cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
             });
-                //));
 
             var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
             if (Request.IsAjaxRequest())
@@ -44,12 +43,24 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 cfg.CreateMap<Project, PreviewProjectViewModel>();
                 cfg.CreateMap<Term, TermViewModel>();
             });
-            //    .ForMember("Definitions", opt => opt.MapFrom(c => Mapper.Map<IEnumerable<Definition>, IEnumerable<DefinitionViewModel>>(c.Definitions.OrderByDescending(d => d.Frequency))))
-            //    .ForMember("Projects", opt => opt.MapFrom(c => Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(c.Projects))));
+
             var resultTerm = Mapper.Map<Term, TermViewModel>(term);
             if (Request.IsAjaxRequest())
                 return PartialView("TermPartical", resultTerm);
             return View("IndexTerm", resultTerm);
+        }
+
+        [ChildActionOnly]
+        public ActionResult PreviewTermsPartical(IEnumerable<PreviewTermViewModel> terms)
+        {
+            ViewData["anotherTitle"] = "Глоссарий проекта";
+            return PartialView("PreviewTermsPartical", terms);
+        }
+
+        [ChildActionOnly]
+        public ActionResult TermPartical(ProjectViewModel term)
+        {
+            return PartialView("TermPartical", term);
         }
     }
 }

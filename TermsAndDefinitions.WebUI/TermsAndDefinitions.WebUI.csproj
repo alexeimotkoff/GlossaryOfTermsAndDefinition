@@ -316,7 +316,7 @@
     <Content Include="Views\Term\IndexTerm.cshtml" />
     <Content Include="Views\Project\IndexProject.cshtml" />
     <Content Include="Views\Project\IndexPreviewProjects.cshtml" />
-    <Content Include="Views\Project\PreviewProjectPartical.cshtml" />
+    <Content Include="Views\Project\PreviewProjectsPartical.cshtml" />
     <Content Include="Views\Project\ProjectPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>

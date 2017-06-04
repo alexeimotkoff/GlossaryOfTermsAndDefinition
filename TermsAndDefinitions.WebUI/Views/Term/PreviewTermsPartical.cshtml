@@ -1,18 +1,32 @@
 ﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
 
 <div>
-    <h3>Термины и определения</h3>
-    <hr />
-    <h3></h3>
-    @foreach (var item in Model)
+@{
+
+    if (ViewData["anotherTitle"] != null)
     {
-        <div class="text-cut-box">
-            <div>
-                <p>
-                    @Ajax.RouteLink(item.TermName, "RouteToTerm", new { name = item.TermName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "term" }) — @item.Definition.Description
-                </p>
-            </div>
-        </div>
+        <hr />
+        <h4>@ViewData["anotherTitle"].ToString()</h4>
     }
+    else
+    {
+        <hr />
+        <h3>Термины и определения</h3>
+        <hr />
+    }
+}
+    <ul>
+    @foreach (var term in Model)
+    {
+        <li style=" list-style-type: none">
+            <div class="text-cut-box">
+                <div>
+                    <p>
+                        @Ajax.RouteLink(term.TermName, "RouteToTerm", new { name = term.TermName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "term" }) — @term.Definition.Description
+                    </p>
+                </div>
+            </div>
+        </li>
+    }</ul>
 
 </div>

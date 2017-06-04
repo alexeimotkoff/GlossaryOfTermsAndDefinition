@@ -7,7 +7,7 @@
 @section navigation {
     <ul class="nav">
         <li>@Ajax.RouteLink("Термины", "RouteToTerms", new AjaxOptions { UpdateTargetId = "Main" })</li>
-        <li>@Html.ActionLink("Проекты", "Projects", "Search")</li>
+        <li>@Ajax.RouteLink("Проекты", "RouteToProjects", new AjaxOptions { UpdateTargetId = "Main" })</li>
     </ul>
 }
 

@@ -18,32 +18,49 @@ namespace TermsAndDefinitions.WebUI
                  url: "Search/{action}/{*catchall}",
                  defaults: new { controller = "Search", action = "Index" }
              );
-            //routes.MapRoute(
-            //       name: "SearchRoute",
-            //       url: "Search/{*catchall}",
-            //       defaults: new { controller = "Search", action = "All" }
-            //   );
+            routes.MapRoute(
+          name: "PreviewTermssPartical",
+          url: "Term/PreviewProjectsPartical/{terms}",
+          defaults: new { controller = "Term", action = "PreviewTermsPartical", terms = UrlParameter.Optional }
+          );
 
             routes.MapRoute(
-               name: "RouteToTerms",
-               url: "Term/",
-               defaults: new { controller = "Term", action = "IndexTerms" }
-            );
+                name: "RouteToTerms",
+                url: "Term/",
+                defaults: new { controller = "Term", action = "IndexTerms" }
+                );
 
             routes.MapRoute(
-                  name: "RouteToTerm",
-                  url: "Term/{name}/",
-                  defaults: new { controller = "Term", action = "IndexTerm", name = UrlParameter.Optional }
-               );
+                name: "RouteToTerm",
+                url: "Term/{name}/",
+                defaults: new { controller = "Term", action = "IndexTerm", name = UrlParameter.Optional }
+                );
 
             routes.MapRoute(
-                  name: "Default",
-                  url: "{controller}/{action}/{id}",
-                  defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-               );
+                name: "PreviewProjectsPartical",
+                url: "Project/PreviewProjectsPartical/{id}",
+                defaults: new { controller = "Project", action = "PreviewProjectsPartical", id = UrlParameter.Optional }
+                );
 
+            routes.MapRoute(
+                name: "RouteToProjects",
+                url: "Project/",
+                defaults: new { controller = "Project", action = "IndexProjects" }
+                );
 
+            routes.MapRoute(
+                name: "RouteToProject",
+                url: "Project/{name}/",
+                defaults: new { controller = "Project", action = "IndexProject", name = UrlParameter.Optional }
+                );
 
+        
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                );
         }
     }
 }

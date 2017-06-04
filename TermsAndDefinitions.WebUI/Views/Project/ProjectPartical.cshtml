@@ -1,2 +1,21 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.ProjectViewModel
 
+<div>
+    <hr />
+    <h4>@Model.ProjectName</h4>
+    <hr />
+    <div>
+        <p>Название: @Model.ProjectName</p>
+        <p>Информационная система: @(string.IsNullOrEmpty(Model.InformationSystem) ? "Не указана" : Model.InformationSystem) </p>
+        <p>Жизненый цикл проекта: @(string.IsNullOrEmpty(Model.LifeCycle) ? "Не указан" : Model.LifeCycle)</p>
+    </div>
+    @if (Model.Glossary != null)
+    {
+        if (Model.Glossary.Count() > 0)
+        {
+            <div>            
+                @{Html.RenderAction("PreviewTermsPartical", "Term", new { terms = Model.Glossary }); }
+            </div>
+          }
+     }
+</div>

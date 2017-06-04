@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewProjectViewModel>
+@{
+    if (ViewData["anotherTitle"] != null)
+    {
+     <hr />
+        <h4>@ViewData["anotherTitle"].ToString()</h4>
+    }
+    else
+    {
+        <hr />
+        <h3>Проекты</h3>
+        <hr />
+    }
+}
+
+<div>
+    <ul>
+    @foreach (var project in Model)
+    {
+        <li style="list-style-type: none">
+            <div>
+                <p>
+                    @Ajax.RouteLink(project.ProjectName, "RouteToProject", new { name = project.ProjectName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "project" })
+                    @*<span> Информационная система: @((string.IsNullOrEmpty(project.InformationSystem)) ? "Не выставлено" : @project.InformationSystem)</span> *@
+                </p>
+            </div>
+            </li>
+    }</ul>
+</div>
