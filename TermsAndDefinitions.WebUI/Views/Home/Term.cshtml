@@ -1,36 +1,45 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
-@using TermsAndDefinitions.WebUI.ViewModels.
 
 @Html.RouteLink("Термины", "RouteToTerms")<span>></span><span class="term">@Model.TermName</span>
 
-<div> 
-    @{
-        int count = 0;
-    <p><span class="term">@Model.TermName</span> - @Model.Definitions.First() [<a href="#@(++count)">count</a>];</p>
-     <hr />
-            if (Model.Definitions.Count() > 1)
-            {
-                <p>Другие определения:</p>
-                <hr />
-                foreach (var definition in Model.Definitions.Skip(1))
-                {
-                    <p><span class="term">@Model.TermName</span> — @definition [<a href="#@(++count)">count</a>]</p>
-                }
-                <hr />
-            }
-    }
-        </div>
 <div>
-    <ol type="1">
-        @{ 
-            count = 0;
-            foreach (var url in Model.URLs)
+    @{
+        int count = 1;
+        var defWithURLs = Model.Definitions.Zip(Model.URLs, (d, u) => new { definition = d, url = u });
+        var firstItem = defWithURLs.First(); 
+        <p><span class="term">@Model.TermName</span> - @firstItem.definition
+         @((string.IsNullOrEmpty(firstItem.url)) ? "" : "[<a href="+firstItem.url+">"+(count++)+"</a>]")
+        </p>
+        <hr />
+        if (Model.Definitions.Count() > 1)
+        {
+            <p>Другие определения:</p>
+            <hr />
+            foreach (var item in defWithURLs.Skip(1))
             {
-              <li><a href=@url name=@(++count)>url</a></li>
+                <p><span class="term">@Model.TermName</span> — @item.definition 
+                @((string.IsNullOrEmpty(item.url)) ? "" : "[<a href=" + item.url + ">" + (count++) + "</a>]")
+                </p>
             }
-         }
+            <hr />
+        }
+    }
+</div>
+@if(Model.URLs.FirstOrDefault() != null)
+{
+<div>
+  
+    <ol type="1">
+      
+            count = 1;
+            @foreach (var url in Model.URLs)
+            {
+                <li><a href=@url name="link@(count++)">@url</a></li>
+            }
+       
     </ol>
 </div>
+}
 
 
 

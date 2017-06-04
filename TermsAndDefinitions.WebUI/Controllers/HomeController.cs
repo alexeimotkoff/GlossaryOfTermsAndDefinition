@@ -33,11 +33,11 @@ namespace TermsAndDefinitions.WebUI.Controllers
         async public Task<ActionResult> Term(string name)
         {
             var term = await db.Terms.FirstOrDefaultAsync(t => t.TermName == name);
-            //Mapper.Initialize(cfg => cfg.CreateMap<Term, TermViewModel>()
-            ////    .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.Description).ToList())
-            //////    .ForMember("URLs", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.URL))));
-            ////var resultTerm = Mapper.Map<Term, TermViewModel>(term);
-            //return PartialView("Term", resultTerm);
+            Mapper.Initialize(cfg => cfg.CreateMap<Term, TermViewModel>()
+                .ForMember("Definitions", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.Description)))
+                .ForMember("URLs", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.URL))));
+            var resultTerm = Mapper.Map<Term, TermViewModel>(term);
+            return PartialView("Term", resultTerm);
         }
 
         async public Task<ActionResult> Terms()

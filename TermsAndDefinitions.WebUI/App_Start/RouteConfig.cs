@@ -32,7 +32,7 @@ namespace TermsAndDefinitions.WebUI
 
             routes.MapRoute(
                   name: "RouteToTerm",
-                  url: "Term/{name}",
+                  url: "Term/{name}/{*catchall}",
                   defaults: new { controller = "Home", action = "Term", name = UrlParameter.Optional }
                );
 
