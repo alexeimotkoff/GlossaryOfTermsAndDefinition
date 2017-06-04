@@ -24,31 +24,5 @@ namespace TermsAndDefinitions.WebUI.Controllers
             //    terms.Add(new VTerm(term));            
            return View();
         }
-
-        //async public Task<IEnumerable<VPreviewTerm>> Terms()
-        //{
-        //    var termsColection = await db.Terms.ToListAsync();
-        //    return termsColection;
-        //}
-        async public Task<ActionResult> Term(string name)
-        {
-            var term = await db.Terms.FirstOrDefaultAsync(t => t.TermName == name);
-            Mapper.Initialize(cfg => cfg.CreateMap<Term, TermViewModel>()
-                .ForMember("Definitions", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.Description)))
-                .ForMember("URLs", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.URL))));
-            var resultTerm = Mapper.Map<Term, TermViewModel>(term);
-            return PartialView("Term", resultTerm);
-        }
-
-        async public Task<ActionResult> Terms()
-        {
-            var termsColection = await db.Terms.ToListAsync();
-            Mapper.Initialize(cfg => cfg.CreateMap<Term, PreviewTermViewModel>()
-                .ForMember("Definition",  opt => opt.MapFrom( c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().Description))
-                .ForMember("URL",  opt => opt.MapFrom( c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().URL)));
-            var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
-            return PartialView("PreviewTerms", resultTermsColection);
-        }
-     
     }
 }

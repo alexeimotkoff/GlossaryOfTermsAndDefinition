@@ -5,7 +5,7 @@
     <div class="text-cut-box">
         <div>
             <p>
-                @Ajax.ActionLink(item.TermName, "Term", new {name = item.TermName}, new AjaxOptions { UpdateTargetId = "Result" }, new { @class="term"}) — @item.Definition
+                @Ajax.RouteLink(item.TermName, "RouteToTerm", new {name = item.TermName}, new AjaxOptions { UpdateTargetId = "Main" }, new { @class="term"}) — @item.Definition
             </p>
         </div>
     </div>

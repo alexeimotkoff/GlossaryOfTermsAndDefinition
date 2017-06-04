@@ -27,13 +27,13 @@ namespace TermsAndDefinitions.WebUI
             routes.MapRoute(
                name: "RouteToTerms",
                url: "Term/",
-               defaults: new { controller = "Home", action = "Terms"}
+               defaults: new { controller = "Term", action = "IndexTerms" }
             );
 
             routes.MapRoute(
                   name: "RouteToTerm",
-                  url: "Term/{name}/{*catchall}",
-                  defaults: new { controller = "Home", action = "Term", name = UrlParameter.Optional }
+                  url: "Term/{name}/",
+                  defaults: new { controller = "Term", action = "IndexTerm", name = UrlParameter.Optional }
                );
 
             routes.MapRoute(
