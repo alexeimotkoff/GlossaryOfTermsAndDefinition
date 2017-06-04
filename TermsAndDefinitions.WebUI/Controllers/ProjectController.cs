@@ -6,6 +6,10 @@ using System.Web.Mvc;
 using Domain = TermsAndDefinitions.Domain;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
+using DBContext = TermsAndDefinitions.WebUI.Models.GlossaryProjectDatabaseEntities;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
@@ -13,16 +17,36 @@ namespace TermsAndDefinitions.WebUI.Controllers
     public class ProjectController : Controller
     {
         //
-        // GET: /AddDocumentation/
+        // GET: /Project/
         //
         Domain.MinHash minHash = new Domain.MinHash();
         Random rnd = new Random(1337);
 
-       GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-        public ActionResult Index()
+        DBContext db = new DBContext();
+      
+        async public Task<ActionResult> IndexProjects()
         {
+            var projects = await db.Projects.ToListAsync();
+            Mapper.Initialize(cfg => cfg.CreateMap<Project, PreviewProjectViewModel>());
+            var result = Mapper.Map<IEnumerable<Project>,IEnumerable<PreviewProjectViewModel>>(projects);           
+                return View("IndexPreviewProjects", result);
+        }
+
+        async public Task<ActionResult> IndexProjects(string name)
+        {
+            var projects = await db.Projects.FirstOrDefaultAsync(p=>p.ProjectName == name);
+
+            Mapper.Initialize(cfg => cfg.CreateMap<Term, PreviewTermViewModel>()
+                 .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().Description))
+                 .ForMember("URL", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().URL)));
+           
+            Mapper.Initialize(cfg => cfg.CreateMap<Project, ProjectViewModel>()
+              .ForMember("Glossary", opt => opt.MapFrom(c => Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(c.Terms)))
+              );
+            var result = Mapper.Map<Project,ProjectViewModel>(projects);
             return View();
         }
+
 
         //public ActionResult ShowProjectsGlossaries(VProject projectFiles )
         //{

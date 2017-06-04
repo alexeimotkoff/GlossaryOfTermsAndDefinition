@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TermsAndDefinitions.WebUI</RootNamespace>
     <AssemblyName>TermsAndDefinitions.WebUI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -314,6 +314,10 @@
     <Content Include="Views\Term\TermPartical.cshtml" />
     <Content Include="Views\Term\IndexPreviewTerms.cshtml" />
     <Content Include="Views\Term\IndexTerm.cshtml" />
+    <Content Include="Views\Project\IndexProject.cshtml" />
+    <Content Include="Views\Project\IndexPreviewProjects.cshtml" />
+    <Content Include="Views\Project\PreviewProjectPartical.cshtml" />
+    <Content Include="Views\Project\ProjectPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

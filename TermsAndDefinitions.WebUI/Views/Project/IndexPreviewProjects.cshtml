@@ -1,6 +1,7 @@
-﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewProjectViewModel>
+
 @{
-    ViewBag.Title = "Термины и определения";
+    ViewBag.Title = "Проекты";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,5 +13,5 @@
 }
 
 <div id="Main">
-    @{ Html.RenderPartial("PreviewTermsPartical", Model);}
+    @{ Html.RenderPartial("PreviewProjectPartical", Model);}
 </div>

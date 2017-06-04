@@ -1,52 +1,62 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
 
 <div>
+    <h3>@Model.TermName</h3>
+    <hr />
     @{
-        int count = 1;
-        var defWithURLs = Model.Definitions.Zip(Model.URLs, (d, u) => new { definition = d, url = u });
-        var firstItem = defWithURLs.First();
-        <p><span class="term">@Model.TermName</span> - @firstItem.definition
+        int count = 1;      
+        var firstItem = Model.Definitions.First();
+        <p><span class="term">@Model.TermName</span> - @firstItem.Description
             @{
-                if (!string.IsNullOrEmpty(firstItem.url))
+                if (!string.IsNullOrEmpty(firstItem.URL))
                 {
-                    <sup>[<a href=@firstItem.url>@(count++)</a>]</sup>
+                    <sup>[<a href=@firstItem.URL>@(count++)</a>]</sup>
                 }
              }
         </p>
         if (Model.Definitions.Count() > 1)
         {
-            <p>Другие определения:</p>
+            <h5>Другие определения</h5>
             <hr />
-                    foreach (var item in defWithURLs.Skip(1))
+                    foreach (var item in Model.Definitions.Skip(1))
                     {
                         <p>
-                            <span class="term">@Model.TermName</span> — @item.definition 
+                            <span class="term">@Model.TermName</span> — @item.Description 
                             @{
-                                if (!string.IsNullOrEmpty(firstItem.url))
+                                if (!string.IsNullOrEmpty(firstItem.URL))
                                 {
-                                    <sup>[<a href=@item.url>@(count++)</a>]</sup>
+                                    <sup>[<a href=@item.URL>@(count++)</a>]</sup>
                                 }
                             }
                         </p>
                 }
             }
-            <hr />
      }
 </div>
-@if (Model.URLs.FirstOrDefault() != null)
+@if (Model.Projects.Count() > 0)
 {
-    <div>  
-        <ol type="1">             
-            @{ 
-                count = 1;
-                foreach (var url in Model.URLs)
-                {
-                    <li><a href=@url name="link@(count++)">@Model.GetLinkNameByURL(url)</a></li>
-                }
-             }
-        </ol>
-    </div>
+    <h4>Встречается в проектах</h4>
+    <hr />
 }
+<div>  
+   @{  
+       var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
+       if (URLs.Count() > 0)
+       {
+           <h4>Ссылки</h4>
+           <hr />
+           <ol type="1">
+                @{
+                    count = 1;
+                    foreach (var item in URLs)
+                    {
+                        <li><a href=@item.URL name="link@(count++)">@item.Name</a></li>
+                    }
+                  }
+           </ol>
+       }
+    }
+</div>
 
 
 

@@ -1,13 +1,18 @@
 ﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
 
-@foreach (var item in Model)
-{
-    <div class="text-cut-box">
-        <div>
-            <p>
-                @Ajax.RouteLink(item.TermName, "RouteToTerm", new {name = item.TermName}, new AjaxOptions { UpdateTargetId = "Main" }, new { @class="term"}) — @item.Definition
-            </p>
+<div>
+    <h3>Термины и определения</h3>
+    <hr />
+    <h3></h3>
+    @foreach (var item in Model)
+    {
+        <div class="text-cut-box">
+            <div>
+                <p>
+                    @Ajax.RouteLink(item.TermName, "RouteToTerm", new { name = item.TermName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "term" }) — @item.Definition.Description
+                </p>
+            </div>
         </div>
-    </div>
-}
+    }
 
+</div>
