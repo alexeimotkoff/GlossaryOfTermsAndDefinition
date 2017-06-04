@@ -183,6 +183,7 @@
     <Compile Include="Controllers\EditTermController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\TermController.cs" />
     <Compile Include="Filters\AjaxOnlyAttribute.cs" />
     <Compile Include="Filters\AjaxOrChildActionOnlyAttribute.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -310,8 +311,10 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\PreviewTerms.cshtml" />
-    <Content Include="Views\Home\Term.cshtml" />
+    <Content Include="Views\Term\PreviewTermsPartical.cshtml" />
+    <Content Include="Views\Term\TermPartical.cshtml" />
+    <Content Include="Views\Term\IndexPreviewTerms.cshtml" />
+    <Content Include="Views\Term\IndexTerm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

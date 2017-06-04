@@ -1,0 +1,16 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
+@{
+    ViewBag.Title = "Термины";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section navigation {
+    <ul class="nav">
+        <li>@Ajax.ActionLink("Термины", "Terms", new AjaxOptions { UpdateTargetId = "Main" })</li>
+        <li>@Html.ActionLink("Проекты", "Projects", "Search")</li>
+    </ul>
+}
+
+<div id="Main">
+    @{ Html.RenderPartial("PreviewTermsPartical", Model);}
+</div>
