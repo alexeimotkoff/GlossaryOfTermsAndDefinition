@@ -1,11 +1,14 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
-
+using DBContext = TermsAndDefinitions.WebUI.Models.GlossaryProjectDatabaseEntities;
 namespace TermsAndDefinitions.WebUI.Controllers
 {
     public class HomeController : Controller
@@ -13,36 +16,39 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /Home/
         //
-      GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
-       
+        DBContext db = new DBContext();
         public ActionResult Index()
         {
-            List<VTerm> terms = new List<VTerm>();
-            foreach (var term in db.Terms)
-                terms.Add(new VTerm(term));            
-            return View(terms);
+            //List<VTerm> terms = new List<VTerm>();
+            //foreach (var term in db.Terms)
+            //    terms.Add(new VTerm(term));            
+           return View();
         }
 
-        public ActionResult Terms(string name)
+        //async public Task<IEnumerable<VPreviewTerm>> Terms()
+        //{
+        //    var termsColection = await db.Terms.ToListAsync();
+        //    return termsColection;
+        //}
+        async public Task<ActionResult> Term(string name)
         {
-            Term term = db.Terms.FirstOrDefault(x => x.TermName == name);
-            List<Definition> definitions = term.Definitions.OrderByDescending(y => y.Frequency).ToList();
-            List<VDefinition> result= new List<VDefinition>();
-            foreach(var def in definitions)
-            {
-                result.Add(new VDefinition(def));
-            }
-            return View(result);
+            var term = await db.Terms.FirstOrDefaultAsync(t => t.TermName == name);
+            //Mapper.Initialize(cfg => cfg.CreateMap<Term, TermViewModel>()
+            ////    .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.Description).ToList())
+            //////    .ForMember("URLs", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).Select(x => x.URL))));
+            ////var resultTerm = Mapper.Map<Term, TermViewModel>(term);
+            //return PartialView("Term", resultTerm);
         }
-        public ActionResult Terms()
+
+        async public Task<ActionResult> Terms()
         {
-            List<Term> terms = db.Terms.ToList();           
-            List<VTerm> result = new List<VTerm>();
-            foreach (var term in terms)
-            {
-               result.Add(new VTerm(term));
-            }
-            return View(result);
+            var termsColection = await db.Terms.ToListAsync();
+            Mapper.Initialize(cfg => cfg.CreateMap<Term, PreviewTermViewModel>()
+                .ForMember("Definition",  opt => opt.MapFrom( c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().Description))
+                .ForMember("URL",  opt => opt.MapFrom( c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault().URL)));
+            var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
+            return PartialView("PreviewTerms", resultTermsColection);
         }
+     
     }
 }

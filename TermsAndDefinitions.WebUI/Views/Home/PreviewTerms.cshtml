@@ -1,0 +1,13 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="text-cut-box">
+        <div>
+            <p>
+                @Html.RouteLink(item.TermName, "RouteToTerm" ,new {name = item.TermName}, new { @class="term"}) — @item.Definition
+            </p>
+        </div>
+    </div>
+}
+

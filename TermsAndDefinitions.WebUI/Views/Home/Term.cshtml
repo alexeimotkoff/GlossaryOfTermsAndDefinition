@@ -1,0 +1,36 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
+@using TermsAndDefinitions.WebUI.ViewModels.
+
+@Html.RouteLink("Термины", "RouteToTerms")<span>></span><span class="term">@Model.TermName</span>
+
+<div> 
+    @{
+        int count = 0;
+    <p><span class="term">@Model.TermName</span> - @Model.Definitions.First() [<a href="#@(++count)">count</a>];</p>
+     <hr />
+            if (Model.Definitions.Count() > 1)
+            {
+                <p>Другие определения:</p>
+                <hr />
+                foreach (var definition in Model.Definitions.Skip(1))
+                {
+                    <p><span class="term">@Model.TermName</span> — @definition [<a href="#@(++count)">count</a>]</p>
+                }
+                <hr />
+            }
+    }
+        </div>
+<div>
+    <ol type="1">
+        @{ 
+            count = 0;
+            foreach (var url in Model.URLs)
+            {
+              <li><a href=@url name=@(++count)>url</a></li>
+            }
+         }
+    </ol>
+</div>
+
+
+
