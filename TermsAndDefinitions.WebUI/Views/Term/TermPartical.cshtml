@@ -4,39 +4,48 @@
     @{
         int count = 1;
         var defWithURLs = Model.Definitions.Zip(Model.URLs, (d, u) => new { definition = d, url = u });
-        var firstItem = defWithURLs.First(); 
+        var firstItem = defWithURLs.First();
         <p><span class="term">@Model.TermName</span> - @firstItem.definition
-         @((string.IsNullOrEmpty(firstItem.url)) ? "" : "[<a href="+firstItem.url+">"+(count++)+"</a>]")
+            @{
+                if (!string.IsNullOrEmpty(firstItem.url))
+                {
+                    <sup>[<a href=@firstItem.url>@(count++)</a>]</sup>
+                }
+             }
         </p>
-        <hr />
         if (Model.Definitions.Count() > 1)
         {
             <p>Другие определения:</p>
             <hr />
-            foreach (var item in defWithURLs.Skip(1))
-            {
-                <p><span class="term">@Model.TermName</span> — @item.definition 
-                @((string.IsNullOrEmpty(item.url)) ? "" : "[<a href=" + item.url + ">" + (count++) + "</a>]")
-                </p>
+                    foreach (var item in defWithURLs.Skip(1))
+                    {
+                        <p>
+                            <span class="term">@Model.TermName</span> — @item.definition 
+                            @{
+                                if (!string.IsNullOrEmpty(firstItem.url))
+                                {
+                                    <sup>[<a href=@item.url>@(count++)</a>]</sup>
+                                }
+                            }
+                        </p>
+                }
             }
             <hr />
-        }
-    }
+     }
 </div>
-@if(Model.URLs.FirstOrDefault() != null)
+@if (Model.URLs.FirstOrDefault() != null)
 {
-<div>
-  
-    <ol type="1">
-      
-            count = 1;
-            @foreach (var url in Model.URLs)
-            {
-                <li><a href=@url name="link@(count++)">@url</a></li>
-            }
-       
-    </ol>
-</div>
+    <div>  
+        <ol type="1">             
+            @{ 
+                count = 1;
+                foreach (var url in Model.URLs)
+                {
+                    <li><a href=@url name="link@(count++)">@Model.GetLinkNameByURL(url)</a></li>
+                }
+             }
+        </ol>
+    </div>
 }
 
 

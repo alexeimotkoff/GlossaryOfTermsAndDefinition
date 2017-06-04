@@ -47,19 +47,17 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 <script type='text/javascript'>
-
     $(document).ready(function () {
         $('[data-toggle=offcanvas]').click(function () {
             $('.row-offcanvas').toggleClass('active');
         });
     });
-</script>
 
-<script type='text/javascript'>
     $("a.nav_link").click(function () {
         $("#SearchResult").load($(this).attr("href"));
         return false;
     });
+  
 </script>
 
 

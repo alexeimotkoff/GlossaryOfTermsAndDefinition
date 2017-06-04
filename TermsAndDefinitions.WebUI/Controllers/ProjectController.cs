@@ -10,7 +10,7 @@ using TermsAndDefinitions.WebUI.ViewModels;
 namespace TermsAndDefinitions.WebUI.Controllers
 {
 
-    public class AddDocumentationController : Controller
+    public class ProjectController : Controller
     {
         //
         // GET: /AddDocumentation/
