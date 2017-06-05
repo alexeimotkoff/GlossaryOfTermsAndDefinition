@@ -304,7 +304,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Search\GetTerms.cshtml" />
     <Content Include="Views\Search\GetTermsByDefinition.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Search\GetResultSearch.cshtml" />
     <Content Include="Views\Search\GetProjects.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -318,6 +317,8 @@
     <Content Include="Views\Project\IndexPreviewProjects.cshtml" />
     <Content Include="Views\Project\PreviewProjectsPartical.cshtml" />
     <Content Include="Views\Project\ProjectPartical.cshtml" />
+    <Content Include="Views\Search\IndexSearch.cshtml" />
+    <Content Include="Views\Search\SearchPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

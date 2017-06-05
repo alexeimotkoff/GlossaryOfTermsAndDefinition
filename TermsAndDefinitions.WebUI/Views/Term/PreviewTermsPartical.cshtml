@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
 
-<div>
 @{
-
     if (ViewData["anotherTitle"] != null)
     {
         <hr />
@@ -15,6 +13,29 @@
         <hr />
     }
 }
+
+@{if (ViewData["anotherTitle"] == null)
+    {
+        var alphabetRU = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+        var alphabetEN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        <hr />
+<ul class="hr">
+    @foreach (var symbol in alphabetRU.ToCharArray())
+    {
+        <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Terms", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content" })</li>
+    }
+</ul>
+<ul class="hr">
+    @foreach (var symbol in alphabetEN.ToCharArray())
+    {
+        <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Terms", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content" })</li>
+    }
+</ul>
+    }
+    <hr />
+}
+<div id="content">
+
     <ul>
     @foreach (var term in Model)
     {
