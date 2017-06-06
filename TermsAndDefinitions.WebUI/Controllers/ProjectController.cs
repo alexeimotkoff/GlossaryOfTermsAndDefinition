@@ -11,6 +11,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Runtime.InteropServices.ComTypes;
+using DotNetOpenAuth.Messaging;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
@@ -73,34 +74,25 @@ namespace TermsAndDefinitions.WebUI.Controllers
         {
             return PartialView("ProjectPartical", id);
         }
-
-
-        //public ActionResult ShowProjectsGlossaries(VProject projectFiles )
-        //{
-        //    //List<Project> similarProgects = 
-        //    //return View();
-        //}
+        
 
         async public Task<IEnumerable<Project>> GetSimilarProgects(int[] signature, List<long> buckets, int count)
-        {           
-            var bucket = await db.BucketHashes.Where((x) => buckets.Contains(x.Hash)).ToListAsync();
-            var similarProgects = bucket.SelectMany(b => b.Projects).ToList();
-            List<Tuple<Project, double>> result = new List<Tuple<Project, double>>(count);
-            foreach (var project in similarProgects)
+        {
+            HashSet<Project> projects = new HashSet<Project>();
+            foreach (long bucketHash in buckets)
             {
-                double similarity_value = minHash.Similarity(signature, project.MinHashes.Select(x => x.MinHash1).ToArray());
-
-                result.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-                if (result.Count < count)
-                    new Tuple<Project, double>(project, similarity_value);
-                else
-                {
-                    for (int i = 0; i < result.Count; i++)
-                        if (result[i].Item2 < similarity_value)
-                            result[i] = new Tuple<Project, double>(project, similarity_value);
-                }
+                var bucket = await db.BucketHashes.FirstOrDefaultAsync(b => b.Hash == bucketHash);
+                if (bucket != null)
+                    projects.AddRange(bucket.Projects);
             }
-            return result.Select(x => x.Item1);
+            var result = projects.Select((x) =>
+            {
+                double similarity_value = minHash.Similarity(signature, x.MinHashes.Select(m=> m.MinHash1).ToArray());
+                return new Tuple<Project, double>(x, similarity_value);
+            });
+            
+            if (count < 0 || count > result.Count()) count = result.Count();
+            return result.OrderByDescending(x => x.Item2).Take(count).Select(x => x.Item1);            
         }
 
         [HttpPost]
@@ -148,12 +140,12 @@ namespace TermsAndDefinitions.WebUI.Controllers
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
-                .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));
-                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
+                .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));              
                 cfg.CreateMap<ProjectViewModel, Project>();
             });
 
             string text = getTextFromDoc(project.File);
+            string annotation = 
             int[] signature = minHash.GetSignature(text);
             List<long> buckets = minHash.GetBuckets(signature).ToList();
             var similarProgects = GetSimilarProgects(signature, buckets, 4);            
@@ -196,59 +188,19 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
             db.Projects.Add(new_project);
             await db.SaveChangesAsync();
+            
 
             return View();
         }
 
         public string getTextFromDoc(HttpPostedFileBase doc)
         {
-            //Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
-            //object miss = System.Reflection.Missing.Value;
-            //object path = @"C:\DOC\myDocument.docx";
-            //object readOnly = true;
-            //Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
-            //string totaltext = "";
-            //for (int i = 0; i < docs.Paragraphs.Count; i++)
-            //{
-            //    totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
-            //}
-            //docs.Close();
-            //word.Quit();
-            //return totaltext;
-
-            return @"1. Мы создаем неуправляемый ресурс, который не соберет сборщик мусора - отдельный процесс в памяти с приложением Word, если мы его не закроем и не выведем на экран, он так и останется там висеть до выключения компьютера. Более того такие ворды могут накапливаться незаметно для пользователя, программист-то еще прибьет их вручную. Заботиться о высвобождения неуправляемого ресурса должен программист. 
-                        2.По умолчанию Word запускается невидимым, на экран его выводим мы.Для начала рассмотрим самый простой и примитивный вариант -поиск и замена строки в документе Word. Некоторые программисты так и работают - ставят в шаблон текстовую метку вроде @@nowDate и заменяют ее на нужное значение.
-
-                        Пришло время познакомится с фундаментом работы с Word -великим и ужасным объектом Range. Его суть сложно описать словами - это некоторый произвольный кусок документа, диапазон (range), который может включать в себя все что угодно - от пары символов, до таблиц, закладок и прочих интересных вещей.Не стоит путать его с Selection -куском документа, выделенным мышкой, который само собой можно конвертировать в Range. Соотвественно нам надо получить Range для всего документа, найти нужную строку внутри него, получить Range для этой строки и уже внутри этого последнего диапазона заменить текст на требуемый. И не стоит забывать, что документ может иметь сложную структуру с колонтитулами и прочей ересью, возможный универсальный метод для замены всех вхождений данной строки:";
-
-
+            return "";
         }
 
-
-        //[HttpPost]
-        //public bool AddGlossary(VProject glossary)
-        //{
-        //    foreach (var pair in glossary)
-        //    {
-        //        Term term = db.Terms.FirstOrDefault(x => x.TermName.ToLower() == x.TermName.ToLower().Trim());
-        //        if (term == null)
-        //        {
-        //            term = pair.Key;
-        //            db.Terms.Add(term);
-        //            db.SaveChanges();
-        //        }
-        //        Definition definition = new Definition() { Description = description, URL = url, IdTerm = term.IdTerm };
-
-        //    }
-
-
-        //}
-
-
-        //public ActionResult AddTerm(string nameTerm, string description, string url)
-        //{
-
-        //}
-
+        public string getAnotationFromText(string text)
+        {
+            return "";
+        }        
     }
 }
