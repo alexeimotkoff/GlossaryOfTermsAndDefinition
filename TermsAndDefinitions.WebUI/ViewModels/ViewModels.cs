@@ -68,6 +68,13 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public DefinitionViewModel Definition { get; set; }
     }
 
+    public class PreviewFundArea
+    {
+        string Name { get; set; }
+        IEnumerable<PreviewTermViewModel> terms { get; set; }
+    }
+
+
     public class TermViewModel
     {
         public string TermName { get; set; }

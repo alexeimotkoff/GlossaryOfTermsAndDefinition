@@ -14,8 +14,17 @@
 </ul>
 }
 
-<div id="Main">
+<div class="input-group stylish-input-group">
+                    <input type="text" class="form-control" value="@((ViewData["query"] != null) ? ViewData["query"].ToString() : "")" placeholder="Search" >
+                    <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>  
+                    </span>
+                </div>
 
+<div id="Main">
+  
 </div>
 
 

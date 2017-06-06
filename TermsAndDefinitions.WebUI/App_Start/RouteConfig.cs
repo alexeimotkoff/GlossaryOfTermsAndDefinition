@@ -15,13 +15,14 @@ namespace TermsAndDefinitions.WebUI
 
             routes.MapRoute(
                  name: "SearchRoute",
-                 url: "Search/{action}/{*catchall}",
-                 defaults: new { controller = "Search", action = "Index" }
+                 url: "Search/{action}/{queryString}",
+                 defaults: new { controller = "Search", action = "Index", queryString = UrlParameter.Optional }
              );
+
             routes.MapRoute(
-          name: "PreviewTermssPartical",
-          url: "Term/PreviewProjectsPartical/{terms}",
-          defaults: new { controller = "Term", action = "PreviewTermsPartical", terms = UrlParameter.Optional }
+                name: "PreviewTermssPartical",
+                url: "Term/PreviewProjectsPartical/{terms}",
+                defaults: new { controller = "Term", action = "PreviewTermsPartical", terms = UrlParameter.Optional }
           );
 
             routes.MapRoute(
@@ -59,13 +60,11 @@ namespace TermsAndDefinitions.WebUI
                 url: "Project/{name}/",
                 defaults: new { controller = "Project", action = "IndexProject", name = UrlParameter.Optional }
                 );
-
-        
-
+            
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/",
+                defaults: new { controller = "Search", action = "Index" }
                 );
         }
     }
