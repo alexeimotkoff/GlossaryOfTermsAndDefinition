@@ -1,5 +1,7 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -76,15 +78,34 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class PreviewProjectViewModel
     {
         public string ProjectName { get; set; }
-        public string InformationSystem { get; set; }
+        public PreviewInfSysViewModel InformationSystem { get; set; }
     }
 
     public class ProjectViewModel
     {
+        [Display(Name = "Название проекта:")]
         public string ProjectName { get; set; }
-        public string InformationSystem { get; set; }
+        [Display(Name = "Информационая система:")]
+        public PreviewInfSysViewModel InformationSystem { get; set; }
+        [Display(Name = "Жизненый цикл:")]
         public string LifeCycle { get; set; }
         public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
+        public IEnumerable <PreviewInfSysViewModel> InfSysList {get; set;}
+        [Display(Name = "Файл технической документации:")]
+        public HttpPostedFileBase File { get; set; }
     }
 
+    public class PreviewInfSysViewModel
+    {
+        public string Name{ get; set; }
+        public int Id { get; set; }
+    }
+
+    public class InfSysViewModel
+    {
+        string Name { get; set; }
+        string Descripton { get; set; }
+        int Id { get; set; }
+        IEnumerable<PreviewProjectViewModel> Projects { get; set; }
+    }
 }

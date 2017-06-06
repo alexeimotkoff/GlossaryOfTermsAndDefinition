@@ -6,7 +6,7 @@
     <hr />
     <div>
         <p>Название: @Model.ProjectName</p>
-        <p>Информационная система: @(string.IsNullOrEmpty(Model.InformationSystem) ? "Не указана" : Model.InformationSystem) </p>
+        <p>Информационная система: @((Model.InformationSystem.Name != null) ? "Не указана" : Model.InformationSystem.Name)) </p>
         <p>Жизненый цикл проекта: @(string.IsNullOrEmpty(Model.LifeCycle) ? "Не указан" : Model.LifeCycle)</p>
     </div>
     @if (Model.Glossary != null)

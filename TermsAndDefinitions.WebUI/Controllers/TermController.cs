@@ -24,6 +24,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
                 cfg.CreateMap<Definition, DefinitionViewModel>();
                 cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
             });
@@ -39,6 +43,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
             var term = await db.Terms.FirstOrDefaultAsync(t => t.TermName == name);
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
                 cfg.CreateMap<Definition, DefinitionViewModel>();
                 cfg.CreateMap<Project, PreviewProjectViewModel>();
                 cfg.CreateMap<Term, TermViewModel>();

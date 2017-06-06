@@ -37,6 +37,12 @@ namespace TermsAndDefinitions.WebUI
                 );
 
             routes.MapRoute(
+            name: "AddProject",
+            url: "Project/AddProject/{project}",
+            defaults: new { controller = "Project", action = "AddProject", project = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "PreviewProjectsPartical",
                 url: "Project/PreviewProjectsPartical/{id}",
                 defaults: new { controller = "Project", action = "PreviewProjectsPartical", id = UrlParameter.Optional }

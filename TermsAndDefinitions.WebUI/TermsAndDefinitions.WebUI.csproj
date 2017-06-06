@@ -318,6 +318,7 @@
     <Content Include="Views\Project\IndexPreviewProjects.cshtml" />
     <Content Include="Views\Project\PreviewProjectsPartical.cshtml" />
     <Content Include="Views\Project\ProjectPartical.cshtml" />
+    <Content Include="Views\Project\AddProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
@@ -358,7 +359,9 @@
   <ItemGroup>
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
