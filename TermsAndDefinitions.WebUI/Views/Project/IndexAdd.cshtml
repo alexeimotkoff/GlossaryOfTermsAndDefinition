@@ -1,0 +1,85 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.ProjectViewModel
+
+@{
+    ViewBag.Title = "IndexAdd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<h4>Новый проект</h4>
+<hr />
+@using (Html.BeginForm("Add","Project", FormMethod.Post))
+{
+    @*@Html.AntiForgeryToken()*@
+
+    <div class="form-horizontal">
+  
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+        <div class="form-group">
+            @Html.LabelFor(project => project.ProjectName, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(project => project.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(project => project.ProjectName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InformationSystem, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(project => project.InformationSystem.Id, new SelectList(Model.InfSysList, "Id", "Name"), htmlAttributes: new { @class = "form-control", aria_describedby = "dropdownMenu1" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(project => project.LifeСycle, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(project => project.LifeСycle.IdLifeСycle, new SelectList(Model.LifeСycleList, "IdLifeСycle", "NameLifeСycle"), htmlAttributes: new { @class = "form-control", aria_describedby = "dropdownMenu1" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(project => project.File, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(project => project.File, new { @class = "filestyle", type = "file", data_show_preview = "false", data_icon = "false", data_buttonText = "Добавить документацию", accept = "application/msword" })
+                @*@Html.ValidationMessageFor(project => project.File, "Файл не выбран", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-7">
+                <input type="submit" value="Добавить проект" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Script
+{
+    @*<script type='text/javascript'>
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+        $(document).ready(function () {
+            $(":file").filestyle({ icon: false });     
+        });*@
+
+        @*$(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                var input = $(this).parents('.form-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+        });
+
+    </script>*@
+}

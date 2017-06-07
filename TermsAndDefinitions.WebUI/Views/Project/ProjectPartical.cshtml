@@ -3,12 +3,12 @@
 <div>
     <hr />
     <h4>@Model.ProjectName</h4>
+    <p>@Model.Annotation</p>
     <hr />
-    <div>
-        <p>Название: @Model.ProjectName</p>
-        <p>Информационная система: @((Model.InformationSystem.Name != null) ? "Не указана" : Model.InformationSystem.Name)) </p>
-        <p>Жизненый цикл проекта: @(string.IsNullOrEmpty(Model.LifeCycle) ? "Не указан" : Model.LifeCycle)</p>
-    </div>
+    <ul class="hr">      
+        <li><p>Информационная система: @((string.IsNullOrEmpty(Model.InformationSystem.Name)) ? "Не указана" : Model.InformationSystem.Name)</p></li>
+        <li><p>Жизненый цикл проекта: @((string.IsNullOrEmpty(Model.LifeСycle.NameLifeСycle)) ? "Не указан" : Model.LifeСycle.NameLifeСycle)</p></li>
+    </ul>
     @if (Model.Glossary != null)
     {
         if (Model.Glossary.Count() > 0)

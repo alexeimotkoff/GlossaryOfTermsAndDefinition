@@ -26,6 +26,5 @@ namespace TermsAndDefinitions.WebUI.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Term> Terms { get; set; }
-        public object Mapper { get; internal set; }
     }
 }

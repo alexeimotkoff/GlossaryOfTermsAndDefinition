@@ -294,7 +294,7 @@
     <Compile Include="Models\InformationSystem.cs">
       <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LifeСycle.cs">
+    <Compile Include="Models\LifeCycle.cs">
       <DependentUpon>ModelOfDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MinHash.cs">
@@ -410,6 +410,7 @@
       <DependentUpon>ModelOfDataBase.edmx</DependentUpon>
       <LastGenOutput>ModelOfDataBase.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\bootstrap-filestyle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -455,6 +456,7 @@
     <Content Include="Views\Project\IndexEdit.cshtml" />
     <Content Include="Views\Search\SearchPartical.cshtml" />
     <Content Include="Views\Search\IndexSearch.cshtml" />
+    <Content Include="Views\Project\IndexAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

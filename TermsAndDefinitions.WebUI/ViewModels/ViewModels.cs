@@ -81,22 +81,30 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     {
         public string ProjectName { get; set; }
         public PreviewInfSysViewModel InformationSystem { get; set;}
+        public string Annotation { get; set; }
         public int IdProject {get; set;}
     }
 
     public class ProjectViewModel
     {
         public int IdProject { get; set;}
+        [Required]
         [Display(Name = "Название проекта:")]
         public string ProjectName { get; set; }
+        public string Annotation { get; set; }
+        [Required]
         [Display(Name = "Информационая система:")]
         public PreviewInfSysViewModel InformationSystem { get; set; }
+        [Required]
         [Display(Name = "Жизненый цикл:")]
-        public string LifeCycle { get; set; }
+        public PreviewLifeСycle LifeСycle { get; set; }
         public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
-        public IEnumerable <PreviewInfSysViewModel> InfSysList {get; set;}
+        public IEnumerable<PreviewInfSysViewModel> InfSysList { get; set; }
+        public IEnumerable<PreviewLifeСycle> LifeСycleList { get; set; }
+        [Required]
         [Display(Name = "Файл технической документации:")]
-        public List<HttpPostedFileBase> File { get; set; }
+        public HttpPostedFileBase File { get; set; }
+        public List<HttpPostedFileBase> Fileы { get; set; }
     }
 
     public class PreviewInfSysViewModel
@@ -118,5 +126,20 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         string Name { get; set; }
         IEnumerable<PreviewTermViewModel> terms { get; set; }
     }
+
+    public class LifeСycleViewModel
+    {
+       public int IdLifeСycle { get; set;}                           
+       public PreviewProjectViewModel Projects {get; set;}
+       public string NameLifeСycle { get; set;}
+       public string DescriptonLifeСycle { get; set;}
+    }
+
+    public class PreviewLifeСycle
+    {
+        public int IdLifeСycle { get; set; }
+        public string NameLifeСycle { get; set; }
+    }
+    
 
 }

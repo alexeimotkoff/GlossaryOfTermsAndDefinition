@@ -38,6 +38,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 var projects = Projects;
                 Mapper.Initialize(cfg =>
                 {
+                    cfg.CreateMap <LifeCycle, PreviewLifeСycle>();
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
@@ -51,9 +52,9 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }else
             {
                 var projects = Projects.FirstOrDefault(x => x.IdProject == id);
-
                 Mapper.Initialize(cfg =>
                 {
+                    cfg.CreateMap<LifeCycle, PreviewLifeСycle>();
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
@@ -106,8 +107,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
         public ActionResult Add()
         {
             var informationSysList = db.InformationSystems;
+            var lifeСycleList = db.LifeCycles;
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<LifeCycle, PreviewLifeСycle>();
                 cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                 .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                 .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
@@ -116,15 +119,16 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
             ProjectViewModel project = new ProjectViewModel()
             {
+                LifeСycleList = Mapper.Map<IEnumerable<LifeCycle>, IEnumerable<PreviewLifeСycle>>(lifeСycleList),
                 InfSysList = Mapper.Map<IEnumerable<InformationSystem>, IEnumerable<PreviewInfSysViewModel>>(informationSysList)
             };
             if (Request.IsAjaxRequest())
                 return PartialView("AddPartical", project);
             return View("IndexAdd",project);
         }
-           
+
         [HttpPost, ActionName("Add")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         async public Task<ActionResult> AddPost(ProjectViewModel project)
         {
             try
@@ -234,6 +238,22 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
         }
 
+        public string SaveDocuments (HttpPostedFileBase doc, string projectName)
+        {
+            projectName = projectName.Replace(' ', '_');
+            if (doc != null)
+            {
+                
+                    // получаем имя файла
+                    string fileName = System.IO.Path.GetFileName(doc.FileName);
+                    // сохраняем файл в папку Files в проекте
+                    string path = Server.MapPath(string.Format("~/Files/{0}/{1}", projectName, fileName));
+                    doc.SaveAs(path);
+                    return path;
+            }
+            return "";
+        }
+
         public IEnumerable<string> GetTextsFromDocs(string pathToFolder)
         {
             DirectoryInfo dir = new DirectoryInfo(pathToFolder);
@@ -241,7 +261,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             {
                 yield return new TextExtractor().Extract(doc.FullName).Text;
             }
-        }
+        }      
 
         public string GetAnnotationFromTexts(IEnumerable<string> text)
         {

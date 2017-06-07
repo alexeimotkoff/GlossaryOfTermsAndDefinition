@@ -29,7 +29,21 @@ namespace TermsAndDefinitions.WebUI
             routes.MapRoute(
               name: "TermAll",
               url: "Term/",
-              defaults: new { controller = "Term", action = "Index"}
+              defaults: new { controller = "Term", action = "Index" }
+              );
+
+
+            routes.MapRoute(
+              name: "TermAdd",
+              url: "Term/Add/{term}",
+              defaults: new { controller = "Term", action = "Add", term = UrlParameter.Optional }
+              );
+
+
+            routes.MapRoute(
+              name: "TermEdit",
+              url: "Term/Edit/{id}",
+              defaults: new { controller = "Term", action = "Edit", id = UrlParameter.Optional }
               );
 
             routes.MapRoute(
@@ -51,9 +65,27 @@ namespace TermsAndDefinitions.WebUI
                 );
 
             routes.MapRoute(
-             name: "ProjectAll",
-             url: "Project/",
-             defaults: new { controller = "Project", action = "Index" }
+                name: "ProjectAll",
+                url: "Project/",
+                defaults: new { controller = "Project", action = "Index" }
+                );
+
+            routes.MapRoute(
+                name: "ProjectAdd",
+                url: "Project/Add/{project}",
+                defaults: new { controller = "Project", action = "Add", project = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
+                name: "ProjectEdit",
+                url: "Project/Edit/{id}",
+                defaults: new { controller = "Project", action = "Edit", id = UrlParameter.Optional }   
+                );
+
+            routes.MapRoute(
+             name: "ProjectSearch",
+             url: "Project/Search/{id}",
+             defaults: new { controller = "Project", action = "Search", id = UrlParameter.Optional }
              );
 
             routes.MapRoute(

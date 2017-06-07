@@ -405,7 +405,7 @@
           <Property Name="DescriptonInformationSystem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" FromRole="InformationSystem" ToRole="Project" />
         </EntityType>
-        <EntityType Name="LifeСycle">
+        <EntityType Name="LifeCycle">
           <Key>
             <PropertyRef Name="IdLifeСycle" />
           </Key>
@@ -454,7 +454,7 @@
           <EntitySet Name="Definitions" EntityType="Self.Definition" />
           <EntitySet Name="FundamentalAreas" EntityType="Self.FundamentalArea" />
           <EntitySet Name="InformationSystems" EntityType="Self.InformationSystem" />
-          <EntitySet Name="LifeСycle" EntityType="Self.LifeСycle" />
+          <EntitySet Name="LifeCycles" EntityType="GlossaryProjectDatabaseModel.LifeCycle" />
           <EntitySet Name="Terms" EntityType="Self.Term" />
           <AssociationSet Name="FK_Definition_ToTable" Association="Self.FK_Definition_ToTable">
             <End Role="Terms" EntitySet="Terms" />
@@ -474,7 +474,7 @@
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle">
-            <End Role="LifeСycle" EntitySet="LifeСycle" />
+            <End Role="LifeСycle" EntitySet="LifeCycles" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Projects_ToUsers" Association="GlossaryProjectDatabaseModel.FK_Projects_ToUsers">
@@ -570,7 +570,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LL_Project_ToIdLifeСycle">
-          <End Type="GlossaryProjectDatabaseModel.LifeСycle" Role="LifeСycle" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.LifeCycle" Role="LifeСycle" Multiplicity="0..1" />
           <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LifeСycle">
@@ -665,8 +665,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LifeСycle">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.LifeСycle">
+          <EntitySetMapping Name="LifeCycles">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.LifeCycle">
               <MappingFragment StoreEntitySet="LifeСycle">
                 <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
                 <ScalarProperty Name="NameLifeСycle" ColumnName="NameLifeСycle" />

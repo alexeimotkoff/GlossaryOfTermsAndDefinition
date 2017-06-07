@@ -91,12 +91,10 @@ namespace TermsAndDefinitions.WebUI.Models
         public string Email { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
         [Display(Name = "Имя")]
         public string FirstName { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
         [Display(Name = "Фамилия")]
         public string LastName { get; set; }
 

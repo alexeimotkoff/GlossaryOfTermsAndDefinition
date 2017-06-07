@@ -22,8 +22,7 @@
                     <p>
                       @*  @Ajax.RouteLink(project.ProjectName, "ProjectDetail", new { id = project.IdProject }, new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" }, new { @class = "project" })*@
 
-
-                        @Html.ActionLink(project.ProjectName, "Index", new {id = project.IdProject }, new { @class = "project" })
+                        @Html.ActionLink(project.ProjectName, "Index", new {id = project.IdProject }, new { @class = "project" })  -  @project.Annotation
                         @*<span> Информационная система: @((string.IsNullOrEmpty(project.InformationSystem)) ? "Не выставлено" : @project.InformationSystem)</span> *@
                     </p>
                 </div>
