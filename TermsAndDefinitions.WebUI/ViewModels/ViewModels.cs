@@ -101,10 +101,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
         public IEnumerable<PreviewInfSysViewModel> InfSysList { get; set; }
         public IEnumerable<PreviewLifeСycle> LifeСycleList { get; set; }
-        [Required]
+       
         [Display(Name = "Файл технической документации:")]
-        public HttpPostedFileBase File { get; set; }
-        public List<HttpPostedFileBase> Fileы { get; set; }
+        public object File { get; set; }
+        public List<HttpPostedFileBase> Files { get; set; }
     }
 
     public class PreviewInfSysViewModel

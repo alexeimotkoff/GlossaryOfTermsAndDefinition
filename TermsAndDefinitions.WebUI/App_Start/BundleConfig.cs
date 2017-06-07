@@ -18,8 +18,8 @@ namespace TermsAndDefinitions.WebUI
                                  "~/Content/bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                    "~/Scripts/bootstrap.min.js",
-                    "~/Scripts/bootstrap-filestyle.min.js"
+                    "~/Scripts/bootstrap.min.js"/*,
+                    "~/Scripts/bootstrap-filestyle.min.js"*/
                     ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
