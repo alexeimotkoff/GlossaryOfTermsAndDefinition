@@ -64,19 +64,14 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
     public class PreviewTermViewModel
     {
+        public int IdTerm { get; set; }
         public string TermName { get; set; }
         public DefinitionViewModel Definition { get; set; }
     }
-
-    public class PreviewFundArea
-    {
-        string Name { get; set; }
-        IEnumerable<PreviewTermViewModel> terms { get; set; }
-    }
-
-
+    
     public class TermViewModel
     {
+        public int IdTerm { get; set; }
         public string TermName { get; set; }
         public IEnumerable<DefinitionViewModel> Definitions { get; set; }
         public IEnumerable<PreviewProjectViewModel> Projects { get; set; }
@@ -85,11 +80,13 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class PreviewProjectViewModel
     {
         public string ProjectName { get; set; }
-        public PreviewInfSysViewModel InformationSystem { get; set; }
+        public PreviewInfSysViewModel InformationSystem { get; set;}
+        public int IdProject {get; set;}
     }
 
     public class ProjectViewModel
     {
+        public int IdProject { get; set;}
         [Display(Name = "Название проекта:")]
         public string ProjectName { get; set; }
         [Display(Name = "Информационая система:")]
@@ -99,7 +96,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
         public IEnumerable <PreviewInfSysViewModel> InfSysList {get; set;}
         [Display(Name = "Файл технической документации:")]
-        public HttpPostedFileBase File { get; set; }
+        public List<HttpPostedFileBase> File { get; set; }
     }
 
     public class PreviewInfSysViewModel
@@ -115,4 +112,11 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         int Id { get; set; }
         IEnumerable<PreviewProjectViewModel> Projects { get; set; }
     }
+    
+    public class PreviewFundArea
+    {
+        string Name { get; set; }
+        IEnumerable<PreviewTermViewModel> terms { get; set; }
+    }
+
 }

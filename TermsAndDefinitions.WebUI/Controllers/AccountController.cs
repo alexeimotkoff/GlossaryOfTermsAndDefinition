@@ -7,15 +7,16 @@ using System.Web.Security;
 using TermsAndDefinitions.WebUI.Filters;
 using WebMatrix.WebData;
 using TermsAndDefinitions.WebUI.Models;
+using System.Web.UI;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-
         GlossaryProjectDatabaseEntities db = new GlossaryProjectDatabaseEntities();
         [AllowAnonymous]
+        [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -49,6 +50,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
 
         [AllowAnonymous]
+        [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
         public ActionResult Register()
         {
             return View();

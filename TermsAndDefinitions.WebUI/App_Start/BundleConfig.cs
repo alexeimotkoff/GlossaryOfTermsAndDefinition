@@ -18,13 +18,13 @@ namespace TermsAndDefinitions.WebUI
                                  "~/Content/bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                    "~/Scripts/bootstrap.js"));
+                    "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                         "~/Scripts/jquery-{version}.js",
-                         "~/Scripts/jquery.unobtrusive-ajax.js",
-                         "~/Scripts/jquery.validate.js",
-                         "~/Scripts/jquery.validate.unobtrusive.js" ));
+                         "~/Scripts/jquery-3.1.1.min.js",
+                         "~/Scripts/jquery.unobtrusive-ajax.min.js",
+                         "~/Scripts/jquery.validate.min.js",
+                         "~/Scripts/jquery.validate.unobtrusive.min.js" ));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                             "~/Scripts/modernizr-*"));

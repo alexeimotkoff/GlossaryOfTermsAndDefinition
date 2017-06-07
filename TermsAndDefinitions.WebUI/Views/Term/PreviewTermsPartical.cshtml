@@ -1,53 +1,75 @@
 ﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.PreviewTermViewModel>
 
-@{
-    if (ViewData["anotherTitle"] != null)
+@if (ViewData["anotherTitle"] == null)
+{
+    using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" }))
     {
-        <hr />
-        <h4>@ViewData["anotherTitle"].ToString()</h4>
-    }
-    else
-    {
-        <hr />
-        <h3>Термины и определения</h3>
-        <hr />
+        <div class="input-group stylish-input-group">
+            <input type="text" name="queryString" class="form-control" placeholder="Поиск">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
     }
 }
+
+
 
 @{if (ViewData["anotherTitle"] == null)
-    {
+{<hr />
         var alphabetRU = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
         var alphabetEN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        <hr />
-<ul class="hr">
-    @foreach (var symbol in alphabetRU.ToCharArray())
-    {
-        <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Terms", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content" })</li>
-    }
-</ul>
-<ul class="hr">
-    @foreach (var symbol in alphabetEN.ToCharArray())
-    {
-        <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Terms", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content" })</li>
-    }
-</ul>
-    }
-    <hr />
-}
-<div id="content">
 
-    <ul>
-    @foreach (var term in Model)
-    {
-        <li style=" list-style-type: none">
-            <div class="text-cut-box">
-                <div>
-                    <p>
-                        @Ajax.RouteLink(term.TermName, "RouteToTerm", new { name = term.TermName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "term" }) — @term.Definition.Description
-                    </p>
-                </div>
-            </div>
-        </li>
-    }</ul>
+            <ul class="hr">
+                @foreach (var symbol in alphabetRU.ToCharArray())
+                {
+                    <li>@Ajax.RouteLink(symbol.ToString(), new {controller = "Term", action = "Search", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" })</li>
 
-</div>
+                    @*<li>@Html.ActionLink(symbol.ToString(), "Terms", "Search",new { queryString = @symbol }, null)</li>*@
+                }
+            </ul>
+            <ul class="hr">
+                @foreach (var symbol in alphabetEN.ToCharArray())
+                {
+                    
+                   <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Search", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" })</li>
+                }
+            </ul>
+        }
+       
+    }
+
+    <div id="content">
+
+        @{
+        if (ViewData["anotherTitle"] != null)
+        {
+            <hr />
+            <h4>@ViewData["anotherTitle"].ToString()</h4>
+            <hr />
+        }
+        else
+        {
+            <hr />
+            <h4>Термины и определения</h4>
+            <hr />
+        }
+    }
+        <ul>
+            @foreach (var term in Model)
+            {
+                <li style=" list-style-type: none">
+                    <div class="text-cut-box">
+                        <div>
+                            <p>
+                                @* @Ajax.RouteLink(term.TermName, "TermDetail", new { id = term.IdTerm.ToString() }, new AjaxOptions { UpdateTargetId = "Main", HttpMethod="GET" }, new { @class = "term" }) — @term.Definition.Description*@
+                                @Html.ActionLink(term.TermName, "Index", new { id = term.IdTerm }, new { @class = "term" }) — @term.Definition.Description
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>

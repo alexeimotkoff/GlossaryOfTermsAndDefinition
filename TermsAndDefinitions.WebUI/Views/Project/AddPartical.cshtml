@@ -1,16 +1,12 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.ProjectViewModel
-@{
-    ViewBag.Title = "AddProject";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
 <h3>Добавить проект</h3>
 
 @using (Html.BeginForm("AddProject", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{ 
+{
     <fieldset>
         <ol>
-          <li>
+            <li>
                 @Html.LabelFor(m => m.ProjectName)
                 @Html.TextBoxFor(m => m.ProjectName)
             </li>
@@ -20,11 +16,11 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.File)
-                @Html.TextBoxFor(m => m.File, new { type = "file"})
+                @Html.TextBoxFor(m => m.File, new { type = "file" })
             </li>
         </ol>
-                <input type="submit" value="Сохранить" />
-</fieldset>
-      
+        <input type="submit" value="Сохранить" />
+    </fieldset>
 
- }
+
+}

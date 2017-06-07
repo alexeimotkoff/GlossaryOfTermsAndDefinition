@@ -16,6 +16,11 @@ namespace TermsAndDefinitions.WebUI
     {
         protected void Application_Start()
         {
+            // Removes all the view engine
+            ViewEngines.Engines.Clear();
+            // Add View Engine that we are ging to use. Here I am using Razor View Engine
+            ViewEngines.Engines.Add(new RazorViewEngine());
+
             AreaRegistration.RegisterAllAreas();
             BundleConfig.Register(BundleTable.Bundles);
             WebApiConfig.Register(GlobalConfiguration.Configuration);

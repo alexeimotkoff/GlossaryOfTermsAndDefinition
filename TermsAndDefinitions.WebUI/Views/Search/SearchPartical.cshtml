@@ -1,34 +1,12 @@
 ﻿
-    @Ajax.BeginForm("", new AjaxOptions { UpdateTargetId = "content" })
+
+@if(ViewData["query"] == null)
     {
-        <div class="input-group stylish-input-group">
-            <input type="text" name="queryString" class="form-control" placeholder="Поиск">
-            <span class="input-group-addon">
-                <button type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
+        //Html.RenderAction("FundArias");
+    }
+    else
+    {
+        Html.RenderAction("Terms", new { queryString = ViewData["query"].ToString()});
+        Html.RenderAction("Projects", new { queryString = ViewData["query"].ToString()});
     }
 
- <div id="Main">
-        <hr />
-   
-
-        <div id="content">
-
-           @if ((ViewData["query"] == null))
-           {
-               Html.RenderAction("FundArias");
-           }
-           else
-           {
-               Html.RenderAction("Terms", new { queryString = ViewData["query"].ToString()});
-               Html.RenderAction("Projects", new { queryString = ViewData["query"].ToString() });
-           }
-
-        </div>
-
-
-
- </div>

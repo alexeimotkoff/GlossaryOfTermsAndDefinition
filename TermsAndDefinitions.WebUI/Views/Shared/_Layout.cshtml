@@ -29,15 +29,17 @@
 
                 <!-- sidebar -->
                 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-                  @if (IsSectionDefined("navigation"))
-                  {
-                    @RenderSection("navigation")
-                  }
+                    <ul class="nav">                        
+                        @*<li>@Ajax.RouteLink("Термины", "TermAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>
+                        <li>@Ajax.RouteLink("Проекты", "ProjectAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>*@
+                        <li>@Html.ActionLink("Термины", "Index", "Term")</li>
+                        <li>@Html.ActionLink("Проекты", "Index", "Project")</li>
+                    </ul>
                 </div>
 
                 <!-- main area -->
-                <div class="col-xs-12 col-sm-9">
-                    @RenderBody()               
+                <div class="col-xs-12 col-sm-9">                
+                    @RenderBody()             
             </div><!-- /.col-xs-12 main -->
         </div><!--/.row-->
     </div><!--/.container-->

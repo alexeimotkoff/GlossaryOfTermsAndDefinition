@@ -44,7 +44,7 @@
     if (Model.Projects.Count() > 0)
     {
         <div>
-            @{Html.RenderAction("PreviewProjectsPartical", "Project", new { id = Model.Projects });}
+            @{Html.RenderAction("PreviewProjectsPartical", "Project", new { project = Model.Projects });}
         </div>
     }
 }

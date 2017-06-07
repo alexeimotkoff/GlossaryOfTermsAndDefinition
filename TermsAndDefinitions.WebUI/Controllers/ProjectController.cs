@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Domain = TermsAndDefinitions.Domain;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
 using DBContext = TermsAndDefinitions.WebUI.Models.GlossaryProjectDatabaseEntities;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using System.Runtime.InteropServices.ComTypes;
 using DotNetOpenAuth.Messaging;
+using System.IO;
+using TikaOnDotNet.TextExtraction;
+using System.Web.UI;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
@@ -21,61 +22,67 @@ namespace TermsAndDefinitions.WebUI.Controllers
         //
         // GET: /Project/
         //
+
         Domain.MinHash minHash = new Domain.MinHash();
+
         Random rnd = new Random(1337);
 
         DBContext db = new DBContext();
+        List<Project> Projects = new DBContext().Projects.ToList();
 
-        async public Task<ActionResult> IndexProjects()
+        [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
+        public ActionResult Index(int? id)
         {
-            var projects = await db.Projects.ToListAsync();
-            Mapper.Initialize(cfg =>
+            if (id == null)
             {
-                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
-                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
-                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                var projects = Projects;
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                    .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                    .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
                 //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
                 cfg.CreateMap<Project, PreviewProjectViewModel>();
-            });
-            var resultProjectsColection = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
-            if (Request.IsAjaxRequest())
-                return PartialView("PreviewProjectsPartical", resultProjectsColection);
-            return View("IndexPreviewProjects", resultProjectsColection);
-        }
-
-        async public Task<ActionResult> IndexProject(string name)
-        {
-            var projects = await db.Projects.FirstOrDefaultAsync(p => p.ProjectName == name);
-
-            Mapper.Initialize(cfg =>
+                });
+                var resultProjectsColection = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
+                if (Request.IsAjaxRequest())
+                    return PartialView("PreviewProjectsPartical", resultProjectsColection);
+                return View("IndexPreviewProjects", resultProjectsColection);
+            }else
             {
-                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
-                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
-                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                cfg.CreateMap<Definition, DefinitionViewModel>();
-                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                cfg.CreateMap<Project, ProjectViewModel>().ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
-            });
+                var projects = Projects.FirstOrDefault(x => x.IdProject == id);
 
-            var resultProject = Mapper.Map<Project, ProjectViewModel>(projects);
-            if (Request.IsAjaxRequest())
-                return PartialView("ProjectPartical", resultProject);
-            return View("IndexProject", resultProject);
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                    .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                    .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
+                    cfg.CreateMap<Definition, DefinitionViewModel>();
+                    cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                    cfg.CreateMap<Project, ProjectViewModel>().ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
+                });
+
+                var resultProject = Mapper.Map<Project, ProjectViewModel>(projects);
+                if (Request.IsAjaxRequest())
+                    return PartialView("ProjectPartical", resultProject);
+                return View("IndexProject", resultProject);
+            }
         }
-        [ChildActionOnly]
-        public ActionResult PreviewProjectsPartical(IEnumerable<PreviewProjectViewModel> id)
+
+        [HttpGet]
+        public ActionResult PreviewProjectsPartical(IEnumerable<PreviewProjectViewModel> project)
         {
             ViewData["anotherTitle"] = "Встречается в проектах";
-            return PartialView("PreviewProjectsPartical", id);
+            return PartialView("PreviewProjectsPartical", project);
         }
-        [ChildActionOnly]
-        public ActionResult ProjectPartical(ProjectViewModel id)
+
+        [HttpGet]
+        public ActionResult ProjectPartical(ProjectViewModel project)
         {
-            return PartialView("ProjectPartical", id);
+            return PartialView("ProjectPartical", project);
         }
         
-
         async public Task<IEnumerable<Project>> GetSimilarProgects(int[] signature, List<long> buckets, int count)
         {
             HashSet<Project> projects = new HashSet<Project>();
@@ -95,28 +102,9 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return result.OrderByDescending(x => x.Item2).Take(count).Select(x => x.Item1);            
         }
 
-        [HttpPost]
-        public ActionResult AddDocumentation(IEnumerable<HttpPostedFileBase> uploads)
-        {
-            //new InformationSystem().NameInformationSystem.DescriptonInformationSystem.IdInformationSystem
-
-            foreach (var file in uploads)
-            {
-                if (file != null)
-                {
-                    // получаем имя файла
-                    string fileName = System.IO.Path.GetFileName(file.FileName);
-                    // сохраняем файл в папку Files в проекте
-                    file.SaveAs(Server.MapPath("~/Files/" + fileName));
-                }
-            }
-            return View();
-        }
-
         [HttpGet]
-        public ActionResult AddProject()
+        public ActionResult Add()
         {
-
             var informationSysList = db.InformationSystems;
             Mapper.Initialize(cfg =>
             {
@@ -130,75 +118,132 @@ namespace TermsAndDefinitions.WebUI.Controllers
             {
                 InfSysList = Mapper.Map<IEnumerable<InformationSystem>, IEnumerable<PreviewInfSysViewModel>>(informationSysList)
             };
-
-            return View(project);
+            if (Request.IsAjaxRequest())
+                return PartialView("AddPartical", project);
+            return View("IndexAdd",project);
         }
-
-        [HttpPost]
-        async public Task<ActionResult> AddProject(ProjectViewModel project)
+           
+        [HttpPost, ActionName("Add")]
+        [ValidateAntiForgeryToken]
+        async public Task<ActionResult> AddPost(ProjectViewModel project)
         {
-            Mapper.Initialize(cfg =>
+            try
             {
-                cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
-                .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));              
-                cfg.CreateMap<ProjectViewModel, Project>();
-            });
-
-            string text = getTextFromDoc(project.File);
-            string annotation = 
-            int[] signature = minHash.GetSignature(text);
-            List<long> buckets = minHash.GetBuckets(signature).ToList();
-            var similarProgects = GetSimilarProgects(signature, buckets, 4);            
-            await db.SaveChangesAsync();
-            var project_signature = signature.Select(x =>
-             {
-               var minHas = db.MinHashes.FirstOrDefault( m => m.MinHash1 == x);
-               if (minHas == null)
-               {
-                   minHas = new MinHash() { IdMinHash = -1, MinHash1 = x };
-               }
-               return minHas;
-           }
-           );
-            db.MinHashes.AddRange(project_signature.Where(s => s.IdMinHash == -1));
-            await db.SaveChangesAsync();
-            var project_buckets = buckets.Select(x =>
-            {
-                var bucket = db.BucketHashes.FirstOrDefault(m => m.Hash == x);
-                if (bucket == null)
+                if (ModelState.IsValid)
                 {
-                    bucket = new BucketHash() { IdHash = -1, Hash = x };
+                    Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
+                    .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));
+                    cfg.CreateMap<ProjectViewModel, Project>()
+                    .ForMember("File", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/", c.ProjectName.Replace(' ', '_')))));
+                });
+                    SaveDocuments(project.File, project.ProjectName);
+                    var texts = GetTextsFromDocs(Server.MapPath("~/Files/{0}/" + project.ProjectName.Replace(' ', '_')));
+                    string annotation = GetAnnotationFromTexts(texts);
+                    int[] signature = minHash.GetSignature(annotation);
+                    List<long> buckets = minHash.GetBuckets(signature).ToList();
+
+                    var project_signature = signature.Select(x =>
+                     {
+                         var minHas = db.MinHashes.FirstOrDefault(m => m.MinHash1 == x);
+                         if (minHas == null)
+                         {
+                             minHas = new MinHash() { IdMinHash = -1, MinHash1 = x };
+                         }
+                         return minHas;
+                     });
+                    db.MinHashes.AddRange(project_signature.Where(s => s.IdMinHash == -1));
+                    var project_buckets = buckets.Select(x =>
+                    {
+                        var bucket = db.BucketHashes.FirstOrDefault(m => m.Hash == x);
+                        if (bucket == null)
+                        {
+                            bucket = new BucketHash() { IdHash = -1, Hash = x };
+                        }
+                        return bucket;
+                    });
+                    db.BucketHashes.AddRange(project_buckets.Where(s => s.IdHash == -1));
+
+                    await db.SaveChangesAsync();
+
+                    Project new_project = Mapper.Map<ProjectViewModel, Project>(project);
+
+                    foreach (var bucket in project_buckets)
+                    {
+                        new_project.BucketHashes.Add(bucket);
+                    }
+                    foreach (var minHash in project_signature)
+                    {
+                        new_project.MinHashes.Add(minHash);
+                    }
+
+                    db.Projects.Add(new_project);
+                    await db.SaveChangesAsync();
+                    var similarProgects = GetSimilarProgects(signature, buckets, 4);
                 }
-                return bucket;
+            }catch {
+
             }
-           );
-
-            db.BucketHashes.AddRange(project_buckets.Where(s => s.IdHash == -1));
-            await db.SaveChangesAsync();
-
-            Project new_project = Mapper.Map<ProjectViewModel, Project>(project);
-
-            foreach (var bucket in project_buckets)
-            {
-                new_project.BucketHashes.Add(bucket);
-            }
-            foreach (var minHash in project_signature)
-            {
-                new_project.MinHashes.Add(minHash);
-            }
-            db.Projects.Add(new_project);
-            await db.SaveChangesAsync();
-            
-
             return View();
         }
 
-        public string getTextFromDoc(HttpPostedFileBase doc)
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        async public Task<ActionResult> Edit(int id)
         {
-            return "";
+            var projects = await db.Projects.FindAsync(id);
+          
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
+                cfg.CreateMap<Definition, DefinitionViewModel>();
+                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<Project, ProjectViewModel>().ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
+            });
+
+            var resultProject = Mapper.Map<Project, ProjectViewModel>(projects);
+
+            return View("IndexEdit",resultProject);
         }
 
-        public string getAnotationFromText(string text)
+        [HttpPost, ActionName("Edit")]
+        async public Task<ActionResult> EditPost(ProjectViewModel project)
+        {
+            var editProject = await db.Projects.FindAsync(project.IdProject);
+            return View("", project);
+        }
+
+        public IEnumerable<string> SaveDocuments(List<HttpPostedFileBase> docs, string projectName)
+        {
+            projectName = projectName.Replace(' ', '_');
+            if (docs != null)
+            {
+                foreach (var doc in docs)
+                {
+                    // получаем имя файла
+                    string fileName = System.IO.Path.GetFileName(doc.FileName);
+                    // сохраняем файл в папку Files в проекте
+                    string path = Server.MapPath(string.Format("~/Files/{0}/{1}", projectName, fileName));
+                    doc.SaveAs(path);
+                    yield return path;
+                }
+            }
+        }
+
+        public IEnumerable<string> GetTextsFromDocs(string pathToFolder)
+        {
+            DirectoryInfo dir = new DirectoryInfo(pathToFolder);
+            foreach (var doc in dir.GetFiles())
+            {
+                yield return new TextExtractor().Extract(doc.FullName).Text;
+            }
+        }
+
+        public string GetAnnotationFromTexts(IEnumerable<string> text)
         {
             return "";
         }        

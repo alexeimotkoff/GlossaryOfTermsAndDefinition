@@ -2,7 +2,7 @@
 @{
     if (ViewData["anotherTitle"] != null)
     {
-     <hr />
+        <hr />
         <h4>@ViewData["anotherTitle"].ToString()</h4>
     }
     else
@@ -15,15 +15,19 @@
 
 <div>
     <ul>
-    @foreach (var project in Model)
-    {
-        <li style="list-style-type: none">
-            <div>
-                <p>
-                    @Ajax.RouteLink(project.ProjectName, "RouteToProject", new { name = project.ProjectName }, new AjaxOptions { UpdateTargetId = "Main" }, new { @class = "project" })
-                    @*<span> Информационная система: @((string.IsNullOrEmpty(project.InformationSystem)) ? "Не выставлено" : @project.InformationSystem)</span> *@
-                </p>
-            </div>
+        @foreach (var project in Model)
+        {
+            <li style="list-style-type: none">
+                <div>
+                    <p>
+                      @*  @Ajax.RouteLink(project.ProjectName, "ProjectDetail", new { id = project.IdProject }, new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" }, new { @class = "project" })*@
+
+
+                        @Html.ActionLink(project.ProjectName, "Index", new {id = project.IdProject }, new { @class = "project" })
+                        @*<span> Информационная система: @((string.IsNullOrEmpty(project.InformationSystem)) ? "Не выставлено" : @project.InformationSystem)</span> *@
+                    </p>
+                </div>
             </li>
-    }</ul>
+        }
+    </ul>
 </div>
