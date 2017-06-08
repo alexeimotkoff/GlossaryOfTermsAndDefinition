@@ -12,8 +12,6 @@
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="5.5" PointY="2.125" IsExpanded="true" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" ManuallyRouted="false" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.BucketHash" Width="1.5" PointX="7.5" PointY="7.125" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.MinHash" Width="1.5" PointX="7.5" PointY="4.875" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="9.75" PointY="5.875" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="5.5" PointY="4.75" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.User" Width="1.5" PointX="1.25" PointY="5.625" />
@@ -21,11 +19,13 @@
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Reference_ToProject" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.Buckets" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.Glossaries" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.Signature" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.webpages_Roles" Width="1.5" PointX="1.25" PointY="2.125" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.webpages_UsersInRoles" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.BucketHash" Width="1.5" PointX="7.75" PointY="7.375" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.MinHash" Width="1.5" PointX="7.75" PointY="5" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Buckets" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.Signature" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

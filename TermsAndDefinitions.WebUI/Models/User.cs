@@ -25,6 +25,8 @@ namespace TermsAndDefinitions.WebUI.Models
         public string UserName { get; set; }
         public string Email { get; set; }
         public Nullable<int> PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }

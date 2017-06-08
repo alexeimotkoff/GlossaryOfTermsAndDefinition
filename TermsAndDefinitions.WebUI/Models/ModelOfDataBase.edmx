@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="IdHash" />
           </Key>
-          <Property Name="IdHash" Type="int" Nullable="false" />
+          <Property Name="IdHash" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Hash" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Buckets">
@@ -112,6 +112,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="56" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="56" />
           <Property Name="PhoneNumber" Type="int" />
         </EntityType>
@@ -464,8 +466,6 @@
             <End Role="FundamentalAreas" EntitySet="FundamentalAreas" />
             <End Role="Terms" EntitySet="Terms" />
           </AssociationSet>
-          <EntitySet Name="BucketHashes" EntityType="GlossaryProjectDatabaseModel.BucketHash" />
-          <EntitySet Name="MinHashes" EntityType="GlossaryProjectDatabaseModel.MinHash" />
           <EntitySet Name="References" EntityType="GlossaryProjectDatabaseModel.Reference" />
           <EntitySet Name="Projects" EntityType="GlossaryProjectDatabaseModel.Project" />
           <EntitySet Name="Users" EntityType="GlossaryProjectDatabaseModel.User" />
@@ -485,40 +485,26 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="Reference" EntitySet="References" />
           </AssociationSet>
-          <AssociationSet Name="Buckets" Association="GlossaryProjectDatabaseModel.Buckets">
-            <End Role="BucketHash" EntitySet="BucketHashes" />
-            <End Role="Project" EntitySet="Projects" />
-          </AssociationSet>
           <AssociationSet Name="Glossaries" Association="GlossaryProjectDatabaseModel.Glossaries">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Term" EntitySet="Terms" />
-          </AssociationSet>
-          <AssociationSet Name="Signature" Association="GlossaryProjectDatabaseModel.Signature">
-            <End Role="MinHash" EntitySet="MinHashes" />
-            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <EntitySet Name="webpages_Roles" EntityType="GlossaryProjectDatabaseModel.webpages_Roles" />
           <AssociationSet Name="webpages_UsersInRoles" Association="GlossaryProjectDatabaseModel.webpages_UsersInRoles">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="BucketHashes" EntityType="GlossaryProjectDatabaseModel.BucketHash" />
+          <EntitySet Name="MinHashes" EntityType="GlossaryProjectDatabaseModel.MinHash" />
+          <AssociationSet Name="Buckets" Association="GlossaryProjectDatabaseModel.Buckets">
+            <End Role="BucketHash" EntitySet="BucketHashes" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="Signature" Association="GlossaryProjectDatabaseModel.Signature">
+            <End Role="MinHash" EntitySet="MinHashes" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="BucketHash">
-          <Key>
-            <PropertyRef Name="IdHash" />
-          </Key>
-          <Property Name="IdHash" Type="Int32" Nullable="false" />
-          <Property Name="Hash" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="BucketHash" ToRole="Project" />
-        </EntityType>
-        <EntityType Name="MinHash">
-          <Key>
-            <PropertyRef Name="IdMinHash" />
-          </Key>
-          <Property Name="IdMinHash" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MinHash1" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="MinHash" ToRole="Project" />
-        </EntityType>
         <EntityType Name="Reference">
           <Key>
             <PropertyRef Name="IdUrl" />
@@ -542,8 +528,8 @@
           <NavigationProperty Name="LifeСycle" Relationship="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="Project" ToRole="LifeСycle" />
           <NavigationProperty Name="User" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="References" Relationship="GlossaryProjectDatabaseModel.FK_Reference_ToProject" FromRole="Project" ToRole="Reference" />
-          <NavigationProperty Name="BucketHashes" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="Project" ToRole="BucketHash" />
           <NavigationProperty Name="Terms" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Project" ToRole="Term" />
+          <NavigationProperty Name="BucketHashes" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="Project" ToRole="BucketHash" />
           <NavigationProperty Name="MinHashes" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="Project" ToRole="MinHash" />
         </EntityType>
         <EntityType Name="User">
@@ -556,6 +542,8 @@
           <Property Name="PhoneNumber" Type="Int32" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="User" ToRole="Project" />
           <NavigationProperty Name="webpages_Roles" Relationship="GlossaryProjectDatabaseModel.webpages_UsersInRoles" FromRole="User" ToRole="webpages_Roles" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SK_Project_ToIdInformationSystem">
           <End Type="GlossaryProjectDatabaseModel.InformationSystem" Role="InformationSystem" Multiplicity="0..1" />
@@ -605,17 +593,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Buckets">
-          <End Type="GlossaryProjectDatabaseModel.BucketHash" Role="BucketHash" Multiplicity="*" />
-          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
-        </Association>
         <Association Name="Glossaries">
           <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
           <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="*" />
-        </Association>
-        <Association Name="Signature">
-          <End Type="GlossaryProjectDatabaseModel.MinHash" Role="MinHash" Multiplicity="*" />
-          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
         </Association>
         <EntityType Name="webpages_Roles">
           <Key>
@@ -628,6 +608,30 @@
         <Association Name="webpages_UsersInRoles">
           <End Type="GlossaryProjectDatabaseModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
           <End Type="GlossaryProjectDatabaseModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="BucketHash">
+          <Key>
+            <PropertyRef Name="IdHash" />
+          </Key>
+          <Property Name="IdHash" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Hash" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="BucketHash" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="MinHash">
+          <Key>
+            <PropertyRef Name="IdMinHash" />
+          </Key>
+          <Property Name="IdMinHash" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MinHash1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="MinHash" ToRole="Project" />
+        </EntityType>
+        <Association Name="Buckets">
+          <End Type="GlossaryProjectDatabaseModel.BucketHash" Role="BucketHash" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
+        </Association>
+        <Association Name="Signature">
+          <End Type="GlossaryProjectDatabaseModel.MinHash" Role="MinHash" Multiplicity="*" />
+          <End Type="GlossaryProjectDatabaseModel.Project" Role="Project" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -684,22 +688,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BucketHashes">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.BucketHash">
-              <MappingFragment StoreEntitySet="BucketHash">
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="IdHash" ColumnName="IdHash" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MinHashes">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.MinHash">
-              <MappingFragment StoreEntitySet="MinHash">
-                <ScalarProperty Name="MinHash1" ColumnName="MinHash" />
-                <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="References">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Reference">
               <MappingFragment StoreEntitySet="Reference">
@@ -724,6 +712,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -731,28 +721,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Buckets" TypeName="GlossaryProjectDatabaseModel.Buckets" StoreEntitySet="Buckets">
-            <EndProperty Name="Project">
-              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-            </EndProperty>
-            <EndProperty Name="BucketHash">
-              <ScalarProperty Name="IdHash" ColumnName="IdHash" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="Glossaries" TypeName="GlossaryProjectDatabaseModel.Glossaries" StoreEntitySet="Glossaries">
             <EndProperty Name="Term">
               <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
             </EndProperty>
             <EndProperty Name="Project">
               <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="Signature" TypeName="GlossaryProjectDatabaseModel.Signature" StoreEntitySet="Signature">
-            <EndProperty Name="Project">
-              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-            </EndProperty>
-            <EndProperty Name="MinHash">
-              <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
             </EndProperty>
           </AssociationSetMapping>
           <EntitySetMapping Name="webpages_Roles">
@@ -769,6 +743,38 @@
             </EndProperty>
             <EndProperty Name="webpages_Roles">
               <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="BucketHashes">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.BucketHash">
+              <MappingFragment StoreEntitySet="BucketHash">
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="IdHash" ColumnName="IdHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinHashes">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.MinHash">
+              <MappingFragment StoreEntitySet="MinHash">
+                <ScalarProperty Name="MinHash1" ColumnName="MinHash" />
+                <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Buckets" TypeName="GlossaryProjectDatabaseModel.Buckets" StoreEntitySet="Buckets">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+            </EndProperty>
+            <EndProperty Name="BucketHash">
+              <ScalarProperty Name="IdHash" ColumnName="IdHash" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Signature" TypeName="GlossaryProjectDatabaseModel.Signature" StoreEntitySet="Signature">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="IdProject" ColumnName="IdProject" />
+            </EndProperty>
+            <EndProperty Name="MinHash">
+              <ScalarProperty Name="IdMinHash" ColumnName="IdMinHash" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>

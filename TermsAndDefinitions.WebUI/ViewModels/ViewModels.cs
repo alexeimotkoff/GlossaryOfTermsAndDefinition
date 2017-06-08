@@ -100,7 +100,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public IEnumerable<PreviewLifeСycle> LifeСycleList { get; set; }
         [Display(Name = "Файл технической документации:")]
         public HttpPostedFileBase File { get; set; }
-        public List<HttpPostedFileBase> Fileы { get; set; }
+        public List<HttpPostedFileBase> Files { get; set; }
     }
 
     public class PreviewInfSysViewModel
