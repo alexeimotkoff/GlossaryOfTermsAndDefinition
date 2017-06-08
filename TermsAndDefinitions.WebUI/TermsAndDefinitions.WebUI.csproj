@@ -270,8 +270,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FundareaController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TermController.cs" />
     <Compile Include="Filters\AjaxOnlyAttribute.cs" />
@@ -457,9 +457,8 @@
     <Content Include="Views\Search\SearchPartical.cshtml" />
     <Content Include="Views\Search\IndexSearch.cshtml" />
     <Content Include="Views\Project\IndexAdd.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Fundarea\IndexFundarea.cshtml" />
+    <Content Include="Views\Fundarea\FundareaPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

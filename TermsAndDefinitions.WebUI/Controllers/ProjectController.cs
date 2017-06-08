@@ -71,12 +71,19 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
         }
 
+
+
+
         [HttpGet]
         public ActionResult PreviewProjectsPartical(IEnumerable<PreviewProjectViewModel> project)
         {
             ViewData["anotherTitle"] = "Встречается в проектах";
             return PartialView("PreviewProjectsPartical", project);
         }
+
+
+
+
 
         [HttpGet]
         public ActionResult ProjectPartical(ProjectViewModel project)
@@ -142,7 +149,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     cfg.CreateMap<ProjectViewModel, Project>()
                     .ForMember("File", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/", c.ProjectName.Replace(' ', '_')))));
                 });
-                    SaveDocuments(project.File, project.ProjectName);
+                    SaveDocuments(project.Files, project.ProjectName);
                     var texts = GetTextsFromDocs(Server.MapPath("~/Files/{0}/" + project.ProjectName.Replace(' ', '_')));
                     string annotation = GetAnnotationFromTexts(texts);
                     int[] signature = minHash.GetSignature(annotation);
