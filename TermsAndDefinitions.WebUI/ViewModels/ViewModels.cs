@@ -88,20 +88,16 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class ProjectViewModel
     {
         public int IdProject { get; set;}
-        [Required]
         [Display(Name = "Название проекта:")]
         public string ProjectName { get; set; }
         public string Annotation { get; set; }
-        [Required]
         [Display(Name = "Информационая система:")]
         public PreviewInfSysViewModel InformationSystem { get; set; }
-        [Required]
         [Display(Name = "Жизненый цикл:")]
         public PreviewLifeСycle LifeСycle { get; set; }
         public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
         public IEnumerable<PreviewInfSysViewModel> InfSysList { get; set; }
         public IEnumerable<PreviewLifeСycle> LifeСycleList { get; set; }
-        [Required]
         [Display(Name = "Файл технической документации:")]
         public HttpPostedFileBase File { get; set; }
         public List<HttpPostedFileBase> Fileы { get; set; }

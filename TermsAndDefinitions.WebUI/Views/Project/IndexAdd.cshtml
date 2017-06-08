@@ -38,7 +38,7 @@
         <div class="form-group">
             @Html.LabelFor(project => project.File, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                @Html.TextBoxFor(project => project.File, new { @class = "filestyle", type = "file", data_show_preview = "false", data_icon = "false", data_buttonText = "Добавить документацию", accept = "application/msword" })
+                @Html.TextBoxFor(project => project.File, new { type = "file", @class = "filestyle",  data_show_preview = "false", data_icon = "false", data_buttonText = "Добавить документацию"})
                 @*@Html.ValidationMessageFor(project => project.File, "Файл не выбран", new { @class = "text-danger" })*@
             </div>
         </div>
