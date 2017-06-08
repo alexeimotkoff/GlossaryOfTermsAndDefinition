@@ -13,6 +13,7 @@ using DotNetOpenAuth.Messaging;
 using System.IO;
 using TikaOnDotNet.TextExtraction;
 using System.Web.UI;
+using System.Text.RegularExpressions;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
@@ -137,21 +138,30 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
         [HttpPost, ActionName("Add")]
         //[ValidateAntiForgeryToken]
-        async public Task<ActionResult> AddPost(ProjectViewModel project)
+        public ActionResult AddPost(ProjectViewModel project)
         {
             if (ModelState.IsValid)
-            {
+            { 
                 Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
                 .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));
                 cfg.CreateMap<ProjectViewModel, Project>()
-                .ForMember("References", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/", c.ProjectName.Replace(' ', '_')))));
+                .ForMember("References", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/",c.ProjectName.Replace(' ', '_')))));
             });
-                SaveDocuments(project.File, project.ProjectName);
-                var texts = GetTextsFromDocs(Server.MapPath("~/Files/{0}/" + project.ProjectName.Replace(' ', '_')));
-                string annotation = GetAnnotationFromTexts(texts);
-                int[] signature = minHash.GetSignature(annotation);
+                string pathToProectFolder = SaveDocuments(project.File, project.ProjectName);
+                var texts = GetTextsFromDocs(pathToProectFolder);
+                var annotations = GetAnnotationFromTexts(texts);
+                string annotation = "";
+                string textForSignature = project.ProjectName + texts.Aggregate((x, y) => x + y);
+
+                if (annotations.Count > 0)
+                {
+                    annotation = annotations.First();
+                    textForSignature = project.ProjectName + annotation;
+                }
+
+                int[] signature = minHash.GetSignature(textForSignature);
                 List<long> buckets = minHash.GetBuckets(signature).ToList();
 
                 var project_signature = signature.Select(x =>
@@ -159,25 +169,31 @@ namespace TermsAndDefinitions.WebUI.Controllers
                      var minHas = db.MinHashes.FirstOrDefault(m => m.MinHash1 == x);
                      if (minHas == null)
                      {
-                         minHas = new MinHash() {MinHash1 = x};
+                         minHas = new MinHash() { MinHash1 = x };
                      }
                      return minHas;
                  });
+
                 db.MinHashes.AddRange(project_signature.Where(s => s.IdMinHash == 0));
                 var project_buckets = buckets.Select(x =>
                 {
                     var bucket = db.BucketHashes.FirstOrDefault(m => m.Hash == x);
                     if (bucket == null)
                     {
-                        bucket = new BucketHash() {Hash = x};
+                        bucket = new BucketHash() { Hash = x };
                     }
                     return bucket;
                 });
                 db.BucketHashes.AddRange(project_buckets.Where(s => s.IdHash == 0));
 
-                await db.SaveChangesAsync();
+                db.SaveChanges();
 
                 Project new_project = Mapper.Map<ProjectViewModel, Project>(project);
+
+                if (annotations.Count > 0)
+                {
+                    new_project.Annotation = annotation;
+                }
 
                 foreach (var bucket in project_buckets)
                 {
@@ -189,7 +205,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 }
 
                 db.Projects.Add(new_project);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 var similarProgects = GetSimilarProgects(signature, buckets, 4);
             }
             return View();
@@ -261,18 +277,31 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return "";
         }
 
-        public IEnumerable<string> GetTextsFromDocs(string pathToFolder)
+        public List<string> GetTextsFromDocs(string pathToFolder)
         {
             DirectoryInfo dir = new DirectoryInfo(pathToFolder);
+            List<string> resultTexts = new List<string>();
             foreach (var doc in dir.GetFiles())
             {
-                yield return new TextExtractor().Extract(doc.FullName).Text;
+                string text = new TextExtractor().Extract(doc.FullName).Text;
+                resultTexts.Add(Regex.Replace(text, @"\n+", @"\n"));
             }
+            return resultTexts;
         }
 
-        public string GetAnnotationFromTexts(IEnumerable<string> text)
+        public List<string> GetAnnotationFromTexts(IEnumerable<string> texts)
         {
-            return "";
+            List<string> annotations = new List<string>();
+            foreach (var text in texts)
+            {
+                string pat = @"аннотация[\s\t.:\n]*([^\n]*)";
+                Regex r = new Regex(pat, RegexOptions.IgnoreCase);
+                Match m = r.Match(text);
+                if (m.Success)
+                    annotations.Add(m.Groups[0].Value);
+            }
+            annotations.Sort((x,y) => y.Length.CompareTo(x.Length));
+            return annotations;
         }
     }
 }
