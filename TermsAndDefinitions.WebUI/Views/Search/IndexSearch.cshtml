@@ -21,7 +21,7 @@
         @{
             if (ViewData["query"] == null)
             {
-                Html.RenderPartial("SearchPartical");
+                Html.RenderAction("PreviewFundareaPartical", "Fundarea");
             }
             else
             {

@@ -20,17 +20,20 @@ namespace TermsAndDefinitions.WebUI.Controllers
         [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
         public ActionResult Index(int? id)
         {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>();
+                cfg.CreateMap<Term, PreviewTermViewModel>()
+                .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<FundamentalArea, FundAreaViewModel>()
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameFundamentalArea))
+                .ForMember("Discription", opt => opt.MapFrom(c => c.NameFundamentalArea));              
+            });
+
             if (id == null)
             {
-                var fundareaColection = new DBContext().FundamentalAreas.OrderBy(t => t.NameFundamentalArea);
-                Mapper.Initialize(cfg =>
-                {
-                    cfg.CreateMap<FundamentalArea, PreviewFundArea>();
-                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                    cfg.CreateMap<Definition, DefinitionViewModel>();
-                    cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                });
-                var resultColection = Mapper.Map<IEnumerable<FundamentalArea>, IEnumerable<PreviewFundArea>>(fundareaColection);
+                var fundareaColection = new DBContext().FundamentalAreas.OrderBy(t => t.NameFundamentalArea);                
+                var resultColection = Mapper.Map<IEnumerable<FundamentalArea>, IEnumerable<FundAreaViewModel>>(fundareaColection);
 
                 if (Request.IsAjaxRequest())
                     return PartialView("PreviewFundareaPartical", resultColection);
@@ -40,19 +43,29 @@ namespace TermsAndDefinitions.WebUI.Controllers
             else
             {
                 var fundareaColection = db.FundamentalAreas.Find(id);
-                Mapper.Initialize(cfg =>
-                {
-                    cfg.CreateMap<FundamentalArea, PreviewFundArea>();
-                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                    cfg.CreateMap<Definition, DefinitionViewModel>();
-                    cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                });
-
-                var resultColection = Mapper.Map<FundamentalArea, PreviewFundArea>(fundareaColection);
+                var resultColection = Mapper.Map<FundamentalArea, FundAreaViewModel>(fundareaColection);
                 if (Request.IsAjaxRequest())
-                    return PartialView("PreviewFundareaPartical", resultColection);
-                return View("IndexPreviewFundarea", resultColection);
+                    return PartialView("FundareaPartical", resultColection);
+                return View("IndexFundarea", resultColection);
             }
+        }
+
+        public ActionResult PreviewFundareaPartical()
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>();
+                cfg.CreateMap<Term, PreviewTermViewModel>()
+                .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<FundamentalArea, FundAreaViewModel>()
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameFundamentalArea))
+                .ForMember("Discription", opt => opt.MapFrom(c => c.NameFundamentalArea));
+            });
+            ViewData["anotherTitle"] = "Фундоментальные области";
+            var fundareaColection = new DBContext().FundamentalAreas.OrderBy(t => t.NameFundamentalArea);
+            var resultColection = Mapper.Map<IEnumerable<FundamentalArea>, IEnumerable<FundAreaViewModel>>(fundareaColection);
+            
+            return PartialView("PreviewFundareaPartical", resultColection);
         }
     }
 }

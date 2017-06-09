@@ -72,9 +72,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 return View("IndexProject", resultProject);
             }
         }
-
-
-
+        
 
         [HttpGet]
         public ActionResult PreviewProjectsPartical(IEnumerable<PreviewProjectViewModel> project)
@@ -84,18 +82,23 @@ namespace TermsAndDefinitions.WebUI.Controllers
         }
 
 
-
-
-
         [HttpGet]
         public ActionResult ProjectPartical(ProjectViewModel project)
         {
             return PartialView("ProjectPartical", project);
         }
 
-        async public Task<IEnumerable<Project>> GetSimilarProgects(int[] signature, List<long> buckets, int count)
+        async public Task<IEnumerable<Project>> GetSimilarProgects(int idProject, int count)
         {
-            HashSet<Project> projects = new HashSet<Project>();
+           var project = db.Projects.Find(idProject);
+           int[] signature = project.MinHashes.Select(x => x.MinHash1).ToArray();
+           List<long> buckets = project.BucketHashes.Select(x => x.Hash).ToList();
+           return await GetSimilarProgects(signature,  buckets,  count);
+        }
+        
+        async public Task<IEnumerable<Project>> GetSimilarProgects(int[] signature, List<long> buckets, int count)
+        {         
+            HashSet <Project> projects = new HashSet<Project>();
             foreach (long bucketHash in buckets)
             {
                 var bucket = await db.BucketHashes.FirstOrDefaultAsync(b => b.Hash == bucketHash);
@@ -141,14 +144,16 @@ namespace TermsAndDefinitions.WebUI.Controllers
         public ActionResult AddPost(ProjectViewModel project)
         {
             if (ModelState.IsValid)
-            { 
-                Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
-                .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));
-                cfg.CreateMap<ProjectViewModel, Project>()
-                .ForMember("References", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/",c.ProjectName.Replace(' ', '_')))));
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<PreviewLifeСycle,LifeCycle>();
+                    cfg.CreateMap<PreviewInfSysViewModel, InformationSystem>()
+                    .ForMember("IdInformationSystem", opt => opt.MapFrom(c => c.Id));
+                    cfg.CreateMap<ProjectViewModel, Project>()
+                    .ForMember("References", opt => opt.MapFrom(c => Server.MapPath(string.Format("~/Files/{0}/",c.ProjectName.Replace(' ', '_')))));
             });
+
                 string pathToProectFolder = SaveDocuments(project.File, project.ProjectName);
                 var texts = GetTextsFromDocs(pathToProectFolder);
                 var annotations = GetAnnotationFromTexts(texts);
@@ -162,54 +167,62 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 }
 
                 int[] signature = minHash.GetSignature(textForSignature);
-                List<long> buckets = minHash.GetBuckets(signature).ToList();
+                //var minHashColectionObjectFromDB = db.MinHashes.Where(x => signature.Contains(x.MinHash1));
+                //var minHashColectionValuesFromDB = minHashColectionObjectFromDB.Select(x => x.MinHash1);
+                var new_project_signature = signature.Select(x => new MinHash() { MinHash1 = x });
+                    //.Where(x => !minHashColectionValuesFromDB.Contains(x))
+                
+                var buckets = minHash.GetBuckets(signature);
+                //var bucketHashColectionObjectFromDB = db.BucketHashes.Where(x => buckets.Contains(x.Hash));
+                //var bucketHashColectionValuesFromDB = bucketHashColectionObjectFromDB.Select(x => x.Hash);
+                var new_project_buckets = buckets.Select(x =>  new BucketHash() { Hash = x });
+                    //.Where(x => !bucketHashColectionValuesFromDB.Contains(x))
 
-                var project_signature = signature.Select(x =>
-                 {
-                     var minHas = db.MinHashes.FirstOrDefault(m => m.MinHash1 == x);
-                     if (minHas == null)
-                     {
-                         minHas = new MinHash() { MinHash1 = x };
-                     }
-                     return minHas;
-                 });
+                db.MinHashes.AddRange(new_project_signature);
+                db.BucketHashes.AddRange(new_project_buckets);
+                // db.SaveChanges();
 
-                db.MinHashes.AddRange(project_signature.Where(s => s.IdMinHash == 0));
-                var project_buckets = buckets.Select(x =>
+                Project new_project = new Project()
                 {
-                    var bucket = db.BucketHashes.FirstOrDefault(m => m.Hash == x);
-                    if (bucket == null)
-                    {
-                        bucket = new BucketHash() { Hash = x };
-                    }
-                    return bucket;
-                });
-                db.BucketHashes.AddRange(project_buckets.Where(s => s.IdHash == 0));
-
-                db.SaveChanges();
-
-                Project new_project = Mapper.Map<ProjectViewModel, Project>(project);
+                    ProjectName = project.ProjectName,
+                    Annotation = annotation,
+                    IdLifeСycle = project.LifeСycle.IdLifeСycle,
+                    IdInformationSystem = project.InformationSystem.Id
+                };
 
                 if (annotations.Count > 0)
                 {
                     new_project.Annotation = annotation;
                 }
 
-                foreach (var bucket in project_buckets)
+                //foreach (var bucket in bucketHashColectionObjectFromDB)
+                //{
+                //    new_project.BucketHashes.Add(bucket);
+                //}
+
+                foreach (var bucket in new_project_buckets)
                 {
                     new_project.BucketHashes.Add(bucket);
                 }
-                foreach (var minHash in project_signature)
+
+                //foreach (var minHash in minHashColectionObjectFromDB)
+                //{
+                //    new_project.MinHashes.Add(minHash);
+                //}
+
+                foreach (var minHash in new_project_signature)
                 {
                     new_project.MinHashes.Add(minHash);
                 }
 
                 db.Projects.Add(new_project);
-                db.SaveChanges();
-                var similarProgects = GetSimilarProgects(signature, buckets, 4);
+                //db.SaveChanges();              
+                return RedirectToAction("Edit",new_project.IdProject);
             }
-            return View();
+            return View("IndexAdd", project);
         }
+
+
 
         [HttpGet]
         [ValidateAntiForgeryToken]
@@ -284,7 +297,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             foreach (var doc in dir.GetFiles())
             {
                 string text = new TextExtractor().Extract(doc.FullName).Text;
-                resultTexts.Add(Regex.Replace(text, @"\n+", @"\n"));
+                resultTexts.Add(Regex.Replace(text, @"[\r\n]+", @"\n"));
             }
             return resultTexts;
         }
@@ -298,7 +311,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 Regex r = new Regex(pat, RegexOptions.IgnoreCase);
                 Match m = r.Match(text);
                 if (m.Success)
-                    annotations.Add(m.Groups[0].Value);
+                    annotations.Add(m.Groups[1].Value);
             }
             annotations.Sort((x,y) => y.Length.CompareTo(x.Length));
             return annotations;

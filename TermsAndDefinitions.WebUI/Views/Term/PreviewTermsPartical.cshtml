@@ -32,14 +32,14 @@
                 @foreach (var symbol in alphabetEN.ToCharArray())
                 {
                     
-                   <li>@Ajax.RouteLink(symbol.ToString(), new { action = "Search", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" })</li>
+                   <li>@Ajax.RouteLink(symbol.ToString(), new { controller = "Term", action = "Search", queryString = @symbol }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" })</li>
                 }
             </ul>
         }
        
     }
 
-    <div id="content">
+<div id="content">
 
         @{
         if (ViewData["anotherTitle"] != null)
@@ -58,7 +58,7 @@
         <ul>
             @foreach (var term in Model)
             {
-                <li style=" list-style-type: none">
+                <li >
                     <div class="text-cut-box">
                         <div>
                             <p>

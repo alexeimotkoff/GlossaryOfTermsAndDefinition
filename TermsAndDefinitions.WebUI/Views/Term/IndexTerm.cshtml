@@ -7,7 +7,5 @@
 <div id="Main">
     @*@using (Ajax.BeginForm("Search", new AjaxOptions { UpdateTargetId = "content", HttpMethod = "GET" }))*@
 
-    <div id="content">
         @{ Html.RenderPartial("TermPartical", Model);}
-    </div>
 </div>

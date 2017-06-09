@@ -30,13 +30,8 @@ namespace TermsAndDefinitions.Domain
             {
                 get
                 {
-
-                    var _textStreamReader = new System.IO.StreamReader("Resources\\RussianStopwords.txt", Encoding.ASCII);
-                    string russianStopwords = _textStreamReader.ReadToEnd();
-                    _textStreamReader.Close();
-                    _textStreamReader = new StreamReader("Resources\\EnglishStopwords.txt", Encoding.ASCII);
-                    string englishStopwords = _textStreamReader.ReadToEnd();
-                    _textStreamReader.Close();
+                    string russianStopwords = Properties.Resources.RussianStopwords;
+                    string englishStopwords= Properties.Resources.EnglishStopwords;
                     List<string> stopWords = new List<string>();
                     stopWords.AddRange(russianStopwords.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));
                     stopWords.AddRange(englishStopwords.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));

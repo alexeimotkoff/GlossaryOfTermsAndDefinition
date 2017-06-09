@@ -1,1 +1,34 @@
-﻿
+﻿@model TermsAndDefinitions.WebUI.ViewModels.FundAreaViewModel
+<div id="content">
+    @{
+        if (ViewData["anotherTitle"] != null)
+        {
+            <hr />
+            <h4>@ViewData["anotherTitle"].ToString()</h4>
+            <hr />
+        }
+        else
+        {
+            <hr />
+             <p><h4>@Model.Name</h4> @*-  @Model.Discription*@</p>
+            <hr />
+        }
+    }
+
+
+        <ul>
+            @foreach (var term in Model.Terms)
+            {
+                <li>
+                    <div class="text-cut-box">
+                        <div>
+                            <p>
+                                @* @Ajax.RouteLink(term.TermName, "TermDetail", new { id = term.IdTerm.ToString() }, new AjaxOptions { UpdateTargetId = "Main", HttpMethod="GET" }, new { @class = "term" }) — @term.Definition.Description*@
+                                @Html.ActionLink(term.TermName, "Index","Term", new { id = term.IdTerm }, new { @class = "term" }) — @term.Definition.Description
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>

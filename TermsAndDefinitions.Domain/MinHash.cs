@@ -14,12 +14,12 @@ namespace TermsAndDefinitions.Domain
         private uint[] hashFunc_b;
         private int ROWSINBAND = 10;
         int m_numBands;
-        private int numHashFunctions = 200;
+        private int numHashFunctions = 100;
 
         public MinHash()
         {
             m_numBands = numHashFunctions / ROWSINBAND;
-            GenerateHashFunctionsArgs();          
+            GenerateHashFunctionsArgs(); 
         }        
 
         public int NumHashFunctions

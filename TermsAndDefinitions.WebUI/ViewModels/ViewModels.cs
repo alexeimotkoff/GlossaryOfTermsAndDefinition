@@ -117,10 +117,12 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         IEnumerable<PreviewProjectViewModel> Projects { get; set; }
     }
     
-    public class PreviewFundArea
+    public class FundAreaViewModel
     {
-        string Name { get; set; }
-        IEnumerable<PreviewTermViewModel> terms { get; set; }
+        public int IdFundamentalArea { get; set; }
+        public string Name { get; set; }
+        public string Discription { get; set; }
+        public IEnumerable<PreviewTermViewModel> Terms { get; set; }
     }
 
     public class LifeСycleViewModel

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.FundAreaViewModel>
+
+@{
+    ViewBag.Title = "IndexPreviewFundarea";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="Main"> 
+    @{ Html.RenderPartial("PreviewFundareaPartical", Model);}
+</div>

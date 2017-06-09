@@ -32,9 +32,22 @@
                     <ul class="nav">                        
                         @*<li>@Ajax.RouteLink("Термины", "TermAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>
                         <li>@Ajax.RouteLink("Проекты", "ProjectAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>*@
+                        <li>@Html.ActionLink("Поиск","Index", "Search")</li>
                         <li>@Html.ActionLink("Термины", "Index", "Term")</li>
                         <li>@Html.ActionLink("Проекты", "Index", "Project")</li>
+                        <li>@Html.ActionLink("Фундаментальные области", "Index", "Fundarea")</li>
                     </ul>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <ul class="nav">
+                            @*<li>@Ajax.RouteLink("Термины", "TermAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>
+                                <li>@Ajax.RouteLink("Проекты", "ProjectAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>*@
+                            <li>@Html.ActionLink("Мои проекты","","")</li>
+                            <li>@Html.ActionLink("Добавить термин", "", "")</li>
+                            <li>@Html.ActionLink("Добавить проект", "Project", "Add")</li>
+                        </ul>
+                    }
+
                 </div>
 
                 <!-- main area -->
@@ -49,7 +62,7 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("Script", false)
-<script type='text/javascript'>
+    <script type='text/javascript'>
     $(document).ready(function () {
         $('[data-toggle=offcanvas]').click(function () {
             $('.row-offcanvas').toggleClass('active');
@@ -60,7 +73,13 @@
         $("#SearchResult").load($(this).attr("href"));
         return false;
     });
-  
+
+   $('.grid').masonry({
+            itemSelector: '.grid-item',
+            columnWidth: 160,
+            horizontalOrder: true
+        });
+
 </script>
 
 

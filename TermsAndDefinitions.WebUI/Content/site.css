@@ -2,7 +2,45 @@
     padding-top: 70px;
 }
 
-.text-center {
+.floating-box {
+    display: inline-block;
+    margin: 10px;
+    height:30px;
+}
+
+.fundarea {
+    background-color: #eaeaea;
+    text-align: center;
+    display: block;
+    color: #0a6b96;
+    padding: 10px;
+    font-weight: bold;
+}
+
+
+li {
+    list-style-type: none;
+}
+
+a.term:link {
+    text-decoration: underline;
+    color: #4e2ead;
+}
+
+a.term:visited {
+    text-decoration: none;
+    color: #4e2ead;
+}
+
+a.term:hover {
+    text-decoration: underline;
+    color: blue;
+}
+a.term:active {
+    text-decoration: underline;
+    color: blue;
+}
+a.text-center {
     padding-top: 10px;
 }
 
@@ -30,7 +68,7 @@
 }
 
 /* collapsed sidebar styles */
-@media screen and (max-width: 767px) { 
+@media screen and (max-width: 767px) {
     .row-offcanvas {
         position: relative;
         -webkit-transition: all 0.25s ease-out;
@@ -38,30 +76,51 @@
         -o-transition: all 0.25s ease-out;
         transition: all 0.25s ease-out;
     }
+
     .row-offcanvas-right .sidebar-offcanvas {
         right: -41.6%;
     }
+
     .row-offcanvas-left .sidebar-offcanvas {
         left: -41.6%;
     }
+
     .row-offcanvas-right.active {
         right: 41.6%;
     }
-    .row-offcanvas-left.active { 
+
+    .row-offcanvas-left.active {
         left: 41.6%;
     }
+
     .sidebar-offcanvas {
         position: absolute;
         top: 0;
         width: 41.6%;
     }
+
     #sidebar {
         padding-top: 0;
     }
+
+    .fundarea {
+        background-color: white;
+    }
+}
+/*--------------------------------*/
+ul.hr {
+    margin: 0; /* Обнуляем значение отступов */
+    padding: 4px; /* Значение полей */
 }
 
-/*--------------------------------*/
-.term {
+ul.hr li {
+        display: inline; /* Отображать как строчный элемент */
+        margin-right: 5px; /* Отступ слева */
+        padding: 3px; /* Поля вокруг текста */
+}
+
+
+a.term {
     font-weight: bold;
 }
 
@@ -138,13 +197,3 @@
     border-bottom-left-radius: 4px;
 }
 /*---------------------------*/
-ul.hr {
-    margin: 0; /* Обнуляем значение отступов */
-    padding: 4px; /* Значение полей */
-}
-
-    ul.hr li {
-        display: inline; /* Отображать как строчный элемент */
-        margin-right: 5px; /* Отступ слева */
-        padding: 3px; /* Поля вокруг текста */
-    }

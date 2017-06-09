@@ -1,5 +1,4 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.ProjectViewModel
-
 <div>
     <hr />
     <h4>@Model.ProjectName</h4>
@@ -14,7 +13,7 @@
         if (Model.Glossary.Count() > 0)
         {
             <div>            
-                @{Html.RenderAction("PreviewTermsPartical", "Term", new { terms = Model.Glossary }); }
+                @{Html.RenderAction("PreviewTermsPartical", "Term", new {terms = Model.Glossary }); }
             </div>
           }
      }

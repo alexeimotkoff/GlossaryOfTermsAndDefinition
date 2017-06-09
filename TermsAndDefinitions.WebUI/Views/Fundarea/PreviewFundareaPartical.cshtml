@@ -1,0 +1,47 @@
+﻿@using TermsAndDefinitions.WebUI.ViewModels
+@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.FundAreaViewModel>
+
+
+<div id="content">
+
+    @{
+        if (ViewData["anotherTitle"] != null)
+        {
+            <hr />
+            <h4>@ViewData["anotherTitle"].ToString()</h4>
+            <hr />
+        }
+        else
+        {
+            <hr />
+            <h4>Фундаментальные области</h4>
+            <hr />
+        }
+    }
+
+    <div class="grid">
+        @{
+            @*List<FundAreaViewModel> areaList = Model.ToList();
+            Random rnd = new Random();
+            int count = 0;
+            while (count < areaList.Count)
+            {
+                <div class="grid-item">
+                    @for (int i = 0; count < areaList.Count && i <rnd.Next(2,5); i++,count++)
+                    {
+                        <h4>
+                            @Html.ActionLink(areaList[count].Name, "Index", new { id = areaList[count].IdFundamentalArea }, new { @class = "fundarea" })
+                        </h4>
+                    }
+                </div>
+            }*@
+
+        foreach (var item in Model)
+        {
+            <div class="floating-box">
+             @Html.ActionLink(item.Name, "Index", new { id = @item.IdFundamentalArea }, new { @class = "fundarea" })
+            </div>
+        }
+        }
+    </div>
+</div>
