@@ -61,7 +61,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 .ForMember("Name", opt => opt.MapFrom(c => c.NameFundamentalArea))
                 .ForMember("Discription", opt => opt.MapFrom(c => c.NameFundamentalArea));
             });
-            ViewData["anotherTitle"] = "Фундоментальные области";
+            ViewData["anotherTitle"] = "Фундаментальные области";
             var fundareaColection = new DBContext().FundamentalAreas.OrderBy(t => t.NameFundamentalArea);
             var resultColection = Mapper.Map<IEnumerable<FundamentalArea>, IEnumerable<FundAreaViewModel>>(fundareaColection);
             
