@@ -12,9 +12,9 @@
     {
         if (Model.Glossary.Count() > 0)
         {
-            <div>            
-                @{Html.RenderAction("PreviewTermsPartical", "Term", new {terms = Model.Glossary }); }
+            <div>
+                @{ Html.RenderPartial("GlossaryPartical", Model.Glossary);}
             </div>
-          }
+        }
      }
 </div>

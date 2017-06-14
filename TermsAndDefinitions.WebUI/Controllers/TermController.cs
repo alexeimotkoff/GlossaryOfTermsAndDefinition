@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotNetOpenAuth.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -50,13 +51,14 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
                     cfg.CreateMap<Definition, DefinitionViewModel>();
                     cfg.CreateMap<Project, PreviewProjectViewModel>();
                     cfg.CreateMap<Term, TermViewModel>();
                 });
-
+                //Проекты в глоссариях которых встречается термин
+                var projects = term.Definitions.SelectMany(x => x.Projects).Distinct();               
                 var resultTerm = Mapper.Map<Term, TermViewModel>(term);
+                resultTerm.Projects = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
                 if (Request.IsAjaxRequest())
                     return PartialView("TermPartical", resultTerm);
                 return View("IndexTerm", resultTerm);
@@ -113,6 +115,19 @@ namespace TermsAndDefinitions.WebUI.Controllers
             ViewData["anotherTitle"] = "Глоссарий проекта";
             return PartialView("PreviewTermsPartical", terms);
         }
+
+        //[HttpGet]
+        //public ActionResult DefinitionEdit(int Id)
+        //{
+
+        //    return PartialView("DefinitionEditPartical", term);
+        //}
+
+        //[HttpPost]
+        //public ActionResult DefinitionEdit(ProjectViewModel term)
+        //{
+        //    return PartialView("DefinitionEditPartical", term);
+        //}
 
         [HttpGet]
         public ActionResult TermPartical(ProjectViewModel term)

@@ -12,13 +12,19 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 {
     public class DefinitionViewModel
     {
+        string urlTitle = "";
         public string Description { get; set; }
+        public int IdDefinition { get; set; }
+        public string TermName { get; set; }
+        public int IdTerm { get; set; }
         public string URL { get; set; }
-        public string Name
+        public string URLTitle
         {
             get
             {
-                if (URL.Contains(".pdf") || URL.Contains(".doc") || URL.Contains(".docx"))
+                if (!string.IsNullOrEmpty(urlTitle))
+                    return urlTitle;
+                else if (URL.Contains(".pdf") || URL.Contains(".doc") || URL.Contains(".docx"))
                     return HttpUtility.UrlDecode(Path.GetFileName(new Uri(URL).AbsolutePath));
                 else
                 {
@@ -59,6 +65,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
                     }
                 }
             }
+            set
+            {
+                urlTitle = value;
+            }
         }
     }
 
@@ -95,7 +105,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public PreviewInfSysViewModel InformationSystem { get; set; }
         [Display(Name = "Жизненый цикл:")]
         public PreviewLifeСycle LifeСycle { get; set; }
-        public IEnumerable<PreviewTermViewModel> Glossary { get; set; }
+        public IEnumerable<DefinitionViewModel> Glossary { get; set; }
         public IEnumerable<PreviewInfSysViewModel> InfSysList { get; set; }
         public IEnumerable<PreviewLifeСycle> LifeСycleList { get; set; }
         [Display(Name = "Файл технической документации:")]

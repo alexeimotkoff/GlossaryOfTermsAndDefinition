@@ -80,7 +80,7 @@ namespace TermsAndDefinitions.Domain
         {
             long[] buckets = new long[m_numBands];
             for (int i = 0; i < m_numBands; i++)
-            {                //combine all 5 MH values and then hash get its hashcode
+            {               
                 long sum = 0;
 
                 for (int j = 0; j < ROWSINBAND; j++)

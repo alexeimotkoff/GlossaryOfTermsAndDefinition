@@ -1,0 +1,25 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.DefinitionViewModel>
+<div id="content">
+
+    <hr />
+    <h4>Глоссарий проекта</h4>
+    <hr />
+    <ul>
+        @foreach (var term in Model)
+            {
+            <li>
+                <div>
+                    <p>
+                        @Html.ActionLink(term.TermName, "Index","Term", new { id = term.IdTerm }, new { @class = "term" }) — @term.Description
+                        @{
+                            if (!string.IsNullOrEmpty(term.URL))
+                            {
+                                    <sup>[<a href=@term.URL>ссылка</a>]</sup>
+                            }
+                         }
+                    </p>
+                 </div>
+            </li>
+        }
+    </ul>
+</div>

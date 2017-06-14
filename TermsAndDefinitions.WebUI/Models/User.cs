@@ -17,8 +17,8 @@ namespace TermsAndDefinitions.WebUI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Projects = new HashSet<Project>();
             this.webpages_Roles = new HashSet<webpages_Roles>();
+            this.Projects = new HashSet<Project>();
         }
     
         public int Id { get; set; }
@@ -29,8 +29,8 @@ namespace TermsAndDefinitions.WebUI.Models
         public string LastName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

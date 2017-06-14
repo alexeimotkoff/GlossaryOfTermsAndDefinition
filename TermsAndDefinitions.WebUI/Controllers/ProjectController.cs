@@ -43,7 +43,6 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
                     cfg.CreateMap<Project, PreviewProjectViewModel>();
                 });
                 var resultProjectsColection = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
@@ -60,12 +59,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                    //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                    cfg.CreateMap<Definition, DefinitionViewModel>();
-                    cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                    cfg.CreateMap<Project, ProjectViewModel>().ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
+                    cfg.CreateMap<Definition, DefinitionViewModel>()
+                    .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
+                    cfg.CreateMap<Project, ProjectViewModel>();
                 });
-
                 var resultProject = Mapper.Map<Project, ProjectViewModel>(projects);
                 if (Request.IsAjaxRequest())
                     return PartialView("ProjectPartical", resultProject);
@@ -221,9 +218,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
             return View("IndexAdd", project);
         }
-
-
-
+        
         [HttpGet]
         [ValidateAntiForgeryToken]
         async public Task<ActionResult> Edit(int id)
@@ -235,10 +230,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                 .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                 .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                cfg.CreateMap<Definition, DefinitionViewModel>();
-                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                cfg.CreateMap<Project, ProjectViewModel>().ForMember("Glossary", opt => opt.MapFrom(c => c.Terms));
+                cfg.CreateMap<Definition, DefinitionViewModel>();                
+                cfg.CreateMap<Project, ProjectViewModel>();
             });
 
             var resultProject = Mapper.Map<Project, ProjectViewModel>(projects);

@@ -18,18 +18,16 @@ namespace TermsAndDefinitions.WebUI.Models
         public Term()
         {
             this.Definitions = new HashSet<Definition>();
-            this.Projects = new HashSet<Project>();
         }
     
         public int IdTerm { get; set; }
         public string TermName { get; set; }
         public string TermNameEng { get; set; }
+        public string Addition { get; set; }
         public Nullable<int> IdFundamentalArea { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Definition> Definitions { get; set; }
         public virtual FundamentalArea FundamentalArea { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects { get; set; }
     }
 }
