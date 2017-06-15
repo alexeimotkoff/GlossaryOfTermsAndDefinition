@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -51,18 +52,53 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
                     .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                     .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                    cfg.CreateMap<Definition, DefinitionViewModel>();
+                    cfg.CreateMap<Definition, DefinitionViewModel>()
+                    .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
                     cfg.CreateMap<Project, PreviewProjectViewModel>();
                     cfg.CreateMap<Term, TermViewModel>();
                 });
+
                 //Проекты в глоссариях которых встречается термин
-                var projects = term.Definitions.SelectMany(x => x.Projects).Distinct();               
+                var projects = term.Definitions
+                    .SelectMany(x => x.Projects)
+                    .GroupBy(x => x.IdProject)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.First());
+
                 var resultTerm = Mapper.Map<Term, TermViewModel>(term);
                 resultTerm.Projects = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
                 if (Request.IsAjaxRequest())
                     return PartialView("TermPartical", resultTerm);
                 return View("IndexTerm", resultTerm);
             }
+        }
+
+        [HttpPost, ActionName("Edit")]
+        public ActionResult EditDefinition(int id)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>();                
+            });
+            Definition item = db.Definitions.Find(id);           
+            return PartialView("EditDefinition", Mapper.Map<Definition, DefinitionViewModel>(item));
+        }
+
+        [HttpPost, ActionName("Update")]
+        public ActionResult UpdateDefinition(DefinitionViewModel model)
+        {
+            return Content(model.Description);
+        }
+
+        [HttpGet]
+        public ActionResult Add()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Add(TermViewModel term)
+        {
+            return View();
         }
 
         [HttpGet]
@@ -106,6 +142,16 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
 
             return PartialView("PreviewTermsPartical", resultColection);
+        }
+
+
+        public ContentResult UpdateField(string id, string value, int termId)
+        {
+            //Term term = db.Terms.Find(termId);
+            //PropertyInfo propertyInfo = term.GetType().GetProperty(id);
+            //propertyInfo.SetValue(term, Convert.ChangeType(value, propertyInfo.PropertyType), null);
+         
+            return Content(value);
         }
 
         #region From another controller

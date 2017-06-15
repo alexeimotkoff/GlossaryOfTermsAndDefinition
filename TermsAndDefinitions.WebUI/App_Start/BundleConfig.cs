@@ -23,8 +23,9 @@ namespace TermsAndDefinitions.WebUI
                     "~/Scripts/masonry.pkgd.min.js"
                     ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(                
                          "~/Scripts/jquery-3.1.1.min.js",
+                         "~/Scripts/jquery.jeditable.js",
                          "~/Scripts/jquery.unobtrusive-ajax.min.js",
                          "~/Scripts/jquery.validate.min.js",
                          "~/Scripts/jquery.validate.unobtrusive.min.js" ));

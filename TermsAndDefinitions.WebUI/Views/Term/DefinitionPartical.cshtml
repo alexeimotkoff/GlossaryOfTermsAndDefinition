@@ -1,0 +1,22 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.DefinitionViewModel
+
+<dt>
+    <span class="term">@Model.TermName </span>
+    @if (Request.IsAuthenticated)
+    {
+        @Ajax.ActionLink("Изменить", "Edit", new { id = Model.IdDefinition }, new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" }, new { style = "float:right;" })
+    }
+</dt>
+@{
+    string definitionId = "definition" + Model.IdDefinition.ToString();
+}
+<dd id="@definitionId">
+    @Model.Description
+    @{
+        if (!string.IsNullOrEmpty(@Model.URL))
+        {
+            <sup>[<a href=@Model.URL>@ViewData["LinkCount"]</a>]</sup>
+        }
+    }
+</dd>
+

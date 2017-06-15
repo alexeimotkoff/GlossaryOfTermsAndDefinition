@@ -32,19 +32,24 @@ namespace TermsAndDefinitions.WebUI
               defaults: new { controller = "Term", action = "Index" }
               );
 
+            routes.MapRoute(
+           name: "TermUpdate",
+           url: "Term/Update/{model}",
+           defaults: new { controller = "Term", action = "Update", model = UrlParameter.Optional }
+           );
 
             routes.MapRoute(
               name: "TermAdd",
               url: "Term/Add/{term}",
               defaults: new { controller = "Term", action = "Add", term = UrlParameter.Optional }
               );
-
-
+            
             routes.MapRoute(
               name: "TermEdit",
               url: "Term/Edit/{id}",
               defaults: new { controller = "Term", action = "Edit", id = UrlParameter.Optional }
               );
+
 
             routes.MapRoute(
              name: "TermSearch",

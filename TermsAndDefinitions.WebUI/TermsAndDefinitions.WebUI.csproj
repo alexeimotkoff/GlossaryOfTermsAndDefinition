@@ -415,6 +415,7 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.jeditable.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -455,6 +456,8 @@
     <Content Include="Views\Fundarea\IndexPreviewFundarea.cshtml" />
     <Content Include="Views\Fundarea\PreviewFundareaPartical.cshtml" />
     <Content Include="Views\Project\GlossaryPartical.cshtml" />
+    <Content Include="Views\Term\EditDefinition.cshtml" />
+    <Content Include="Views\Term\DefinitionPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -494,6 +497,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Edit\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
