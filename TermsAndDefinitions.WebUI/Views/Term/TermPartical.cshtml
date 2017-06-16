@@ -1,4 +1,5 @@
-﻿@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
+﻿@using TermsAndDefinitions.WebUI.ViewModels;
+@model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
 
 <div>
     <hr />
@@ -6,7 +7,8 @@
     <hr />
     @{
         int count = 1;
-        var firstItem = Model.Definitions.First();
+        var definitions = Model.Definitions.OrderByDescending(x => x.Freq);
+        var firstItem = definitions.First();
 
         if (!string.IsNullOrEmpty(firstItem.URL))
         {
@@ -19,43 +21,47 @@
             @{Html.RenderPartial("DefinitionPartical", firstItem, ViewData); }
         </div>
 
-                if (Model.Definitions.Count() > 1)
-                {
-                    <hr />
-                    <h4>Другие определения</h4>
-
-                    foreach (var item in Model.Definitions.Skip(1))
-                    {
-                        if (!string.IsNullOrEmpty(item.URL))
-                        {
-                            ViewData["LinkCount"] = (count++).ToString();
-                        }
-                        definitionId = "definition" + item.IdDefinition.ToString();
-
-                        <div id="@definitionId" class="row">
-                            @{Html.RenderPartial("DefinitionPartical", item, ViewData); }
-                        </div>
-                                    }
-                                }
-    }
-    <div class="row">
-        @if (Model.Projects != null)
-        {
-            if (Model.Projects.Count() > 0)
-            {
-                Html.RenderAction("PreviewProjectsPartical", "Project", new { project = Model.Projects });
-
+        <div id="OtherDefinitions" class="row">
+            @{ 
+                var otherDefinitions = definitions.Skip(1);
             }
-        }
-    </div>
+           
+            @{Html.RenderPartial("OtherDefinitionsPartical", otherDefinitions); }
+            
+        </div>
+        if (Request.IsAuthenticated)
+        {
+            <div class="row">
+                <div class="col-sm-6  col-xs-12">                      
+                        @Ajax.ActionLink("Добавть другое определение", "AddDefinitionForm",
+                       new { id = Model.IdTerm },
+                       new AjaxOptions { UpdateTargetId = "newDefinitionForm", HttpMethod = "POST" },
+                        new { @class = "btn  btn-sm btn-default" }
+                       )
+                </div>
+            </div>
+       }
 
-    <div class="row">
-        @{
-            var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
-            if (URLs.Count() > 0)
-            {
-                <hr />
-                <h4>Ссылки</h4>
+    }
+                <div class="row">
+
+                    @if (Model.Projects != null)
+                    {
+                        if (Model.Projects.Count() > 0)
+                        {
+                            Html.RenderAction("PreviewProjectsPartical", "Project", new { project = Model.Projects });
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @{
+                        var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
+                        if (URLs.Count() > 0)
+                        {
+                            <hr />
+                            <h4>Ссылки</h4>
                             <ol type="1">
                                 @{
                                     count = 1;
@@ -66,5 +72,5 @@
                                 }
                             </ol>
                                     }
-        }
-    </div>
+                    }
+                </div>

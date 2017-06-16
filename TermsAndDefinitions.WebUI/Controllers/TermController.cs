@@ -53,7 +53,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
                         .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                         .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
                         cfg.CreateMap<Definition, DefinitionViewModel>()
-                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
+                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
+                        .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
                         cfg.CreateMap<Project, PreviewProjectViewModel>();
                         cfg.CreateMap<Term, TermViewModel>();
                     });
@@ -91,6 +92,40 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
         }
 
+        public ActionResult AddDefinitionForm(int id)
+        {
+            using (var db = new DBContext())
+            {
+                var term = db.Terms.Find(id);
+                var model = new DefinitionViewModel() { IdTerm = term.IdTerm, TermName = term.TermName };
+                return PartialView("AddDefinition", model);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddDefinition(DefinitionViewModel model)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>()
+                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
+                        .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
+                cfg.CreateMap<DefinitionViewModel, Definition>();
+            });
+
+            using (var db = new DBContext())
+            {
+                var data = Mapper.Map<DefinitionViewModel, Definition>(model);
+                db.Definitions.Add(data);
+                db.SaveChanges();
+                var term = db.Terms.Find(data.IdTerm);
+                term.Definitions.Add(data);
+                db.SaveChanges();
+                var definitions = Mapper.Map<IEnumerable<Definition>, IEnumerable<DefinitionViewModel>>(term.Definitions).OrderByDescending(x=>x.Freq).Skip(1);
+                return PartialView("OtherDefinitionsPartical", definitions);
+            }
+        }
+
         [HttpPost, ActionName("Update")]
         public ActionResult UpdateDefinition(DefinitionViewModel model)
         {
@@ -108,11 +143,6 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     if (data.IdDefinition > 0)
                     {
                         db.Entry(data).State = EntityState.Modified;
-                    }else
-                    {
-                        db.Definitions.Add(data);
-                        db.SaveChanges();
-                        db.Terms.Find(data.IdTerm).Definitions.Add(data);                      
                     }
                     db.SaveChanges();
                     return PartialView("DefinitionPartical", model);
@@ -176,16 +206,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 return PartialView("PreviewTermsPartical", resultColection);
             }
         }
-
-
-        public ContentResult UpdateField(string id, string value, int termId)
-        {
-            //Term term = db.Terms.Find(termId);
-            //PropertyInfo propertyInfo = term.GetType().GetProperty(id);
-            //propertyInfo.SetValue(term, Convert.ChangeType(value, propertyInfo.PropertyType), null);
-         
-            return Content(value);
-        }
+        
 
         #region From another controller
         [HttpGet]

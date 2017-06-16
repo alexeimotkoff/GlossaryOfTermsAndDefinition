@@ -14,6 +14,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     {
         string urlTitle = "";
         public string Description { get; set; }
+        public int Freq { get; set; }
         public int IdDefinition { get; set; }
         public string TermName { get; set; }
         public int IdTerm { get; set; }

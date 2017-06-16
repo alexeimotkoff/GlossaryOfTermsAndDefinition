@@ -1,11 +1,9 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.DefinitionViewModel
 
-@using (Ajax.BeginForm("Update", new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" }))
+@using (Ajax.BeginForm("AddDefinition", new AjaxOptions { UpdateTargetId = "OtherDefinitions", HttpMethod = "POST" }))
 {
     <div class="form-horizontal">
-        @Html.HiddenFor(model => model.IdDefinition)
         @Html.HiddenFor(model => model.IdTerm)
-        @Html.HiddenFor(model => model.TermName)
         <div class="form-group">
             <div class="col-sm-6 col-xs-7">
                 <span class="term">@Model.TermName</span>

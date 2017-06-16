@@ -1,0 +1,26 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.DefinitionViewModel>
+
+@if (Model.Count() > 0)
+{
+    <hr />
+    <h4>Другие определения</h4>
+    <hr />
+
+    int count = 1;
+
+    foreach (var item in Model)
+    {
+        if (!string.IsNullOrEmpty(item.URL))
+        {
+            ViewData["LinkCount"] = (count++).ToString();
+        }
+        string definitionId = "definition" + item.IdDefinition.ToString();
+
+        <div id="@definitionId" class="row">
+            @{Html.RenderPartial("DefinitionPartical", item, ViewData); }
+        </div>
+    }
+}
+<div id="newDefinitionForm" class="row">
+
+</div>

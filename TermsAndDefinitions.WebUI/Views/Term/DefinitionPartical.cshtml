@@ -5,8 +5,11 @@
     </div>
     @if (Request.IsAuthenticated)
     {
-        <div class="col-sm-2 col-sm-push-4 col-xs-1 col-xs-push-3">
-            @Ajax.ActionLink("Изменить", "Edit", new { id = Model.IdDefinition }, new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" })
+        <div class="col-sm-2 col-sm-push-4 col-xs-1 col-xs-push-3">          
+                @Ajax.ActionLink("Изменить", "Edit",
+               new { id = Model.IdDefinition },
+               new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" },
+               new { @class="btn btn-primary btn-xs"})          
         </div>
     }
     <div class="col-sm-12 col-xs-12">

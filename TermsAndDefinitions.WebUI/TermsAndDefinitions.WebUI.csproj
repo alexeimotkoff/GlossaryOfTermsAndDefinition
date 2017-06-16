@@ -458,6 +458,8 @@
     <Content Include="Views\Project\GlossaryPartical.cshtml" />
     <Content Include="Views\Term\EditDefinition.cshtml" />
     <Content Include="Views\Term\DefinitionPartical.cshtml" />
+    <Content Include="Views\Term\OtherDefinitionsPartical.cshtml" />
+    <Content Include="Views\Term\AddDefinition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
