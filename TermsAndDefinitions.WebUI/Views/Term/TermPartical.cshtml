@@ -13,53 +13,58 @@
             ViewData["LinkCount"] = (count++).ToString();
         }
 
+        string definitionId = "definition" + firstItem.IdDefinition.ToString();
 
-        <dl>
+        <div id="@definitionId" class="row">
             @{Html.RenderPartial("DefinitionPartical", firstItem, ViewData); }
+        </div>
 
-        </dl>
                 if (Model.Definitions.Count() > 1)
                 {
                     <hr />
                     <h4>Другие определения</h4>
-                    <dl class="dl-horizontal">
-                        @foreach (var item in Model.Definitions.Skip(1))
-                        {
-                            if (!string.IsNullOrEmpty(item.URL))
-                            {
-                                ViewData["LinkCount"] = (count++).ToString();
-                            }
-                            Html.RenderPartial("DefinitionPartical", item, ViewData);
-                        }
-                    </dl>
-                }
-    }
-</div>
-@if (Model.Projects != null)
-            {
-                if (Model.Projects.Count() > 0)
-                {
-        <div>
-            @{Html.RenderAction("PreviewProjectsPartical", "Project", new { project = Model.Projects });}
-        </div>
-                    }
-                }
-<div>
-    @{
-        var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
-        if (URLs.Count() > 0)
-        {
-            <hr />
-            <h4>Ссылки</h4>
-            <ol type="1">
-                @{
-                    count = 1;
-                    foreach (var item in URLs)
+
+                    foreach (var item in Model.Definitions.Skip(1))
                     {
-                        <li><a href=@item.URL name="link@(count++)">@item.URLTitle</a></li>
-                    }
-                }
-            </ol>
-                    }
+                        if (!string.IsNullOrEmpty(item.URL))
+                        {
+                            ViewData["LinkCount"] = (count++).ToString();
+                        }
+                        definitionId = "definition" + item.IdDefinition.ToString();
+
+                        <div id="@definitionId" class="row">
+                            @{Html.RenderPartial("DefinitionPartical", item, ViewData); }
+                        </div>
+                                    }
+                                }
     }
-</div>
+    <div class="row">
+        @if (Model.Projects != null)
+        {
+            if (Model.Projects.Count() > 0)
+            {
+                Html.RenderAction("PreviewProjectsPartical", "Project", new { project = Model.Projects });
+
+            }
+        }
+    </div>
+
+    <div class="row">
+        @{
+            var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
+            if (URLs.Count() > 0)
+            {
+                <hr />
+                <h4>Ссылки</h4>
+                            <ol type="1">
+                                @{
+                                    count = 1;
+                                    foreach (var item in URLs)
+                                    {
+                                        <li><a href=@item.URL name="link@(count++)">@item.URLTitle</a></li>
+                                    }
+                                }
+                            </ol>
+                                    }
+        }
+    </div>

@@ -18,76 +18,107 @@ namespace TermsAndDefinitions.WebUI.Controllers
     public class TermController : Controller
     {
         // GET: Term
-
-        DBContext db = new DBContext();
-        List<Term> Terms = new DBContext().Terms.OrderBy(t => t.TermName).ToList();
-        List<Definition> Definitions = new DBContext().Definitions.OrderBy(d => d.Term.TermName).ThenBy(d => d.Frequency).ToList();
-
+               
         [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
         public ActionResult Index(int? id)
         {
-            if (id == null)
+            using (var db = new DBContext())
             {
-                var termsColection = Terms;
-                Mapper.Initialize(cfg =>
+                
+                if (id == null)
                 {
-                    cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
-                    .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
-                    .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                //.ForMember("Descripton", opt => opt.MapFrom(c => c.DescriptonInformationSystem))
-                cfg.CreateMap<Definition, DefinitionViewModel>();
-                    cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
-                });
-                var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
+                    var termsColection = db.Terms;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                        .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                        .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                        cfg.CreateMap<Definition, DefinitionViewModel>();
+                        cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                    });
 
-                if (Request.IsAjaxRequest())
-                    return PartialView("PreviewTermsPartical", resultTermsColection);
+                    var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
 
-                return View("IndexPreviewTerms", resultTermsColection);
-            }else
-            {
-                var term = Terms.FirstOrDefault(x => x.IdTerm == id);
-                Mapper.Initialize(cfg =>
+                    if (Request.IsAjaxRequest())
+                        return PartialView("PreviewTermsPartical", resultTermsColection);
+
+                    return View("IndexPreviewTerms", resultTermsColection);
+                }
+                else
                 {
-                    cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
-                    .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
-                    .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
-                    cfg.CreateMap<Definition, DefinitionViewModel>()
-                    .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
-                    cfg.CreateMap<Project, PreviewProjectViewModel>();
-                    cfg.CreateMap<Term, TermViewModel>();
-                });
+                    var term = db.Terms.Find(id);
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                        .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                        .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                        cfg.CreateMap<Definition, DefinitionViewModel>()
+                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
+                        cfg.CreateMap<Project, PreviewProjectViewModel>();
+                        cfg.CreateMap<Term, TermViewModel>();
+                    });
 
-                //Проекты в глоссариях которых встречается термин
-                var projects = term.Definitions
-                    .SelectMany(x => x.Projects)
-                    .GroupBy(x => x.IdProject)
-                    .OrderByDescending(g => g.Count())
-                    .Select(g => g.First());
+                    //Проекты в глоссариях которых встречается термин
+                    var projects = term.Definitions
+                        .SelectMany(x => x.Projects)
+                        .GroupBy(x => x.IdProject)
+                        .OrderByDescending(g => g.Count())
+                        .Select(g => g.First());
 
-                var resultTerm = Mapper.Map<Term, TermViewModel>(term);
-                resultTerm.Projects = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
-                if (Request.IsAjaxRequest())
-                    return PartialView("TermPartical", resultTerm);
-                return View("IndexTerm", resultTerm);
+                    var resultTerm = Mapper.Map<Term, TermViewModel>(term);
+                    resultTerm.Projects = Mapper.Map<IEnumerable<Project>, IEnumerable<PreviewProjectViewModel>>(projects);
+                    if (Request.IsAjaxRequest())
+                        return PartialView("TermPartical", resultTerm);
+                    return View("IndexTerm", resultTerm);
+                }
             }
         }
 
         [HttpPost, ActionName("Edit")]
         public ActionResult EditDefinition(int id)
         {
-            Mapper.Initialize(cfg =>
+          using (var db = new DBContext())
             {
-                cfg.CreateMap<Definition, DefinitionViewModel>();                
+                Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Definition, DefinitionViewModel>()
+                .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
             });
-            Definition item = db.Definitions.Find(id);           
-            return PartialView("EditDefinition", Mapper.Map<Definition, DefinitionViewModel>(item));
+                            
+                Definition item = db.Definitions.Find(id);
+                var resultItem = Mapper.Map<Definition, DefinitionViewModel>(item);
+            return PartialView("EditDefinition", resultItem);
+            }
         }
 
         [HttpPost, ActionName("Update")]
         public ActionResult UpdateDefinition(DefinitionViewModel model)
         {
-            return Content(model.Description);
+            if (model != null)
+            {
+                using (var db = new DBContext())
+                {
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<DefinitionViewModel, Definition>();
+                    });
+                    
+                    var data = Mapper.Map< DefinitionViewModel,Definition>(model);
+
+                    if (data.IdDefinition > 0)
+                    {
+                        db.Entry(data).State = EntityState.Modified;
+                    }else
+                    {
+                        db.Definitions.Add(data);
+                        db.SaveChanges();
+                        db.Terms.Find(data.IdTerm).Definitions.Add(data);                      
+                    }
+                    db.SaveChanges();
+                    return PartialView("DefinitionPartical", model);
+                }
+            }
+            return null;
         }
 
         [HttpGet]
@@ -117,31 +148,33 @@ namespace TermsAndDefinitions.WebUI.Controllers
             bool findByAlphabet = searchQuery.Length == 1 && searchQuery[0].Length == 1;
             if (findByAlphabet)
                 firstCharacter = searchQuery[0].ToLower();
-
-            if (findByAlphabet)
+            using (var db = new DBContext())
             {
-                searchResult = Terms.Where(x => x.TermName.ToLower().StartsWith(firstCharacter)).ToList();
-            }
-            else
-            {
-                List<Definition> searchByDefinitions = new List<Definition>(Definitions);
-                foreach (var query in searchQuery)
+                if (findByAlphabet)
                 {
-                    searchByDefinitions = searchByDefinitions.Where(x =>
+                    searchResult = db.Terms.Where(x => x.TermName.ToLower().StartsWith(firstCharacter)).ToList();
+                }
+                else
+                {
+                    List<Definition> searchByDefinitions = new List<Definition>(db.Definitions);
+                    foreach (var query in searchQuery)
                     {
-                        return x.Term.TermName.ToLower().Contains(query) || x.Description.ToLower().Contains(query);
-                    }).ToList();
+                        searchByDefinitions = searchByDefinitions.Where(x =>
+                        {
+                            return x.Term.TermName.ToLower().Contains(query) || x.Description.ToLower().Contains(query);
+                        }).ToList();
+                    }
+
+                    searchResult = searchByDefinitions.Select(x => x.Term).Distinct().ToList();
                 }
 
-                searchResult = searchByDefinitions.Select(x => x.Term).Distinct().ToList();
+                var resultColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(searchResult);
+
+                ViewData["anotherTitle"] = "Найдено " + resultColection.Count() + " терминов";
+
+
+                return PartialView("PreviewTermsPartical", resultColection);
             }
-
-            var resultColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(searchResult);
-
-            ViewData["anotherTitle"] = "Найдено " + resultColection.Count() + " терминов";
-
-
-            return PartialView("PreviewTermsPartical", resultColection);
         }
 
 

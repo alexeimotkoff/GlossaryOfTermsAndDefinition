@@ -24,6 +24,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
             {
                 if (!string.IsNullOrEmpty(urlTitle))
                     return urlTitle;
+                else if (string.IsNullOrEmpty(URL))
+                    return null;
                 else if (URL.Contains(".pdf") || URL.Contains(".doc") || URL.Contains(".docx"))
                     return HttpUtility.UrlDecode(Path.GetFileName(new Uri(URL).AbsolutePath));
                 else

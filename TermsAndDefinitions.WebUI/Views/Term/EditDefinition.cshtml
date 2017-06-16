@@ -3,23 +3,30 @@
 @using (Ajax.BeginForm("Update", new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" }))
 {
     <div class="form-horizontal">
-         <div class="col-md-8">
-                @Html.TextAreaFor(model => model.Description,  new { @class = "form-control" })
-         </div>
+        @Html.HiddenFor(model => model.IdDefinition)
+        @Html.HiddenFor(model => model.IdTerm)
+        @Html.HiddenFor(model => model.TermName)
         <div class="form-group">
-            @Html.LabelFor(model => model.URL, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.TextBoxFor(model => model.URL, new { @class = "form-control" })
+            <div class="col-sm-6 col-xs-7">
+                <span class="term">@Model.TermName</span>
+            </div>
+            <div class="col-sm-2 col-sm-push-4 col-xs-1 col-xs-push-3">
+                <input type="Submit" value="Сохранить" class="btn btn-default">
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.URLTitle, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.TextBoxFor(model => model.URLTitle, new { @class = "form-control" })
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder="Введите определение", style ="resize:vertical;"})
             </div>
         </div>
-        <div class="col-md-offset-1 col-md-7">
-            <input type="Submit" value="Сохранить" class="btn btn-default" />
+        <div class="form-group">
+            @Html.LabelFor(model => model.URL, new { @class = "control-label col-sm-1" })
+            <div class="col-sm-6 col-xs-11">
+                @Html.TextBoxFor(model => model.URL, new { @class = "form-control", placeholder = "Ссылка на источник" })
+            </div>
+            <div class="col-sm-5 col-xs-12">
+                @Html.TextBoxFor(model => model.URLTitle, new { @class = "form-control", placeholder = "Название источника" })
+            </div>
         </div>
     </div>
 }
