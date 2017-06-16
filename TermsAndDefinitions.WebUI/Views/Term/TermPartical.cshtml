@@ -1,7 +1,7 @@
 ﻿@using TermsAndDefinitions.WebUI.ViewModels;
 @model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
 
-<div>
+
     <hr />
     <h3>@Model.TermName</h3>
     <hr />
@@ -21,7 +21,7 @@
             @{Html.RenderPartial("DefinitionPartical", firstItem, ViewData); }
         </div>
 
-        <div id="OtherDefinitions" class="row col-sm-12 col-xs-12">
+        <div id="OtherDefinitions">
             @{ 
                 var otherDefinitions = definitions.Skip(1);
             }
@@ -31,7 +31,7 @@
         </div>
         if (Request.IsAuthenticated)
         {
-            <div class="row col-sm-12 col-xs-12">
+            <div class="row">
                 <div class="col-sm-6  col-xs-12">                      
                         @Ajax.ActionLink("Добавть другое определение", "AddDefinitionForm",
                        new { id = Model.IdTerm },
@@ -43,7 +43,7 @@
        }
 
     }
-                <div class="row col-sm-12 col-xs-12">
+                <div class="row">
 
                     @if (Model.Projects != null)
                     {
@@ -55,7 +55,7 @@
                     }
                 </div>
 
-                <div class="row col-sm-12 col-xs-12">
+                <div class="row">
                     @{
                         var URLs = Model.Definitions.Where(x => !string.IsNullOrEmpty(x.URL));
                         if (URLs.Count() > 0)
