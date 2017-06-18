@@ -1,0 +1,11 @@
+﻿@model IEnumerable<TermsAndDefinitions.WebUI.ViewModels.LifeСycleViewModel>
+
+@{
+    ViewBag.Title = "IndexPreviewLifecyc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="Main">
+    @{ Html.RenderPartial("PreviewLifecycPartical", Model);}
+</div>
