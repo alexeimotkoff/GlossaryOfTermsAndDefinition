@@ -176,7 +176,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class LifeСycleViewModel
     {
        public int IdLifeСycle { get; set;}                           
-       public PreviewProjectViewModel Projects {get; set;}
+       public IEnumerable<PreviewProjectViewModel> Projects {get; set;}
        public string NameLifeСycle { get; set;}
        public string DescriptonLifeСycle { get; set;}
     }

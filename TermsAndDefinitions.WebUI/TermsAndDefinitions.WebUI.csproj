@@ -272,6 +272,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FundareaController.cs" />
     <Compile Include="Controllers\InfsysController.cs" />
+    <Compile Include="Controllers\LifecycleController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TermController.cs" />
@@ -467,6 +468,10 @@
     <Content Include="Views\Infsys\IndexInfsys.cshtml" />
     <Content Include="Views\Infsys\IndexPreviewInfsys.cshtml" />
     <Content Include="Views\Infsys\PreviewInfsysPartical.cshtml" />
+    <Content Include="Views\Lifecycle\IndexLifecyc.cshtml" />
+    <Content Include="Views\Lifecycle\IndexPreviewLifecyc.cshtml" />
+    <Content Include="Views\Lifecycle\LifecycPartical.cshtml" />
+    <Content Include="Views\Lifecycle\PreviewLifecycPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
