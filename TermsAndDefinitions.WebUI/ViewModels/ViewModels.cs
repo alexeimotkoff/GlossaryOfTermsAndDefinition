@@ -105,8 +105,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public string TermName { get; set; }
         public string TermNameEng { get; set; }
         public string Addition { get; set; }
-        [Required(ErrorMessage = "Необходимо указать фундоментальную область")]
-        [Display(Name = "Фундоментальная область:")]
+        [Required(ErrorMessage = "Необходимо указать фундаментальную область")]
+        [Display(Name = "Фундаментальная область:")]
         public string FundamentalArea { get; set; }
         [Required(ErrorMessage = "Необходимо ввести определение")]
         public string Definition { get; set; }
