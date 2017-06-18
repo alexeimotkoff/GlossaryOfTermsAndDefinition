@@ -122,6 +122,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     {
         public string ProjectName { get; set; }
         public PreviewInfSysViewModel InformationSystem { get; set;}
+        public PreviewLifeСycle LifeCycle { get; set; }
         public string Annotation { get; set; }
         public int IdProject {get; set;}
     }
@@ -158,10 +159,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
     public class InfSysViewModel
     {
-        string Name { get; set; }
-        string Descripton { get; set; }
-        int Id { get; set; }
-        IEnumerable<PreviewProjectViewModel> Projects { get; set; }
+        public string Name { get; set; }
+        public string Discription { get; set; }
+        public int IdInformationSystem { get; set; }
+        public IEnumerable<PreviewProjectViewModel> Projects { get; set; }
     }
     
     public class FundAreaViewModel

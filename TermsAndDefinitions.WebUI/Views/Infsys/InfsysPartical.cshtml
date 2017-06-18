@@ -1,0 +1,34 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.InfSysViewModel
+<div id="content">
+    @{
+        if (ViewData["anotherTitle"] != null)
+        {
+            <hr />
+            <h4>@ViewData["anotherTitle"].ToString()</h4>
+            <hr />
+        }
+        else
+        {
+            <hr />
+            <p><h4>@Model.Name</h4> @*-  @Model.Discription*@</p>
+            <hr />
+        }
+    }
+
+
+    <ul>
+        @foreach (var project in Model.Projects)
+            {
+            <li>
+                <div class="text-cut-box">
+                    <div>
+                        <p>
+                            @* @Ajax.RouteLink(term.TermName, "TermDetail", new { id = term.IdTerm.ToString() }, new AjaxOptions { UpdateTargetId = "Main", HttpMethod="GET" }, new { @class = "term" }) — @term.Definition.Description*@
+                            @Html.ActionLink(project.ProjectName, "Index", "Project", new { id = project.IdProject }, new { @class = "project" }) — @project.Annotation
+                        </p>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
