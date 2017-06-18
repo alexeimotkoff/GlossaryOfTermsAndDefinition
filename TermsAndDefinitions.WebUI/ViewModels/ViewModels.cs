@@ -21,6 +21,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public string Freq { get; set; }
         public int IdTerm { get; set; }
         [Required(ErrorMessage = "Требуется ссылка на источник")]
+        [RegularExpression(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", ErrorMessage = "Ссылка должна быть коректна")]
         public string URL { get; set; }
         public string URLTitle
         {
@@ -100,16 +101,17 @@ namespace TermsAndDefinitions.WebUI.ViewModels
 
     public class AddTermViewModel
     {        
-        [Required(ErrorMessage = "Необходимо ввести название термина")]
+        [Required(ErrorMessage = "Необходимо ввести термин")]
         public string TermName { get; set; }
         public string TermNameEng { get; set; }
         public string Addition { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Необходимо указать фундоментальную область")]
         [Display(Name = "Фундоментальная область:")]
         public string FundamentalArea { get; set; }
         [Required(ErrorMessage = "Необходимо ввести определение")]
         public string Definition { get; set; }
         [Required(ErrorMessage = "Требуется ссылка на источник")]
+        [RegularExpression(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$", ErrorMessage = "Ссылка должна быть коректна")]
         public string URL { get; set; }
         public string URLTitle {get; set;}
         [Column(TypeName = "smalldatetime")]

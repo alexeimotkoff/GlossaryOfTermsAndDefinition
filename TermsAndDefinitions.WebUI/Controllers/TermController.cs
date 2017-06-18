@@ -21,14 +21,14 @@ namespace TermsAndDefinitions.WebUI.Controllers
     public class TermController : Controller
     {
         // GET: Term
-               
+
         [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
         [AllowAnonymous]
         public ActionResult Index(int? id)
         {
             using (var db = new DBContext())
             {
-                
+
                 if (id == null)
                 {
                     var termsColection = db.Terms;
@@ -41,7 +41,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                         cfg.CreateMap<Term, PreviewTermViewModel>()
                          .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
                          .OrderByDescending(d => d.Projects.Count())
-                         .ThenBy(x => x.Time).FirstOrDefault()));                       
+                         .ThenBy(x => x.Time).FirstOrDefault()));
                     });
 
                     var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
@@ -85,17 +85,17 @@ namespace TermsAndDefinitions.WebUI.Controllers
         [HttpPost, ActionName("Edit")]
         public ActionResult EditDefinition(int id)
         {
-          using (var db = new DBContext())
+            using (var db = new DBContext())
             {
                 Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>()
                 .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
             });
-                            
+
                 Definition item = db.Definitions.Find(id);
                 var resultItem = Mapper.Map<Definition, DefinitionViewModel>(item);
-            return PartialView("EditDefinition", resultItem);
+                return PartialView("EditDefinition", resultItem);
             }
         }
 
@@ -128,7 +128,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 db.Definitions.Add(data);
                 db.SaveChanges();
                 var term = db.Terms.Find(data.IdTerm);
-                var definitions = Mapper.Map<IEnumerable<Definition>, IEnumerable<DefinitionViewModel>>(term.Definitions).OrderByDescending(x=>x.Freq).Skip(1);
+                var definitions = Mapper.Map<IEnumerable<Definition>, IEnumerable<DefinitionViewModel>>(term.Definitions).OrderByDescending(x => x.Freq).Skip(1);
                 return PartialView("OtherDefinitionsPartical", definitions);
             }
         }
@@ -145,8 +145,8 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     {
                         cfg.CreateMap<DefinitionViewModel, Definition>();
                     });
-                    
-                    var data = Mapper.Map< DefinitionViewModel,Definition>(model);
+
+                    var data = Mapper.Map<DefinitionViewModel, Definition>(model);
 
                     if (data.IdDefinition > 0)
                     {
@@ -162,6 +162,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
         [HttpGet]
         public ActionResult Add()
         {
+            using (var db = new DBContext())
+            {
+                ViewData["Areas"] = db.FundamentalAreas.Select(x => x.NameFundamentalArea).ToList();
+            }
             if (Request.IsAjaxRequest())
                 return PartialView("AddPartical", new AddTermViewModel());
 
@@ -176,35 +180,62 @@ namespace TermsAndDefinitions.WebUI.Controllers
             {
                 using (var db = new DBContext())
                 {
-                    var term = new Term() { TermName = model.TermName };
+                    if (db.Terms.FirstOrDefault(x => x.TermName.ToLower() == model.TermName.ToLower()) == null)
+                    {
+                        FundamentalArea area = db.FundamentalAreas
+                            .FirstOrDefault(x => x.NameFundamentalArea.ToLower() == model.FundamentalArea.ToLower());
 
-                    Mapper.Initialize(cfg =>
+                        if(area == null)
+                        {
+                            area = new FundamentalArea() { NameFundamentalArea = model.FundamentalArea };
+                            db.FundamentalAreas.Add(area);
+                            db.SaveChanges();
+                        }
+                        
+                        var term = new Term()
+                        {
+                            TermName = model.TermName,
+                            Addition = model.Addition,
+                            IdFundamentalArea = area.IdFundamentalArea
+                        };
+
+                        Mapper.Initialize(cfg =>
+                        {
+                            cfg.CreateMap<Definition, DefinitionViewModel>()
+                                    .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
+                                    .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
+                            cfg.CreateMap<DefinitionViewModel, Definition>();
+                        });
+                        db.Terms.Add(term);
+                        db.SaveChanges();
+                        var definition = new Definition()
+                        {
+                            IdTerm = term.IdTerm,
+                            Description = model.Definition,
+                            URL = model.URL,
+                            URLTitle = model.URLTitle,
+                            UserId = WebSecurity.CurrentUserId
+                        };
+                        db.Definitions.Add(definition);
+                        db.SaveChanges();
+                        return View("Index", term.IdTerm);
+                    }
+                    else
                     {
-                        cfg.CreateMap<Definition, DefinitionViewModel>()
-                                .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
-                                .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
-                        cfg.CreateMap<DefinitionViewModel, Definition>();
-                    });
-                    //Сделать проверку на существование данного термина
-                    db.Terms.Add(term);
-                    db.SaveChanges();
-                    var definition = new Definition()
-                    {
-                        IdTerm = term.IdTerm,
-                        Description = model.Definition,
-                        URL = model.URL,
-                        URLTitle = model.URLTitle,
-                        UserId = WebSecurity.CurrentUserId
-                    };
-                    db.Definitions.Add(definition);
-                    db.SaveChanges();
-                    return View("Index", term.IdTerm);
+                        ModelState.AddModelError("TermName", "Данный термин уже добавлен");
+                    }
                 }
             }
-                if (Request.IsAjaxRequest())
-                    return PartialView("AddPartical", new AddTermViewModel());
 
-                return View("IndexAdd", new AddTermViewModel());
+            using (var db = new DBContext())
+            {
+                ViewData["Areas"] = db.FundamentalAreas.Select(x => x.NameFundamentalArea).ToList();
+            }
+
+            if (Request.IsAjaxRequest())
+                return PartialView("AddPartical", new AddTermViewModel());
+
+            return View("IndexAdd", new AddTermViewModel());
         }
 
         [HttpGet]
@@ -255,7 +286,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 return PartialView("PreviewTermsPartical", resultColection);
             }
         }
-        
+
 
         #region From another controller
         [HttpGet]
@@ -273,5 +304,5 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return PartialView("TermPartical", term);
         }
     }
-#endregion
+    #endregion
 }
