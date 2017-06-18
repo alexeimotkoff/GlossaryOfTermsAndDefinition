@@ -88,10 +88,23 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         public DefinitionViewModel Definition { get; set; }
     }
     
+    public class TermAdditionViewModel
+    {
+        public int IdTerm { get; set; }
+        public string TermName { get; set; }
+        [Display(Name = "Примечание")]
+        public string Addition { get; set; }
+        [Required(ErrorMessage = "Необходимо указать фундаментальную область")]
+        [Display(Name = "Фундаментальная область:")]
+        public string FundamentalArea { get; set; }
+        public int IdFundamentalArea { get; set; }
+    }
+
     public class TermViewModel
     {
         public string TermName { get; set; }
         public string TermNameEng { get; set; }
+        public int IdFundamentalArea { get; set; }
         public string FundamentalArea { get; set; }
         public string Addition { get; set; }
         public int IdTerm { get; set; }
@@ -104,9 +117,10 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         [Required(ErrorMessage = "Необходимо ввести термин")]
         public string TermName { get; set; }
         public string TermNameEng { get; set; }
+        [Display(Name = "Примечание")]
         public string Addition { get; set; }
         [Required(ErrorMessage = "Необходимо указать фундаментальную область")]
-        [Display(Name = "Фундаментальная область:")]
+        [Display(Name = "Фундаментальная область")]
         public string FundamentalArea { get; set; }
         [Required(ErrorMessage = "Необходимо ввести определение")]
         public string Definition { get; set; }

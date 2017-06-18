@@ -60,10 +60,12 @@ namespace TermsAndDefinitions.WebUI.Controllers
                         .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                         .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
                         cfg.CreateMap<Definition, DefinitionViewModel>()
-                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
+                        .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))                   
                         .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
                         cfg.CreateMap<Project, PreviewProjectViewModel>();
-                        cfg.CreateMap<Term, TermViewModel>();
+                        cfg.CreateMap<Term, TermViewModel>()
+                        .ForMember("FundamentalArea", opt => opt.MapFrom(c => c.FundamentalArea.NameFundamentalArea))
+                        .ForMember("IdFundamentalArea", opt => opt.MapFrom(c => c.FundamentalArea.IdFundamentalArea));
                     });
 
                     //Проекты в глоссариях которых встречается термин
@@ -98,6 +100,47 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 return PartialView("EditDefinition", resultItem);
             }
         }
+
+        
+        [HttpPost]
+        public ActionResult EditAddition(int id)
+        {
+            using (var db = new DBContext())
+            {
+                ViewData["Areas"] = db.FundamentalAreas.Select(x => x.NameFundamentalArea).ToList();
+                var term = db.Terms.Find(id);
+                var data = new TermAdditionViewModel()
+                {
+                    Addition = term.Addition,
+                    TermName = term.TermName,
+                    IdTerm = term.IdTerm,
+                    FundamentalArea = term.FundamentalArea.NameFundamentalArea,
+                    IdFundamentalArea = term.FundamentalArea.IdFundamentalArea
+                };
+             return PartialView("EditAdditionPartical",data);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAddition(TermAdditionViewModel model)
+        {
+            using (var db = new DBContext())
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<DefinitionViewModel, Definition>();
+                });
+
+                var term = db.Terms.Find(model.IdTerm);
+                term.Addition = model.Addition;
+                var area = db.FundamentalAreas.FirstOrDefault(x=> x.NameFundamentalArea == model.FundamentalArea);
+                term.IdFundamentalArea = area.IdFundamentalArea;
+                    db.Entry(term).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+                return PartialView("AdditionPartical", model);
+        }
+
 
         [HttpPost]
         public ActionResult AddDefinitionForm(int id)

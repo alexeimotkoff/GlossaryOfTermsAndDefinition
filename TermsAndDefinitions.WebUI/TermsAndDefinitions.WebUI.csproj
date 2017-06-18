@@ -462,6 +462,8 @@
     <Content Include="Views\Term\AddDefinition.cshtml" />
     <Content Include="Views\Term\IndexAdd.cshtml" />
     <Content Include="Views\Term\AddPartical.cshtml" />
+    <Content Include="Views\Term\AdditionPartical.cshtml" />
+    <Content Include="Views\Term\EditAdditionPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
