@@ -472,6 +472,8 @@
     <Content Include="Views\Lifecycle\IndexPreviewLifecyc.cshtml" />
     <Content Include="Views\Lifecycle\LifecycPartical.cshtml" />
     <Content Include="Views\Lifecycle\PreviewLifecycPartical.cshtml" />
+    <Content Include="Views\Term\AdditionPartical.cshtml" />
+    <Content Include="Views\Term\EditAdditionPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
