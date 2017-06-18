@@ -22,13 +22,15 @@ namespace TermsAndDefinitions.WebUI.Models
     
         public int IdDefinition { get; set; }
         public int IdTerm { get; set; }
-        public Nullable<int> Frequency { get; set; }
         public string Description { get; set; }
         public string DescriptionEng { get; set; }
         public string URL { get; set; }
         public string URLTitle { get; set; }
+        public Nullable<int> UserId { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
     
         public virtual Term Term { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
     }

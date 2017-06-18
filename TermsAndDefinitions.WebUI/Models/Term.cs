@@ -26,8 +26,8 @@ namespace TermsAndDefinitions.WebUI.Models
         public string Addition { get; set; }
         public Nullable<int> IdFundamentalArea { get; set; }
     
+        public virtual FundamentalArea FundamentalArea { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Definition> Definitions { get; set; }
-        public virtual FundamentalArea FundamentalArea { get; set; }
     }
 }

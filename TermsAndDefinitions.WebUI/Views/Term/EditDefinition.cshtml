@@ -2,6 +2,9 @@
 
 @using (Ajax.BeginForm("Update", new AjaxOptions { UpdateTargetId = "definition" + Model.IdDefinition.ToString(), HttpMethod = "POST" }))
 {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
     <div class="form-horizontal">
         @Html.HiddenFor(model => model.IdDefinition)
         @Html.HiddenFor(model => model.IdTerm)
@@ -17,6 +20,7 @@
         <div class="form-group">
             <div class="col-md-12">
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder="Введите определение", style ="resize:vertical;"})
+                @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
         <div class="form-group">

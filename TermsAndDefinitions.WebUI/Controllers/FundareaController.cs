@@ -24,7 +24,9 @@ namespace TermsAndDefinitions.WebUI.Controllers
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>();
                 cfg.CreateMap<Term, PreviewTermViewModel>()
-                .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
+                .OrderByDescending(d => d.Projects.Count())
+                .ThenBy(x => x.Time).FirstOrDefault()));
                 cfg.CreateMap<FundamentalArea, FundAreaViewModel>()
                 .ForMember("Name", opt => opt.MapFrom(c => c.NameFundamentalArea))
                 .ForMember("Discription", opt => opt.MapFrom(c => c.NameFundamentalArea));              
@@ -56,7 +58,9 @@ namespace TermsAndDefinitions.WebUI.Controllers
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>();
                 cfg.CreateMap<Term, PreviewTermViewModel>()
-                .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                 .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
+                .OrderByDescending(d => d.Projects.Count())
+                .ThenBy(x => x.Time).FirstOrDefault()));
                 cfg.CreateMap<FundamentalArea, FundAreaViewModel>()
                 .ForMember("Name", opt => opt.MapFrom(c => c.NameFundamentalArea))
                 .ForMember("Discription", opt => opt.MapFrom(c => c.NameFundamentalArea));

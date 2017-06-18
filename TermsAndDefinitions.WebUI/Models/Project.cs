@@ -29,6 +29,7 @@ namespace TermsAndDefinitions.WebUI.Models
         public Nullable<int> IdLifeСycle { get; set; }
         public Nullable<int> IdInformationSystem { get; set; }
         public Nullable<int> UserId { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
     
         public virtual InformationSystem InformationSystem { get; set; }
         public virtual LifeCycle LifeСycle { get; set; }

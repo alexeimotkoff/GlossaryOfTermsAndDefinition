@@ -18,6 +18,7 @@ namespace TermsAndDefinitions.WebUI.Models
         public User()
         {
             this.webpages_Roles = new HashSet<webpages_Roles>();
+            this.Definitions = new HashSet<Definition>();
             this.Projects = new HashSet<Project>();
         }
     
@@ -30,6 +31,8 @@ namespace TermsAndDefinitions.WebUI.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Definition> Definitions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
     }

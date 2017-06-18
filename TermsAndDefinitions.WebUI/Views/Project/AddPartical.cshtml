@@ -1,26 +1,2 @@
 ﻿@model TermsAndDefinitions.WebUI.ViewModels.ProjectViewModel
 
-<h3>Добавить проект</h3>
-
-@using (Html.BeginForm("AddProject", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <fieldset>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.ProjectName)
-                @Html.TextBoxFor(m => m.ProjectName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.InformationSystem)
-                @Html.DropDownListFor(m => m.InformationSystem.Id, new SelectList(Model.InfSysList, "Id", "Name"))
-            </li>
-            <li>
-                @Html.LabelFor(m => m.File)
-                @Html.TextBoxFor(m => m.File, new { type = "file" })
-            </li>
-        </ol>
-        <input type="submit" value="Сохранить" />
-    </fieldset>
-
-
-}

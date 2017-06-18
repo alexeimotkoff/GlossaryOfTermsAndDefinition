@@ -33,8 +33,8 @@ namespace TermsAndDefinitions.WebUI.Models
         public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
         public virtual DbSet<BucketHash> BucketHashes { get; set; }
         public virtual DbSet<MinHash> MinHashes { get; set; }
+        public virtual DbSet<Term> Terms { get; set; }
         public virtual DbSet<Definition> Definitions { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<Term> Terms { get; set; }
     }
 }

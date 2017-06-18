@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -13,11 +14,13 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     public class DefinitionViewModel
     {
         string urlTitle = "";
+        [Required(ErrorMessage = "Необходимо ввести определение")]
         public string Description { get; set; }
-        public int Freq { get; set; }
         public int IdDefinition { get; set; }
         public string TermName { get; set; }
+        public string Freq { get; set; }
         public int IdTerm { get; set; }
+        [Required(ErrorMessage = "Требуется ссылка на источник")]
         public string URL { get; set; }
         public string URLTitle
         {
@@ -73,6 +76,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
                 urlTitle = value;
             }
         }
+        [Column(TypeName = "smalldatetime")]
+        public DateTime Time { get; set; }
     }
 
     public class PreviewTermViewModel
@@ -84,10 +89,31 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     
     public class TermViewModel
     {
-        public int IdTerm { get; set; }
         public string TermName { get; set; }
+        public string TermNameEng { get; set; }
+        public string FundamentalArea { get; set; }
+        public string Addition { get; set; }
+        public int IdTerm { get; set; }
         public IEnumerable<DefinitionViewModel> Definitions { get; set; }
         public IEnumerable<PreviewProjectViewModel> Projects { get; set; }
+    }
+
+    public class AddTermViewModel
+    {        
+        [Required(ErrorMessage = "Необходимо ввести название термина")]
+        public string TermName { get; set; }
+        public string TermNameEng { get; set; }
+        public string Addition { get; set; }
+        [Required]
+        [Display(Name = "Фундоментальная область:")]
+        public string FundamentalArea { get; set; }
+        [Required(ErrorMessage = "Необходимо ввести определение")]
+        public string Definition { get; set; }
+        [Required(ErrorMessage = "Требуется ссылка на источник")]
+        public string URL { get; set; }
+        public string URLTitle {get; set;}
+        [Column(TypeName = "smalldatetime")]
+        public DateTime Time { get; set; }
     }
 
     public class PreviewProjectViewModel
@@ -99,13 +125,17 @@ namespace TermsAndDefinitions.WebUI.ViewModels
     }
 
     public class ProjectViewModel
-    {
+    {     
         public int IdProject { get; set;}
+        [Required]
         [Display(Name = "Название проекта:")]
         public string ProjectName { get; set; }
+        [Required]
         public string Annotation { get; set; }
+        [Required]
         [Display(Name = "Информационая система:")]
         public PreviewInfSysViewModel InformationSystem { get; set; }
+        [Required]
         [Display(Name = "Жизненый цикл:")]
         public PreviewLifeСycle LifeСycle { get; set; }
         public IEnumerable<DefinitionViewModel> Glossary { get; set; }
@@ -114,6 +144,8 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         [Display(Name = "Файл технической документации:")]
         public HttpPostedFileBase File { get; set; }
         public List<HttpPostedFileBase> Files { get; set; }
+        [Column(TypeName = "smalldatetime")]
+        public DateTime Time { get; set; }
     }
 
     public class PreviewInfSysViewModel

@@ -44,14 +44,11 @@
                             @*<li>@Ajax.RouteLink("Термины", "TermAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>
                                 <li>@Ajax.RouteLink("Проекты", "ProjectAll", new AjaxOptions { UpdateTargetId = "Main", HttpMethod = "GET" })</li>*@
                             <li>@Html.ActionLink("Мои проекты","","")</li>
-                            <li>@Html.ActionLink("Добавить термин", "", "")</li>
+                            <li>@Html.ActionLink("Добавить термин", "Add", "Term")</li>
                             <li>@Html.ActionLink("Добавить проект", "Add" , "Project")</li>
-                           
                         </ul>
                     }
-
                 </div>
-
                 <!-- main area -->
                 <div class="col-xs-12 col-sm-9">                
                     @RenderBody()             

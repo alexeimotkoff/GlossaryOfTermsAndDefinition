@@ -5,20 +5,21 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d01277107ccd4610986325e6c2e13a2d" Name="Diagram1" ZoomLevel="71">
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="3.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.FundamentalArea" Width="1.5" PointX="3.5" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.InformationSystem" Width="1.5" PointX="3.5" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeCycle" Width="1.5" PointX="3.5" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.LifeCycle" Width="1.5" PointX="3.5" PointY="6.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Reference" Width="1.5" PointX="9.75" PointY="5.875" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.User" Width="1.5" PointX="1.25" PointY="5.625" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.webpages_Roles" Width="1.5" PointX="1.25" PointY="2.125" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.webpages_UsersInRoles" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.BucketHash" Width="1.5" PointX="7.75" PointY="7.375" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.MinHash" Width="1.5" PointX="7.75" PointY="5" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="9.375" PointY="1.75" />
-        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="5.625" PointY="5.125" />
         <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Term" Width="1.5" PointX="6.5" PointY="1.625" />
-        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Definition" Width="1.5" PointX="9" PointY="1.5" />
+        <EntityTypeShape EntityType="GlossaryProjectDatabaseModel.Project" Width="1.5" PointX="5.625" PointY="5" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable" />
+        <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Definition_ToUsers" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" />
         <AssociationConnector Association="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" />

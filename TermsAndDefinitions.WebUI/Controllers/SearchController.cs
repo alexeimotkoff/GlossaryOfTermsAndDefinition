@@ -25,7 +25,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
         DBContext db = new DBContext();
         List<Term> Terms = new DBContext().Terms.OrderBy(t => t.TermName).ToList();
-        List<Definition> Definitions = new DBContext().Definitions.OrderBy(d => d.Term.TermName).ThenBy(d => d.Frequency).ToList();
+        List<Definition> Definitions = new DBContext().Definitions.OrderBy(d => d.Term.TermName).ThenBy(d => d.Projects.Count()).ToList();
         List<Project> Projects = new DBContext().Projects.ToList();
 
         [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
@@ -71,7 +71,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>();
-                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<Term, PreviewTermViewModel>()
+                 .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
+                .OrderByDescending(d => d.Projects.Count())
+                .ThenBy(x => x.Time).FirstOrDefault()));               
             });
 
             List<Term> searchResult = new List<Term>();

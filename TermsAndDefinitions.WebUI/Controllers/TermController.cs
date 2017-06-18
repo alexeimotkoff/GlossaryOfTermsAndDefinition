@@ -9,17 +9,21 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using TermsAndDefinitions.WebUI.Filters;
 using TermsAndDefinitions.WebUI.Models;
 using TermsAndDefinitions.WebUI.ViewModels;
+using WebMatrix.WebData;
 using DBContext = TermsAndDefinitions.WebUI.Models.GlossaryProjectDatabaseEntities;
 
 namespace TermsAndDefinitions.WebUI.Controllers
 {
+    [InitializeSimpleMembership]
     public class TermController : Controller
     {
         // GET: Term
                
         [OutputCache(Duration = 300, Location = OutputCacheLocation.Any)]
+        [AllowAnonymous]
         public ActionResult Index(int? id)
         {
             using (var db = new DBContext())
@@ -34,7 +38,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
                         .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
                         .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
                         cfg.CreateMap<Definition, DefinitionViewModel>();
-                        cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                        cfg.CreateMap<Term, PreviewTermViewModel>()
+                         .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
+                         .OrderByDescending(d => d.Projects.Count())
+                         .ThenBy(x => x.Time).FirstOrDefault()));                       
                     });
 
                     var resultTermsColection = Mapper.Map<IEnumerable<Term>, IEnumerable<PreviewTermViewModel>>(termsColection);
@@ -92,6 +99,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
         }
 
+        [HttpPost]
         public ActionResult AddDefinitionForm(int id)
         {
             using (var db = new DBContext())
@@ -103,6 +111,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddDefinition(DefinitionViewModel model)
         {
             Mapper.Initialize(cfg =>
@@ -119,14 +128,13 @@ namespace TermsAndDefinitions.WebUI.Controllers
                 db.Definitions.Add(data);
                 db.SaveChanges();
                 var term = db.Terms.Find(data.IdTerm);
-                term.Definitions.Add(data);
-                db.SaveChanges();
                 var definitions = Mapper.Map<IEnumerable<Definition>, IEnumerable<DefinitionViewModel>>(term.Definitions).OrderByDescending(x=>x.Freq).Skip(1);
                 return PartialView("OtherDefinitionsPartical", definitions);
             }
         }
 
         [HttpPost, ActionName("Update")]
+        [ValidateAntiForgeryToken]
         public ActionResult UpdateDefinition(DefinitionViewModel model)
         {
             if (model != null)
@@ -154,15 +162,53 @@ namespace TermsAndDefinitions.WebUI.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            if (Request.IsAjaxRequest())
+                return PartialView("AddPartical", new AddTermViewModel());
+
+            return View("IndexAdd", new AddTermViewModel());
         }
+
         [HttpPost]
-        public ActionResult Add(TermViewModel term)
+        [ValidateAntiForgeryToken]
+        public ActionResult Add(AddTermViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                using (var db = new DBContext())
+                {
+                    var term = new Term() { TermName = model.TermName };
+
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<Definition, DefinitionViewModel>()
+                                .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName))
+                                .ForMember("Freq", opt => opt.MapFrom(c => c.Projects.Count));
+                        cfg.CreateMap<DefinitionViewModel, Definition>();
+                    });
+                    //Сделать проверку на существование данного термина
+                    db.Terms.Add(term);
+                    db.SaveChanges();
+                    var definition = new Definition()
+                    {
+                        IdTerm = term.IdTerm,
+                        Description = model.Definition,
+                        URL = model.URL,
+                        URLTitle = model.URLTitle,
+                        UserId = WebSecurity.CurrentUserId
+                    };
+                    db.Definitions.Add(definition);
+                    db.SaveChanges();
+                    return View("Index", term.IdTerm);
+                }
+            }
+                if (Request.IsAjaxRequest())
+                    return PartialView("AddPartical", new AddTermViewModel());
+
+                return View("IndexAdd", new AddTermViewModel());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Search(string queryString)
         {
             queryString = HttpUtility.UrlDecode(queryString).ToLower();
@@ -170,7 +216,10 @@ namespace TermsAndDefinitions.WebUI.Controllers
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Definition, DefinitionViewModel>();
-                cfg.CreateMap<Term, PreviewTermViewModel>().ForMember("Definition", opt => opt.MapFrom(c => c.Definitions.OrderByDescending(d => d.Frequency).FirstOrDefault()));
+                cfg.CreateMap<Term, PreviewTermViewModel>()
+                 .ForMember("Definition", opt => opt.MapFrom(c => c.Definitions
+                .OrderByDescending(d => d.Projects.Count())
+                .ThenBy(x => x.Time).FirstOrDefault()));
             });
 
             List<Term> searchResult = new List<Term>();
@@ -210,26 +259,15 @@ namespace TermsAndDefinitions.WebUI.Controllers
 
         #region From another controller
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult PreviewTermsPartical(IEnumerable<PreviewTermViewModel> terms)
         {
             ViewData["anotherTitle"] = "Глоссарий проекта";
             return PartialView("PreviewTermsPartical", terms);
         }
 
-        //[HttpGet]
-        //public ActionResult DefinitionEdit(int Id)
-        //{
-
-        //    return PartialView("DefinitionEditPartical", term);
-        //}
-
-        //[HttpPost]
-        //public ActionResult DefinitionEdit(ProjectViewModel term)
-        //{
-        //    return PartialView("DefinitionEditPartical", term);
-        //}
-
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult TermPartical(ProjectViewModel term)
         {
             return PartialView("TermPartical", term);

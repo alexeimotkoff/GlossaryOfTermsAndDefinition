@@ -4,25 +4,27 @@
     ViewBag.Title = "IndexAdd";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
 <hr />
 <h4>Новый проект</h4>
 <hr />
-@using (Html.BeginForm("Add","Project", FormMethod.Post,  new { enctype = "multipart/form-data" }))
+
+@using (Html.BeginForm("Add", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @*@Html.AntiForgeryToken()*@
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-  
-        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
             @Html.LabelFor(project => project.ProjectName, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-8">
                 @Html.EditorFor(project => project.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
-              @*  @Html.ValidationMessageFor(project => project.ProjectName, "", new { @class = "text-danger" })*@
+                @Html.ValidationMessageFor(project => project.ProjectName, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(project => project.InformationSystem, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-8">
@@ -38,15 +40,14 @@
         <div class="form-group">
             @Html.LabelFor(project => project.File, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                @Html.TextBoxFor(project => project.File, new { type = "file", @class = "filestyle",  data_show_preview = "false", data_icon = "false", data_buttonText = "Добавить документацию"})
-                @*@Html.ValidationMessageFor(project => project.File, "Файл не выбран", new { @class = "text-danger" })*@
+                @Html.TextBoxFor(project => project.File, new { type = "file", @class = "filestyle", data_show_preview = "false", data_icon = "false", data_buttonText = "Добавить документацию" })
+                @Html.ValidationMessageFor(project => project.File)
             </div>
         </div>
 
-            <div class="col-md-offset-1 col-md-7">
-                <input type="Submit" value="Добавить проект" class="btn btn-default" />
-            </div>
+        <div class="col-md-offset-1 col-md-7">
+            <input type="Submit" value="Добавить проект" class="btn btn-default" />
+        </div>
     </div>
 }
-
 

@@ -26,11 +26,12 @@
           </Key>
           <Property Name="IdDefinition" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTerm" Type="int" Nullable="false" />
-          <Property Name="Frequency" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DescriptionEng" Type="nvarchar(max)" />
           <Property Name="URL" Type="nvarchar(max)" />
           <Property Name="URLTitle" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Time" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="FundamentalAreas">
           <Key>
@@ -81,6 +82,7 @@
           <Property Name="IdLifeСycle" Type="int" />
           <Property Name="IdInformationSystem" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="Time" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="Reference">
           <Key>
@@ -167,6 +169,18 @@
             </Principal>
             <Dependent Role="Definitions">
               <PropertyRef Name="IdTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Definition_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Definitions" Type="Self.Definitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Definitions">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -330,6 +344,10 @@
             <End Role="Terms" EntitySet="Terms" />
             <End Role="Definitions" EntitySet="Definitions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Definition_ToUsers" Association="Self.FK_Definition_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Definitions" EntitySet="Definitions" />
+          </AssociationSet>
           <AssociationSet Name="FK_LL_Project_ToIdLifeСycle" Association="Self.FK_LL_Project_ToIdLifeСycle">
             <End Role="LifeСycle" EntitySet="LifeСycle" />
             <End Role="Projects" EntitySet="Projects" />
@@ -419,16 +437,20 @@
           </AssociationSet>
           <EntitySet Name="BucketHashes" EntityType="GlossaryProjectDatabaseModel.BucketHash" />
           <EntitySet Name="MinHashes" EntityType="GlossaryProjectDatabaseModel.MinHash" />
+          <EntitySet Name="Terms" EntityType="GlossaryProjectDatabaseModel.Term" />
+          <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea">
+            <End Role="FundamentalArea" EntitySet="FundamentalAreas" />
+            <End Role="Term" EntitySet="Terms" />
+          </AssociationSet>
           <EntitySet Name="Definitions" EntityType="GlossaryProjectDatabaseModel.Definition" />
           <EntitySet Name="Projects" EntityType="GlossaryProjectDatabaseModel.Project" />
-          <EntitySet Name="Terms" EntityType="GlossaryProjectDatabaseModel.Term" />
           <AssociationSet Name="FK_Definition_ToTable" Association="GlossaryProjectDatabaseModel.FK_Definition_ToTable">
             <End Role="Term" EntitySet="Terms" />
             <End Role="Definition" EntitySet="Definitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_YK_Term_ToIdFundamentalArea" Association="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea">
-            <End Role="FundamentalArea" EntitySet="FundamentalAreas" />
-            <End Role="Term" EntitySet="Terms" />
+          <AssociationSet Name="FK_Definition_ToUsers" Association="GlossaryProjectDatabaseModel.FK_Definition_ToUsers">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Definition" EntitySet="Definitions" />
           </AssociationSet>
           <AssociationSet Name="FK_SK_Project_ToIdInformationSystem" Association="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem">
             <End Role="InformationSystem" EntitySet="InformationSystems" />
@@ -479,6 +501,7 @@
           <NavigationProperty Name="webpages_Roles" Relationship="GlossaryProjectDatabaseModel.webpages_UsersInRoles" FromRole="User" ToRole="webpages_Roles" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Definitions" Relationship="GlossaryProjectDatabaseModel.FK_Definition_ToUsers" FromRole="User" ToRole="Definition" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="User" ToRole="Project" />
         </EntityType>
         <EntityType Name="webpages_Roles">
@@ -509,18 +532,44 @@
           <Property Name="MinHash1" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="MinHash" ToRole="Project" />
         </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="IdTerm" />
+          </Key>
+          <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TermName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TermNameEng" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Addition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdFundamentalArea" Type="Int32" />
+          <NavigationProperty Name="FundamentalArea" Relationship="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" FromRole="Term" ToRole="FundamentalArea" />
+          <NavigationProperty Name="Definitions" Relationship="GlossaryProjectDatabaseModel.FK_Definition_ToTable" FromRole="Term" ToRole="Definition" />
+        </EntityType>
+        <Association Name="FK_YK_Term_ToIdFundamentalArea">
+          <End Type="GlossaryProjectDatabaseModel.FundamentalArea" Role="FundamentalArea" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FundamentalArea">
+              <PropertyRef Name="IdFundamentalArea" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="IdFundamentalArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Definition">
           <Key>
             <PropertyRef Name="IdDefinition" />
           </Key>
           <Property Name="IdDefinition" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTerm" Type="Int32" Nullable="false" />
-          <Property Name="Frequency" Type="Int32" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DescriptionEng" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="URLTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Term" Relationship="GlossaryProjectDatabaseModel.FK_Definition_ToTable" FromRole="Definition" ToRole="Term" />
+          <NavigationProperty Name="User" Relationship="GlossaryProjectDatabaseModel.FK_Definition_ToUsers" FromRole="Definition" ToRole="User" />
           <NavigationProperty Name="Projects" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Definition" ToRole="Project" />
         </EntityType>
         <EntityType Name="Project">
@@ -533,6 +582,7 @@
           <Property Name="IdLifeСycle" Type="Int32" />
           <Property Name="IdInformationSystem" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
           <NavigationProperty Name="InformationSystem" Relationship="GlossaryProjectDatabaseModel.FK_SK_Project_ToIdInformationSystem" FromRole="Project" ToRole="InformationSystem" />
           <NavigationProperty Name="LifeСycle" Relationship="GlossaryProjectDatabaseModel.FK_LL_Project_ToIdLifeСycle" FromRole="Project" ToRole="LifeCycle" />
           <NavigationProperty Name="User" Relationship="GlossaryProjectDatabaseModel.FK_Projects_ToUsers" FromRole="Project" ToRole="User" />
@@ -540,18 +590,6 @@
           <NavigationProperty Name="BucketHashes" Relationship="GlossaryProjectDatabaseModel.Buckets" FromRole="Project" ToRole="BucketHash" />
           <NavigationProperty Name="Glossary" Relationship="GlossaryProjectDatabaseModel.Glossaries" FromRole="Project" ToRole="Definition" />
           <NavigationProperty Name="MinHashes" Relationship="GlossaryProjectDatabaseModel.Signature" FromRole="Project" ToRole="MinHash" />
-        </EntityType>
-        <EntityType Name="Term">
-          <Key>
-            <PropertyRef Name="IdTerm" />
-          </Key>
-          <Property Name="IdTerm" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TermName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TermNameEng" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Addition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IdFundamentalArea" Type="Int32" />
-          <NavigationProperty Name="Definitions" Relationship="GlossaryProjectDatabaseModel.FK_Definition_ToTable" FromRole="Term" ToRole="Definition" />
-          <NavigationProperty Name="FundamentalArea" Relationship="GlossaryProjectDatabaseModel.FK_YK_Term_ToIdFundamentalArea" FromRole="Term" ToRole="FundamentalArea" />
         </EntityType>
         <Association Name="FK_Definition_ToTable">
           <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="1" />
@@ -565,15 +603,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_YK_Term_ToIdFundamentalArea">
-          <End Type="GlossaryProjectDatabaseModel.FundamentalArea" Role="FundamentalArea" Multiplicity="0..1" />
-          <End Type="GlossaryProjectDatabaseModel.Term" Role="Term" Multiplicity="*" />
+        <Association Name="FK_Definition_ToUsers">
+          <End Type="GlossaryProjectDatabaseModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="GlossaryProjectDatabaseModel.Definition" Role="Definition" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FundamentalArea">
-              <PropertyRef Name="IdFundamentalArea" />
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Term">
-              <PropertyRef Name="IdFundamentalArea" />
+            <Dependent Role="Definition">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -723,31 +761,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Definitions">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Definition">
-              <MappingFragment StoreEntitySet="Definitions">
-                <ScalarProperty Name="URLTitle" ColumnName="URLTitle" />
-                <ScalarProperty Name="URL" ColumnName="URL" />
-                <ScalarProperty Name="DescriptionEng" ColumnName="DescriptionEng" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
-                <ScalarProperty Name="IdDefinition" ColumnName="IdDefinition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Project">
-              <MappingFragment StoreEntitySet="Projects">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
-                <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
-                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
-                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
-                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Terms">
             <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Term">
               <MappingFragment StoreEntitySet="Terms">
@@ -756,6 +769,33 @@
                 <ScalarProperty Name="TermNameEng" ColumnName="TermNameEng" />
                 <ScalarProperty Name="TermName" ColumnName="TermName" />
                 <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Definitions">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Definition">
+              <MappingFragment StoreEntitySet="Definitions">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="URLTitle" ColumnName="URLTitle" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="DescriptionEng" ColumnName="DescriptionEng" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IdTerm" ColumnName="IdTerm" />
+                <ScalarProperty Name="IdDefinition" ColumnName="IdDefinition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="GlossaryProjectDatabaseModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdInformationSystem" ColumnName="IdInformationSystem" />
+                <ScalarProperty Name="IdLifeСycle" ColumnName="IdLifeСycle" />
+                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="IdProject" ColumnName="IdProject" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
