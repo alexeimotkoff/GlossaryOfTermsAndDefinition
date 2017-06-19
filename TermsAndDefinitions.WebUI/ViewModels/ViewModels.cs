@@ -79,6 +79,7 @@ namespace TermsAndDefinitions.WebUI.ViewModels
         }
         [Column(TypeName = "smalldatetime")]
         public DateTime Time { get; set; }
+
     }
 
     public class PreviewTermViewModel

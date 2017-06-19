@@ -78,6 +78,25 @@ namespace TermsAndDefinitions.WebUI.Controllers
             return PartialView("PreviewProjectsPartical", project);
         }
 
+        [HttpGet]
+        public ActionResult EditGlossary(int id)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<LifeCycle, PreviewLifeСycle>();
+                cfg.CreateMap<InformationSystem, PreviewInfSysViewModel>()
+                .ForMember("Id", opt => opt.MapFrom(c => c.IdInformationSystem))
+                .ForMember("Name", opt => opt.MapFrom(c => c.NameInformationSystem));
+                cfg.CreateMap<Definition, DefinitionViewModel>()
+                .ForMember("TermName", opt => opt.MapFrom(c => c.Term.TermName));
+                cfg.CreateMap<Project, ProjectViewModel>();
+            });
+            var glossary = db.Projects.Find(id).Glossary;
+
+
+            return PartialView("EditGlossary", project);
+        }
+
 
         [HttpGet]
         public ActionResult ProjectPartical(ProjectViewModel project)

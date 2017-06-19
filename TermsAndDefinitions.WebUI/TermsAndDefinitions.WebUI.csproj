@@ -172,6 +172,9 @@
     <Reference Include="Moq, Version=4.7.12.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.7.12\lib\net45\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="MvcCheckBoxList, Version=1.4.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcCheckBoxList.1.4.5\lib\net45\MvcCheckBoxList.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -474,6 +477,7 @@
     <Content Include="Views\Lifecycle\PreviewLifecycPartical.cshtml" />
     <Content Include="Views\Term\AdditionPartical.cshtml" />
     <Content Include="Views\Term\EditAdditionPartical.cshtml" />
+    <Content Include="Views\Project\EditGlossaryPartical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
