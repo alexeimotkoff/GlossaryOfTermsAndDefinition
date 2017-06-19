@@ -45,7 +45,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Search");
         }
 
 
@@ -68,7 +68,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password,
                         new { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, PhoneNumber = model.PhoneNumber });
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Search");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -87,7 +87,7 @@ namespace TermsAndDefinitions.WebUI.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Search");
             }
         }
 
