@@ -1,0 +1,27 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.TermAdditionViewModel
+
+
+@using (Ajax.BeginForm("UpdateAddition", new AjaxOptions { UpdateTargetId = "addition", HttpMethod = "POST" }))
+{
+    @Html.HiddenFor(model => model.IdTerm);
+    @Html.HiddenFor(model => model.TermName);
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.Addition, new { @class = "form-control", placeholder = "Примечание", style = "resize:vertical;" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FundamentalArea, new { @class = "control-label col-sm-4 col-xs-12" })
+            <div class="col-sm-4 col-xs-8">
+                    @Html.DropDownListFor(model => model.FundamentalArea, new SelectList(ViewData["Areas"] as List<string>), htmlAttributes: new { @class = "form-control", aria_describedby = "dropdownMenu1" })
+             <p class="help-block">
+                    @Html.ValidationMessageFor(model => model.FundamentalArea, null, new { @class = "text-danger" })
+            </p>
+            </div>
+            <div class="col-sm-2  col-xs-2 col-xs-push-2">
+                <input type="Submit" value="Сохранить" class="btn btn-success btn-sm">
+            </div>
+        </div>
+    </div>
+}

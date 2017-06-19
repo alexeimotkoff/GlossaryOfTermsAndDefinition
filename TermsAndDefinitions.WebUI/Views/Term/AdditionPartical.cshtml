@@ -1,0 +1,22 @@
+﻿@model TermsAndDefinitions.WebUI.ViewModels.TermAdditionViewModel
+
+@if (!string.IsNullOrEmpty(Model.Addition))
+{
+    <div class="col-sm-12 col-xs-12">
+        <p style="margin-left:15px;">
+            @Model.Addition
+        </p>
+    </div>
+}
+<div class="col-sm-8 col-xs-12">
+    @Html.LabelFor(model => model.FundamentalArea, new { @class = "col-sm-4 col-xs-12" })
+    @Html.ActionLink(Model.FundamentalArea, "Index", new { id = Model.IdFundamentalArea }, new { @class = "col-sm-5 col-xs-6" })
+    @if (Request.IsAuthenticated)
+    {   <div class="col-sm-2 col-sm-push-6 col-xs-2 col-xs-push-4">
+            @Ajax.ActionLink("Редактировать", "EditAddition",
+               new { id = Model.IdTerm },
+               new AjaxOptions { UpdateTargetId = "addition", HttpMethod = "POST" },
+               new { @class = "btn btn-default btn-xs" })
+        </div>
+    }
+</div>

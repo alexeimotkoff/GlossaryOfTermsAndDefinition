@@ -1,10 +1,25 @@
 ﻿@using TermsAndDefinitions.WebUI.ViewModels;
 @model TermsAndDefinitions.WebUI.ViewModels.TermViewModel
 
+<hr />
+<h3>@Model.TermName</h3>
 
-    <hr />
-    <h3>@Model.TermName</h3>
-    <hr />
+<div id="addition" class="row">
+    @{
+        var addition = new TermAdditionViewModel()
+        {
+            Addition = Model.Addition,
+            IdTerm = Model.IdTerm,
+            TermName = Model.TermName,
+            IdFundamentalArea = Model.IdFundamentalArea,
+            FundamentalArea = Model.FundamentalArea
+        };
+
+        Html.RenderPartial("AdditionPartical", addition);
+        }
+</div>
+<hr />
+
     @{
         int count = 1;
         var definitions = Model.Definitions.OrderByDescending(x => x.Freq);
